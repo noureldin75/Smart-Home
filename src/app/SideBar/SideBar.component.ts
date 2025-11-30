@@ -39,12 +39,8 @@ export class SideBarComponent {
   // Methods
   onToggleSidebar() {
     this.toggleSidebar.emit();
-    this.isSidebarExpanded = !this.isSidebarExpanded;
-    if (!this.isSidebarExpanded) {
-      this.homePartsExpanded = false;
-    }
   }
- 
+  
 
   onToggleHomeParts() {
     this.toggleHomeParts.emit();
