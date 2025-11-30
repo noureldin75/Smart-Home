@@ -13,7 +13,7 @@
           <p>Control Center</p>
         </div>
       </div>
-      <button class="sidebar-toggle" (click)="onToggleSidebar()" [class.expanded]="isSidebarExpanded">
+      <button class="sidebar-toggle" (click)="toggleSidebar()" [class.expanded]="isSidebarExpanded">
         <div class="toggle-icon">
           <span></span>
           <span></span>
@@ -59,7 +59,7 @@
         </div>
       </div>
 
-      <div class="nav-item" [class.active]="activeSection === 'home-parts'" (click)="onToggleHomeParts()"  routerLink="/HomeParts" >
+      <div class="nav-item" [class.active]="activeSection === 'home-parts'" (click)="toggleHomeParts()"  routerLink="/HomeParts" >
         <div class="nav-icon">
           <div class="icon-wrapper">
             <div class="icon-glow"></div>
@@ -161,7 +161,7 @@
     </div>
 
     <div class="sidebar-bottom">
-      <div class="nav-item mode-toggle" (click)="onToggleDarkMode()">
+      <div class="nav-item mode-toggle" (click)="toggleDarkMode()">
         <div class="nav-icon">
           <div class="icon-wrapper">
             <div class="icon-glow"></div>
@@ -177,7 +177,7 @@
           </div>
         </div>
       </div>
-      <div class="nav-item logout-item" (click)="onLogout()">
+      <div class="nav-item logout-item" (click)="logout()">
         <div class="nav-icon">
           <div class="icon-wrapper">
             <div class="icon-glow-red"></div>
