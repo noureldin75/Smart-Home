@@ -1,3 +1,53 @@
-<p>
-  EnergyAnalytics works!
-</p>
+<div class="page-container">
+
+  <!-- 
+    1. عطينا السايد بار اسم مرجعي #sidebarRef 
+    ده بيخلينا نقدر نشوف المتغيرات اللي جواه (زي isSidebarExpanded) مباشرة هنا
+  -->
+  <app-sidebar #sidebarRef class="sidebar"></app-sidebar>
+
+  <!-- 
+    2. استخدمنا المتغير المرجعي ده عشان نتحكم في كلاسات المحتوى 
+    لاحظ: !sidebarRef.isSidebarExpanded بدل ما نكتب كود في الـ TS
+  -->
+  <main class="main-content" 
+        [class.collapsed]="!sidebarRef.isSidebarExpanded">
+
+    <div class="cards-container">
+      <div *ngFor="let card of cards" class="energy-card" [ngClass]="card.type">
+        <div class="icon-wrapper">{{card.icon}}</div>
+        <div class="card-content">
+          <h3>{{card.title}}</h3>
+          <div class="value">
+            <h1>{{card.value}}</h1>
+          </div>
+          <p>{{card.subvalue}}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chart Section -->
+    <div class="chart-container">
+       <h3>Power Consumption (Today)</h3>
+       <div class="bar-chart">
+         <div class="bar-wrapper" *ngFor="let item of powerConsumption">
+            <div class="bar" 
+                 [style.height.%]="getBarHeight(item.consumption)"
+                 [class.high-usage]="isHighUsage(item.consumption)">
+                 <span class="tooltip">{{item.consumption}} kW</span>
+            </div>
+            <span class="label">{{item.time}}</span>
+         </div>
+       </div>
+    </div>
+
+    <div class="peak-usage">
+      <div class="usage-icon">📈</div>
+      <div class="usage-content">
+        <h3>Peak Usage: 2 PM - 6 PM</h3>
+        <p>Consider shifting high-power activities to off-peak hours.</p>
+      </div>
+    </div>
+      
+  </main>
+</div>

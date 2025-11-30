@@ -1,0 +1,222 @@
+/* ==========================
+   متغيرات عامة
+========================== */
+/* 1. الكونتينر الكبير */
+.page-container {
+  display: flex;          /* يحطهم جنب بعض */
+  height: 100vh;          /* طول الشاشة */
+  width: 100vw;
+  overflow: hidden;       /* يمنع السكرول الخارجي */
+  background: #0f172a;    /* لون الخلفية */
+}
+
+
+/* 3. المحتوى الرئيسي */
+.main-content {
+  flex-grow: 1;           /* السطر ده هو السر: خد كل المساحة الباقية */
+  height: 100%;
+  overflow-y: auto;       /* السكرول يبقى هنا بس */
+  transition: all 0.3s ease; /* نعومة لما المساحة تتغير */
+  margin-left: 350px;
+}
+
+/* اختياري: استخدام الكلاسات اللي أنت ضفتها لتغيير التنسيق الداخلي */
+.main-content.collapsed {
+  /* مثلاً لما السايد بار يقفل، وسع الـ Padding شوية */
+
+  margin-left: 100px;
+}
+
+/* ==========================
+   الكروت
+========================== */
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  width: 100%;
+  transition: all 0.5s ease;
+}
+
+.energy-card {
+  border-radius: 1rem;
+  padding: 1.5rem;
+  border: 1px solid transparent;
+  text-align: center;
+  transition: transform 0.5s, box-shadow 0.5s, border-color 0.5s;
+  --theme-color: #fff;
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+}
+
+.energy-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 
+    0 0 15px lab(54.82% -3.33 -44.53),
+    0 0 30px lab(54.82% -3.33 -44.53);
+}
+
+.energy-card.usage { --theme-color: #E0FF4F; }
+.energy-card.cost { --theme-color: #06b6d4; }
+.energy-card.bill { --theme-color: #a855f7; }
+.energy-card.ecoScore { --theme-color:#4B7F52; }
+
+.energy-card {
+  border-color: var(--theme-color);
+}
+
+/* ==========================
+   EDITED SECTION: Icon Wrapper
+========================== */
+
+/* 1. Main Circle (The Glass Effect) */
+.icon-wrapper {
+  position: relative; /* Needed for the second circle */
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  
+  /* Changed: Thinner border looks better for glass */
+  border: 1px solid var(--theme-color);
+  
+  /* Changed: Text/Icon color stays solid */
+  color: var(--theme-color);
+  
+  /* Changed: Background is now 90% transparent version of theme color */
+  background-color: color-mix(in srgb, var(--theme-color), transparent 90%);
+  
+  /* Changed: Inner glow instead of outer shadow */
+  box-shadow: inset 0 0 15px color-mix(in srgb, var(--theme-color), transparent 80%);
+  
+  z-index: 2;
+}
+
+/* 2. The "Ghost" Offset Circle (New Addition) */
+.icon-wrapper::before {
+  content: '';
+  position: absolute;
+  top: -8px;  /* Moves circle Up */
+  left: -8px; /* Moves circle Left */
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  
+  /* Very faint border using the theme color */
+  border: 1px solid color-mix(in srgb, var(--theme-color), transparent 70%);
+  z-index: -1;
+}
+
+/* 3. Optional: Stroke for the Icon inside */
+.icon-wrapper svg, .icon-wrapper i {
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.5));
+}
+
+/* ==========================
+   END EDITED SECTION
+========================== */
+
+.value h1 { 
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: var(--theme-color);
+}
+
+h3 {
+  color: #9ca3af;
+  font-size: 0.75rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+p {
+  color: #eee;
+}
+h2{
+  font-size: 1.1rem;
+}
+
+/* ==========================
+   responsive
+========================== */
+@media (max-width: 1024px) {
+  .cards-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+    padding-top: 80px; 
+  }
+
+  .cards-container {
+    grid-template-columns: 1fr;
+  }
+
+  .energy-card {
+    width: 100%;
+  }
+
+  .sidebar {
+    position: fixed;
+    width: var(--sidebar-open);
+  }
+}
+
+
+
+
+
+
+
+
+.peak-usage {
+  display: flex;             /* Key: aligns icon and text in a row */
+  align-items: center;       /* Vertically centers items */
+  gap: 1rem;                 /* Space between icon and text */
+  
+  background: rgba(255, 68, 68, 0.1); /* Dark Red background */
+  border: 1px solid rgba(255, 68, 68, 0.3); /* Red Border */
+  border-radius: 12px;
+  
+  padding: 1rem 1.5rem;      /* Top/Bottom: 1rem, Left/Right: 1.5rem */
+  margin-top: 1.5rem;
+  width: 100%;               /* Takes full width of parent (or use 70% if preferred) */
+  box-sizing: border-box;    /* Ensures padding doesn't break width */
+}
+
+/* Style the Icon specifically */
+.usage-icon {
+  font-size: 2rem;           /* Make emoji larger */
+  line-height: 1;
+  filter: drop-shadow(0 0 5px rgba(255, 68, 68, 0.4)); /* Optional glow */
+}
+
+.usage-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;               /* Space between title and description */
+}
+
+/* Title Styling */
+.usage-content h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;               /* Bright White */
+  letter-spacing: 0.5px;
+}
+
+/* Description Styling */
+.usage-content p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #aaa;               /* Grey text */
+  line-height: 1.4;
+}
