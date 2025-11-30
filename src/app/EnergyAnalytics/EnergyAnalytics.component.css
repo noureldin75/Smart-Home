@@ -1,12 +1,11 @@
-/* ==========================
-   1. إعدادات الصفحة والكونتينر
-========================== */
+
 .page-container {
   display: flex;
   height: 100vh;
   width: 100vw;
   overflow: hidden;
-  background: #0f172a; /* لون الخلفية الكحلي الداكن */
+   background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* المنطقة الرئيسية للمحتوى */
@@ -182,9 +181,10 @@
 .chart-section:hover {
   transform: translateY(-5px);
   box-shadow: 
-    0 10px 15px -3px rgba(0, 0, 0, 0.1), 
-    0 0 15px var(#06b6d4);
+    0 15px 30px -5px rgba(0, 0, 0, 0.3), 
+    0 0 20px rgba(0, 243, 255, 0.2); 
 }
+
 
 .chart-header {
   display: flex;
