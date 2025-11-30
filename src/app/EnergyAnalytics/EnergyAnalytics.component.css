@@ -1,222 +1,310 @@
 /* ==========================
-   متغيرات عامة
+   1. إعدادات الصفحة والكونتينر
 ========================== */
-/* 1. الكونتينر الكبير */
 .page-container {
-  display: flex;          /* يحطهم جنب بعض */
-  height: 100vh;          /* طول الشاشة */
+  display: flex;
+  height: 100vh;
   width: 100vw;
-  overflow: hidden;       /* يمنع السكرول الخارجي */
-  background: #0f172a;    /* لون الخلفية */
+  overflow: hidden;
+  background: #0f172a; /* لون الخلفية الكحلي الداكن */
 }
 
-
-/* 3. المحتوى الرئيسي */
+/* المنطقة الرئيسية للمحتوى */
 .main-content {
-  flex-grow: 1;           /* السطر ده هو السر: خد كل المساحة الباقية */
+  flex-grow: 1;
   height: 100%;
-  overflow-y: auto;       /* السكرول يبقى هنا بس */
-  transition: all 0.3s ease; /* نعومة لما المساحة تتغير */
-  margin-left: 350px;
+  overflow-y: auto;          /* سكرول رأسي فقط */
+  overflow-x: hidden;        /* منع السكرول الجانبي */
+  transition: all 0.3s ease;
+  
+  margin-left: 350px;        /* مسافة السايد بار المفتوح */
+  padding: 2rem;             /* مسافات داخلية للمحتوى */
+  box-sizing: border-box;    /* لضبط حساب المسافات */
 }
 
-/* اختياري: استخدام الكلاسات اللي أنت ضفتها لتغيير التنسيق الداخلي */
+/* حالة السايد بار المغلق */
 .main-content.collapsed {
-  /* مثلاً لما السايد بار يقفل، وسع الـ Padding شوية */
-
   margin-left: 100px;
 }
 
 /* ==========================
-   الكروت
+   2. شبكة الكروت (Cards Grid)
 ========================== */
 .cards-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
   width: 100%;
-  transition: all 0.5s ease;
+  margin-bottom: 2rem;       /* مسافة تفصل الكروت عن الشارت */
 }
 
+/* ستايل الكارت الأساسي */
 .energy-card {
+  position: relative;        /* ضروري عشان تأثير اللمعة */
   border-radius: 1rem;
   padding: 1.5rem;
-  border: 1px solid transparent;
   text-align: center;
-  transition: transform 0.5s, box-shadow 0.5s, border-color 0.5s;
+  overflow: hidden;          /* عشان اللمعة متخرجش بره */
+  
+  /* الألوان والخلفية */
   --theme-color: #fff;
-  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--theme-color);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  
+  /* إعدادات الأنيميشن (الدخول) */
+  opacity: 0; /* مخفي في البداية */
+  animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.energy-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 
-    0 0 15px lab(54.82% -3.33 -44.53),
-    0 0 30px lab(54.82% -3.33 -44.53);
-}
-
+/* ألوان الثيم لكل نوع */
 .energy-card.usage { --theme-color: #E0FF4F; }
 .energy-card.cost { --theme-color: #06b6d4; }
 .energy-card.bill { --theme-color: #a855f7; }
-.energy-card.ecoScore { --theme-color:#4B7F52; }
+.energy-card.ecoScore { --theme-color: #4B7F52; }
 
-.energy-card {
-  border-color: var(--theme-color);
+/* تأثير الهوفر (الطفو + التوهج) */
+.energy-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 
+    0 10px 15px -3px rgba(0, 0, 0, 0.1), 
+    0 0 15px var(--theme-color);
+}
+
+.energy-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
+  transform: skewX(-25deg);
+  transition: 0.5s;
+  pointer-events: none;
+}
+
+.energy-card:hover::after {
+  left: 150%;
+  transition: 0.7s ease-in-out;
+}
+
+.card-content h3 {
+  color: #9ca3af;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 1rem;
+}
+
+.value h1 { 
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0.5rem 0;
+  color: var(--theme-color);
+}
+
+.card-content p {
+  color: #94a3b8;
+  font-size: 0.8rem;
 }
 
 /* ==========================
-   EDITED SECTION: Icon Wrapper
+   3. الأيقونات (Icons)
 ========================== */
-
-/* 1. Main Circle (The Glass Effect) */
 .icon-wrapper {
-  position: relative; /* Needed for the second circle */
-  width: 80px;
-  height: 80px;
+  position: relative;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
-  margin: 0 auto 1rem;
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
+  font-size: 1.75rem;
   
-  /* Changed: Thinner border looks better for glass */
+  /* Glass Style */
   border: 1px solid var(--theme-color);
-  
-  /* Changed: Text/Icon color stays solid */
   color: var(--theme-color);
-  
-  /* Changed: Background is now 90% transparent version of theme color */
   background-color: color-mix(in srgb, var(--theme-color), transparent 90%);
-  
-  /* Changed: Inner glow instead of outer shadow */
-  box-shadow: inset 0 0 15px color-mix(in srgb, var(--theme-color), transparent 80%);
-  
+  box-shadow: inset 0 0 10px color-mix(in srgb, var(--theme-color), transparent 85%);
   z-index: 2;
+  
+  /* أنيميشن العوم المستمر */
+  animation: float 4s ease-in-out infinite;
 }
 
-/* 2. The "Ghost" Offset Circle (New Addition) */
+/* الدائرة الخلفية الشفافة */
 .icon-wrapper::before {
   content: '';
   position: absolute;
-  top: -8px;  /* Moves circle Up */
-  left: -8px; /* Moves circle Left */
+  top: -6px;
+  left: -6px;
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  
-  /* Very faint border using the theme color */
-  border: 1px solid color-mix(in srgb, var(--theme-color), transparent 70%);
+  border: 1px solid color-mix(in srgb, var(--theme-color), transparent 80%);
   z-index: -1;
+  padding: 6px;
 }
 
-/* 3. Optional: Stroke for the Icon inside */
-.icon-wrapper svg, .icon-wrapper i {
-  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.5));
-}
-
-/* ==========================
-   END EDITED SECTION
-========================== */
-
-.value h1 { 
-  font-size: 2.5rem;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-  color: var(--theme-color);
-}
-
-h3 {
-  color: #9ca3af;
-  font-size: 0.75rem;
-  font-weight: bold;
-  letter-spacing: 1px;
-}
-
-p {
-  color: #eee;
-}
-h2{
-  font-size: 1.1rem;
+/* تغيير سرعة العوم للكروت الفردية عشان ميكونوش كلهم نفس الحركة */
+.energy-card:nth-child(odd) .icon-wrapper {
+  animation-duration: 5s;
 }
 
 /* ==========================
-   responsive
+   4. قسم الرسم البياني (Chart)
 ========================== */
+.chart-section {
+  background-color: #161b2e;
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  box-sizing: border-box;
+  
+  /* أنيميشن الدخول */
+  opacity: 0;
+  animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  animation-delay: 0.6s; /* يتأخر بعد الكروت */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.chart-section:hover {
+  transform: translateY(-5px);
+  box-shadow: 
+    0 10px 15px -3px rgba(0, 0, 0, 0.1), 
+    0 0 15px var(#06b6d4);
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.chart-header h3 {
+  font-size: 1.25rem;
+  background: linear-gradient(45deg, #00f3ff, #ff00ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+}
+
+.chart-header .badge {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  color: #8b92a5;
+  font-size: 0.8rem;
+}
+
+/* ==========================
+   5. تنبيه الاستهلاك (Peak Usage)
+========================== */
+.peak-usage {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(255, 68, 68, 0.1);
+  border: 1px solid rgba(255, 68, 68, 0.3);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-top: 1.5rem;
+  width: 100%;
+  box-sizing: border-box;
+  
+  /* أنيميشن النبض */
+  animation: softPulse 2s infinite;
+}
+
+.usage-icon {
+  font-size: 1.8rem;
+}
+
+.usage-content h3 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1rem;
+  color: #fff;
+}
+
+.usage-content p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #cbd5e1;
+}
+
+/* ==========================
+   6. تعريف الأنيميشن (Keyframes)
+========================== */
+
+/* حركة الظهور من الأسفل */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* حركة العوم للأيقونات */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+  100% { transform: translateY(0px); }
+}
+
+/* حركة النبض للتنبيه */
+@keyframes softPulse {
+  0% { box-shadow: 0 0 0 0 rgba(255, 68, 68, 0.2); }
+  70% { box-shadow: 0 0 0 10px rgba(255, 68, 68, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 68, 68, 0); }
+}
+
+/* تأخير حركة ظهور الكروت (Staggering) */
+.energy-card:nth-child(1) { animation-delay: 0.1s; }
+.energy-card:nth-child(2) { animation-delay: 0.2s; }
+.energy-card:nth-child(3) { animation-delay: 0.3s; }
+.energy-card:nth-child(4) { animation-delay: 0.4s; }
+
+/* ==========================
+   7. التجاوب (Media Queries)
+========================== */
+
+/* تابلت */
 @media (max-width: 1024px) {
   .cards-container {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
+/* موبايل */
 @media (max-width: 768px) {
   .main-content {
-    margin-left: 0;
-    padding-top: 80px; 
+    margin-left: 0 !important;
+    padding: 1rem;
+    padding-top: 80px;
   }
 
   .cards-container {
     grid-template-columns: 1fr;
+    gap: 1rem;
   }
-
-  .energy-card {
-    width: 100%;
-  }
-
-  .sidebar {
-    position: fixed;
-    width: var(--sidebar-open);
-  }
-}
-
-
-
-
-
-
-
-
-.peak-usage {
-  display: flex;             /* Key: aligns icon and text in a row */
-  align-items: center;       /* Vertically centers items */
-  gap: 1rem;                 /* Space between icon and text */
   
-  background: rgba(255, 68, 68, 0.1); /* Dark Red background */
-  border: 1px solid rgba(255, 68, 68, 0.3); /* Red Border */
-  border-radius: 12px;
-  
-  padding: 1rem 1.5rem;      /* Top/Bottom: 1rem, Left/Right: 1.5rem */
-  margin-top: 1.5rem;
-  width: 100%;               /* Takes full width of parent (or use 70% if preferred) */
-  box-sizing: border-box;    /* Ensures padding doesn't break width */
-}
-
-/* Style the Icon specifically */
-.usage-icon {
-  font-size: 2rem;           /* Make emoji larger */
-  line-height: 1;
-  filter: drop-shadow(0 0 5px rgba(255, 68, 68, 0.4)); /* Optional glow */
-}
-
-.usage-content {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;               /* Space between title and description */
-}
-
-/* Title Styling */
-.usage-content h3 {
-  margin: 0;
-  font-size: 1rem;
-  font-weight: 700;
-  color: #fff;               /* Bright White */
-  letter-spacing: 0.5px;
-}
-
-/* Description Styling */
-.usage-content p {
-  margin: 0;
-  font-size: 0.9rem;
-  color: #aaa;               /* Grey text */
-  line-height: 1.4;
+  .chart-section {
+    padding: 1rem;
+  }
 }

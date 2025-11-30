@@ -10,8 +10,7 @@
     2. استخدمنا المتغير المرجعي ده عشان نتحكم في كلاسات المحتوى 
     لاحظ: !sidebarRef.isSidebarExpanded بدل ما نكتب كود في الـ TS
   -->
-  <main class="main-content" 
-        [class.collapsed]="!sidebarRef.isSidebarExpanded">
+  <main class="main-content" [class.collapsed]="!sidebarRef.isSidebarExpanded">
 
     <div class="cards-container">
       <div *ngFor="let card of cards" class="energy-card" [ngClass]="card.type">
@@ -26,28 +25,37 @@
       </div>
     </div>
 
-    <!-- Chart Section -->
-    <div class="chart-container">
-       <h3>Power Consumption (Today)</h3>
-       <div class="bar-chart">
-         <div class="bar-wrapper" *ngFor="let item of powerConsumption">
-            <div class="bar" 
-                 [style.height.%]="getBarHeight(item.consumption)"
-                 [class.high-usage]="isHighUsage(item.consumption)">
-                 <span class="tooltip">{{item.consumption}} kW</span>
-            </div>
-            <span class="label">{{item.time}}</span>
-         </div>
-       </div>
-    </div>
-
-    <div class="peak-usage">
-      <div class="usage-icon">📈</div>
-      <div class="usage-content">
-        <h3>Peak Usage: 2 PM - 6 PM</h3>
-        <p>Consider shifting high-power activities to off-peak hours.</p>
+   <div class="chart-section" *ngIf="chartOptions">
+      <div class="chart-header">
+        <h3>Hourly Usage</h3>
+        <span class="badge">Last 24 Hours</span>
       </div>
-    </div>
-      
+
+      <div id="chart">
+        <apx-chart
+          [series]="chartOptions.series"
+          [chart]="chartOptions.chart"
+          [dataLabels]="chartOptions.dataLabels"
+          [plotOptions]="chartOptions.plotOptions"
+          [yaxis]="chartOptions.yaxis"
+          [xaxis]="chartOptions.xaxis"
+          [legend]="chartOptions.legend"
+          [colors]="chartOptions.colors"
+          [grid]="chartOptions.grid"
+          [fill]="chartOptions.fill"
+          [tooltip]="chartOptions.tooltip"
+        ></apx-chart>
+      </div>
+       <div class="peak-usage">
+        <div class="usage-icon">📈</div>
+        <div class="usage-content">
+          <h3>Peak Usage: 2 PM - 6 PM</h3>
+          <p>Consider shifting high-power activities to off-peak hours.</p>
+        </div>
+      </div>
+   </div>
+
+     
+
   </main>
 </div>
