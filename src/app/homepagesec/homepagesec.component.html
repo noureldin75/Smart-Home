@@ -1,0 +1,90 @@
+<div class="prayer-times-card" [class.expanded]="isExpanded">
+  <!-- Compact View -->
+  <div class="prayer-compressed" (click)="toggleExpand()">
+    <div class="prayer-basic">
+      <div class="location-info">
+        <div class="location-icon">🕌</div>
+        <div class="location-text">
+ <div class="city">{{ location.city }}</div>
+ <div class="country">{{ location.country }}</div>
+        </div>
+      </div>
+      
+      <div class="time-section">
+        <div class="current-time">{{ getCurrentTimeString() }}</div>
+
+<div class="current-date">{{ currentDate }}</div>
+
+
+        <div class="hijri-date">{{ getHijriDate() }}</div>
+      </div>
+      <div class="next-prayer">
+        <div class="next-prayer-label">Next Prayer</div>
+        <div class="next-prayer-name">{{ nextPrayer }}</div>
+        <div class="time-remaining">{{ timeToNextPrayer }}</div>
+      </div>
+    </div>
+
+    <div class="expand-indicator">
+      <span class="expand-icon" [class.expanded]="isExpanded">▼</span>
+    </div>
+  </div>
+
+  <!-- Expanded View -->
+  <div class="prayer-expanded" *ngIf="isExpanded">
+    <!-- Today's Prayer Times -->
+    <div class="today-prayers">
+
+
+      <h3 class="section-title">Today's Prayer Times</h3>
+
+      <div class="prayer-grid">
+
+        <div *ngFor="let prayer of todaysPrayers" 
+             class="prayer-item" 
+             [class.next]="prayer.isNext"
+             [class.passed]="prayer.passed">
+          <div class="prayer-name">{{ prayer.name }}</div>
+ <div class="prayer-time">{{ prayer.time }}</div>
+  <div class="prayer-status" *ngIf="prayer.isNext">🔔 Next</div>
+   <div class="prayer-status" *ngIf="prayer.passed && !prayer.isNext">✓</div>
+  </div>
+      </div>
+    </div>
+    <!-- Weekly Calendar -->
+    <div class="prayer-calendar">
+      <h3 class="section-title">Prayer Times This Week</h3>
+      <div class="calendar-grid">
+        <div *ngFor="let day of calendarDays" class="calendar-day" [class.today]="day.isToday">
+          <div class="day-header">
+            <div class="day-number">{{ day.day }}</div>
+            <div class="day-month">{{ day.month }}</div>
+          </div>
+          <div class="day-prayers">
+            <div class="prayer-slot" *ngFor="let prayer of day.prayerTimes.slice(0, 3)">
+              <span class="prayer-abbr">{{ prayer.name.charAt(0) }}</span>
+              <span class="prayer-time-small">{{ prayer.time }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Prayer Calculation Info -->
+    <div class="calculation-info">
+      <div class="info-item">
+        <div class="info-icon">🕌</div>
+        <div class="info-text">
+          <div class="info-label">Calculation Method</div>
+          <div class="info-value">Egyptian General Authority</div>
+        </div>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">🌍</div>
+        <div class="info-text">
+          <div class="info-label">Location</div>
+          <div class="info-value">{{ location.latitude }}°N, {{ location.longitude }}°E</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

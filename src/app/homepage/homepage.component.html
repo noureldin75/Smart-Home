@@ -1,0 +1,651 @@
+<div class="homepage-container">
+  <!-- Modern Smart Home Sidebar -->
+  <nav class="smart-sidebar" [class.expanded]="isSidebarExpanded" [class.collapsed]="!isSidebarExpanded">
+    
+    <!-- Sidebar Header with Animated Logo -->
+    <div class="sidebar-header">
+      <div class="header-glow"></div>
+      <div class="logo-container">
+        <div class="logo-orb" [class.spinning]="isSidebarExpanded">
+          <div class="orb-core"></div>
+          <div class="orb-ring"></div>
+          <div class="orb-pulse"></div>
+        </div>
+        <div class="logo-text" *ngIf="isSidebarExpanded">
+          <h2>SMART HOME</h2>
+          <p>Control Center</p>
+        </div>
+      </div>
+      <button class="sidebar-toggle" (click)="toggleSidebar()" [class.expanded]="isSidebarExpanded">
+        <div class="toggle-icon">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </button>
+    </div>
+    <!-- Connection Status -->
+    <div class="connection-status" *ngIf="isSidebarExpanded">
+      <div class="status-indicators">
+        <div class="status-item online">
+          <div class="status-dot"></div>
+          <span>System Online</span>
+        </div>
+        <div class="status-item active">
+          <div class="status-dot"></div>
+          <span>{{ connectedDevices }} Devices</span>
+        </div>
+      </div>
+      <div class="network-bars">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+      </div>
+    </div>
+    <!-- Navigation Menu -->
+    <div class="nav-menu">
+      <!-- Profile Section -->
+      <div class="nav-item profile-item" [class.active]="activeSection === 'profile'" (click)="setActiveSection('profile')">
+        <div class="nav-icon">
+          <div class="icon-wrapper">
+            <div class="icon-glow"></div>
+            <span class="emoji">👤</span>
+            <div class="status-indicator online"></div>
+          </div>
+        </div>
+        <div class="nav-content" *ngIf="isSidebarExpanded">
+          <span class="nav-label">Profile</span>
+          <span class="nav-subtitle">User Settings</span>
+        </div>
+        <div class="nav-badge" *ngIf="isSidebarExpanded && profileNotifications > 0">
+          {{ profileNotifications }}
+        </div>
+      </div>
+      <!-- Home Parts Section -->
+      <div class="nav-item" [class.active]="activeSection === 'home-parts'" (click)="toggleHomeParts()">
+        <div class="nav-icon">
+          <div class="icon-wrapper">
+            <div class="icon-glow"></div>
+            <span class="emoji">🏠</span>
+          </div>
+        </div>
+        <div class="nav-content" *ngIf="isSidebarExpanded">
+          <span class="nav-label">Home Parts</span>
+          <span class="nav-subtitle">{{ activeRooms }} Active</span>
+        </div>
+        <div class="nav-arrow" *ngIf="isSidebarExpanded" [class.expanded]="homePartsExpanded">
+          ▼
+        </div>
+      </div>
+      <!-- Home Parts Submenu -->
+      <div class="submenu" *ngIf="homePartsExpanded && isSidebarExpanded">
+        <div *ngFor="let room of rooms" class="submenu-item" (click)="selectRoom(room)">
+          <div class="room-icon">
+            <span class="emoji">{{ room.icon }}</span>
+            <div class="room-status" [class]="room.status"></div>
+          </div>
+          <span class="room-name">{{ room.name }}</span>
+          <div class="room-info">
+            <span class="device-count">{{ room.devices }} dev</span>
+            <span class="temperature">{{ room.temperature }}</span>
+          </div>
+        </div>
+      </div>
+      <!-- Devices Section -->
+      <div class="nav-item" [class.active]="activeSection === 'devices'" (click)="setActiveSection('devices')">
+        <div class="nav-icon">
+          <div class="icon-wrapper">
+            <div class="icon-glow"></div>
+            <span class="emoji">📱</span>
+          </div>
+        </div>
+        <div class="nav-content" *ngIf="isSidebarExpanded">
+          <span class="nav-label">Devices</span>
+          <span class="nav-subtitle">{{ connectedDevices }} Connected</span>
+        </div>
+        <div class="nav-badge" *ngIf="isSidebarExpanded">
+          {{ connectedDevices }}
+        </div>
+      </div>
+      <!-- Security Section -->
+      <div class="nav-item" [class.active]="activeSection === 'security'" (click)="setActiveSection('security')">
+        <div class="nav-icon">
+          <div class="icon-wrapper">
+            <div class="icon-glow"></div>
+            <span class="emoji">🔒</span>
+          </div>
+        </div>
+        <div class="nav-content" *ngIf="isSidebarExpanded">
+          <span class="nav-label">Security</span>
+          <span class="nav-subtitle" [class.armed]="securityArmed"> 
+            {{ securityArmed ? 'Armed' : 'Disarmed' }}
+          </span>
+        </div>
+        <div class="security-status" *ngIf="isSidebarExpanded" [class.armed]="securityArmed">
+          <div class="status-dot"></div>
+        </div>
+      </div>
+      <!-- Analytics Section -->
+      <div class="nav-item" [class.active]="activeSection === 'analytics'" (click)="setActiveSection('analytics')">
+        <div class="nav-icon">
+          <div class="icon-wrapper">
+            <div class="icon-glow"></div>
+            <span class="emoji">📈</span>
+          </div>
+        </div>
+        <div class="nav-content" *ngIf="isSidebarExpanded">
+          <span class="nav-label">Analytics</span>
+          <span class="nav-subtitle">Usage Data</span>
+        </div>
+        <div class="analytics-spark" *ngIf="isSidebarExpanded">
+          <div class="spark-line">
+            <div *ngFor="let point of sparklineData" class="spark-point" [style.height]="point + '%'"></div>
+          </div>
+        </div>
+      </div>
+      <!-- Jarvis AI Section -->
+      <div class="nav-item ai-item" [class.active]="activeSection === 'jarvis'" (click)="setActiveSection('jarvis')">
+        <div class="nav-icon">
+          <div class="icon-wrapper">
+            <div class="icon-glow"></div>
+            <span class="emoji">🤖</span>
+            <div class="ai-pulse"></div>
+          </div>
+        </div>
+        <div class="nav-content" *ngIf="isSidebarExpanded">
+          <span class="nav-label">Jarvis AI</span>
+          <span class="nav-subtitle">AI Assistant</span>
+        </div>
+        <div class="ai-status" *ngIf="isSidebarExpanded">
+          <div class="ai-dot"></div>
+        </div>
+      </div>
+    </div>
+    <!-- Bottom Section -->
+    <div class="sidebar-bottom">
+      <!-- Dark Mode Toggle -->
+      <div class="nav-item mode-toggle" (click)="toggleDarkMode()">
+        <div class="nav-icon">
+          <div class="icon-wrapper">
+            <div class="icon-glow"></div>
+            <span class="emoji">{{ isDarkMode ? '☀️' : '🌙' }}</span>
+          </div>
+        </div>
+        <div class="nav-content" *ngIf="isSidebarExpanded">
+          <span class="nav-label">{{ isDarkMode ? 'Light Mode' : 'Dark Mode' }}</span>
+        </div>
+        <div class="mode-switch" *ngIf="isSidebarExpanded" [class.active]="isDarkMode">
+          <div class="switch-track">
+            <div class="switch-thumb"></div>
+          </div>
+        </div>
+      </div>
+      <!-- Log Out -->
+      <div class="nav-item logout-item" (click)="logout()">
+        <div class="nav-icon">
+          <div class="icon-wrapper">
+            <div class="icon-glow-red"></div>
+            <span class="emoji">🚪</span>
+          </div>
+        </div>
+        <div class="nav-content" *ngIf="isSidebarExpanded">
+          <span class="nav-label">Log Out</span>
+        </div>
+        <div class="logout-arrow" *ngIf="isSidebarExpanded">↪</div>
+      </div>
+    </div>
+    <!-- Ambient Effects -->
+    <div class="ambient-effects">
+      <div class="glow-orb orb-1"></div>
+      <div class="glow-orb orb-2"></div>
+      <div class="glow-orb orb-3"></div>
+      <div class="connection-grid"></div>
+    </div>
+  </nav>
+  <!-- Main Content -->
+  <main class="main-content" [class.sidebar-expanded]="isSidebarExpanded">
+    <!-- Top Bar with Search, Notifications, Settings -->
+    <header class="top-bar">
+      <div class="top-bar-left">
+        <h1 class="welcome-title">Welcome to Your Smart Home</h1>
+        <p class="welcome-slogan">Everything is under your intelligent control</p>
+      </div>
+      
+      <div class="top-bar-right">
+        <div class="search-bar">
+          <input type="text" placeholder="Search devices, rooms, settings..." class="search-input">
+          <span class="search-icon">🔍</span>
+        </div>
+        <div class="top-bar-actions">
+          <button class="action-btn notification-btn" (click)="toggleNotifications()">
+            <span class="action-icon">🔔</span>
+            <span class="notification-badge">3</span>
+          </button>
+          
+          <button class="action-btn settings-btn" (click)="openSettings()">
+            <span class="action-icon">⚙️</span>
+          </button>
+          
+          <div class="user-avatar">
+            <span class="avatar-fallback">👤</span>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- Recently Activities Section -->
+    <section class="recent-activities">
+      <h2 class="section-title">Recent Activities</h2>
+      <div class="activities-grid">
+        <div *ngFor="let activity of recentActivities" 
+             class="activity-item" 
+             [class]="'priority-' + activity.priority">
+          <div class="activity-icon">{{ activity.icon }}</div>
+          <div class="activity-content">
+            <div class="activity-title">{{ activity.title }}</div>
+            <div class="activity-time">{{ activity.time }}</div>
+          </div>
+          <div class="activity-priority-indicator"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dashboard Grid -->
+    <div class="dashboard-grid">
+      
+      <!-- Weather Card -->
+      <section class="dashboard-card weather-section">
+        <div class="weather-card" [class.expanded]="weatherExpanded" (click)="toggleWeather()">
+          <!-- Compressed View -->
+          <div class="weather-compressed">
+            <div class="weather-basic">
+              <div class="weather-icon">
+                <div class="weather-animation" [class]="currentWeather.animation"></div>
+              </div>
+              <div class="weather-info">
+                <div class="location">
+                  <span class="location-icon">📍</span>
+                  <span class="location-text">Current Location</span>
+                </div>
+                <div class="temperature-main">{{ currentWeather.temperature }}°C</div>
+                <div class="weather-description">{{ currentWeather.description }}</div>
+                <div class="temperature-range">
+                  H:{{ currentWeather.high }}°C L:{{ currentWeather.low }}°C
+                </div>
+              </div>
+            </div>
+            <div class="expand-indicator">
+              <span class="expand-icon" [class.expanded]="weatherExpanded">▼</span>
+            </div>
+          </div>
+
+          <!-- Expanded View -->
+          <div class="weather-expanded" *ngIf="weatherExpanded">
+            <div class="detailed-weather">
+              <div class="detail-grid">
+         <div class="detail-item">
+
+
+       <div class="detail-icon">💧</div>
+            
+       <div class="detail-info">
+     <div class="detail-label">Humidity</div>
+             <div class="detail-value">{{ currentWeather.humidity }}%</div>
+                  </div>
+                </div>
+                <div class="detail-item">
+                  <div class="detail-icon">💨</div>
+                  <div class="detail-info">
+                    <div class="detail-label">Wind</div>
+                    <div class="detail-value">{{ currentWeather.windSpeed }} km/h</div>
+                  </div>
+                </div>
+                <div class="detail-item">
+                  <div class="detail-icon">🌧️</div>
+                  <div class="detail-info">
+                    <div class="detail-label">Rain</div>
+                    <div class="detail-value">{{ currentWeather.rainChance }}%</div>
+                  </div>
+                </div>
+                <div class="detail-item">
+                  <div class="detail-icon">😊</div>
+                  <div class="detail-info">
+                    <div class="detail-label">Feels Like</div>
+                    <div class="detail-value">{{ currentWeather.feelsLike }}°C</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Hourly Forecast -->
+              <div class="hourly-forecast">
+                <h3 class="section-title">24-Hour Forecast</h3>
+                <div class="hourly-scroll">
+                  <div *ngFor="let hour of hourlyForecast" class="hour-item">
+                    <div class="hour-time">{{ hour.time }}</div>
+                    <div class="hour-icon">
+                      <div class="hour-animation" [class]="hour.animation"></div>
+                    </div>
+                    <div class="hour-temp">{{ hour.temperature }}°</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Weather Advice -->
+              <div class="weather-advice" [class]="currentWeather.adviceLevel">
+                <div class="advice-icon">💡</div>
+                <div class="advice-text">{{ currentWeather.advice }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Prayer Card -->
+      <section class="dashboard-card prayer-section">
+        <app-homepagesec></app-homepagesec>
+      </section>
+
+      <!-- Security Camera Card -->
+      <section class="dashboard-card security-section">
+        <div class="security-card">
+          <div class="card-header">
+            <h3 class="card-title">Entrance Security</h3>
+            <div class="security-status" [class]="securityStatus">
+              <div class="status-dot"></div>
+              <span class="status-text">{{ securityStatus }}</span>
+            </div>
+          </div>
+          
+          <div class="camera-feed">
+            <div class="camera-placeholder">
+              <div class="camera-icon">📹</div>
+              <p>Live Camera Feed</p>
+              <div class="recording-indicator">
+                <div class="recording-dot"></div>
+                <span>REC</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="security-controls">
+            <button class="security-btn lock-btn" (click)="toggleDoorLock()">
+              <span class="btn-icon">🔒</span>
+              <span>{{ doorLocked ? 'Unlock' : 'Lock' }} Door</span>
+            </button>
+            <button class="security-btn alarm-btn" (click)="toggleAlarm()">
+              <span class="btn-icon">🚨</span>
+              <span>{{ alarmArmed ? 'Disarm' : 'Arm' }} Alarm</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Power Consumption Card -->
+      <section class="dashboard-card power-section">
+        <div class="power-card">
+          <div class="card-header">
+            <h3 class="card-title">Power Consumption</h3>
+            <div class="power-stats">
+              <span class="power-value">1.2 kW</span>
+              <span class="power-trend">↓ 12%</span>
+            </div>
+          </div>
+          
+          <div class="power-chart">
+            <div class="chart-container">
+              <div *ngFor="let hour of powerConsumption" class="chart-bar">
+                <div class="bar-fill" [style.height]="hour.consumption + '%'"></div>
+                <span class="bar-label">{{ hour.time }}</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="power-breakdown">
+            <div class="breakdown-item">
+              <span class="breakdown-label">Lighting</span>
+              <div class="breakdown-bar">
+                <div class="breakdown-fill" style="width: 35%"></div>
+              </div>
+              <span class="breakdown-value">35%</span>
+            </div>
+            <div class="breakdown-item">
+              <span class="breakdown-label">Appliances</span>
+              <div class="breakdown-bar">
+                <div class="breakdown-fill" style="width: 45%"></div>
+              </div>
+              <span class="breakdown-value">45%</span>
+            </div>
+            <div class="breakdown-item">
+              <span class="breakdown-label">Climate</span>
+              <div class="breakdown-bar">
+                <div class="breakdown-fill" style="width: 20%"></div>
+              </div>
+              <span class="breakdown-value">20%</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Family Members Card -->
+      <section class="dashboard-card members-section">
+        <div class="members-card">
+          <div class="card-header">
+            <h3 class="card-title">Family Members</h3>
+            <span class="members-count">{{ getOnlineMembers() }} Online</span>
+          </div>
+          
+          <div class="members-grid">
+            <div *ngFor="let member of familyMembers" class="member-item">
+              <div class="member-avatar" [class]="member.status">
+                <span class="avatar-fallback">{{ member.emoji }}</span>
+                <div class="status-indicator"></div>
+              </div>
+              <div class="member-info">
+                <div class="member-name">{{ member.name }}</div>
+                <div class="member-location">{{ member.location }}</div>
+              </div>
+              <div class="member-actions">
+                <button class="member-action-btn">💬</button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="quick-actions">
+           
+          </div>
+        </div>
+      </section>
+
+      <!-- Accessories Control Card -->
+      <section class="dashboard-card accessories-section">
+        <div class="accessories-card">
+          <div class="card-header">
+            <h3 class="card-title">Accessories Control</h3>
+            <div class="wifi-status">
+              <span class="wifi-icon">📶</span>
+              <span class="wifi-strength">Excellent</span>
+            </div>
+          </div>
+          
+          <div class="accessories-grid">
+            <!-- Outdoor Lights -->
+            <div class="accessory-item">
+              <div class="accessory-header">
+                <span class="accessory-icon">💡</span>
+                <span class="accessory-name">Outdoor Lights</span>
+              </div>
+              <div class="accessory-controls">
+                <label class="toggle-switch">
+                  <input type="checkbox" [checked]="outdoorLightsOn" (change)="toggleOutdoorLights()">
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+            
+            <!-- Window Locks -->
+            <div class="accessory-item">
+              <div class="accessory-header">
+                <span class="accessory-icon">🔒</span>
+                <span class="accessory-name">Window Locks</span>
+              </div>
+              <div class="accessory-controls">
+                <label class="toggle-switch">
+                  <input type="checkbox" [checked]="windowLocksOn" (change)="toggleWindowLocks()">
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+            
+            <!-- Temperature Control -->
+            <div class="accessory-item temperature-control">
+              <div class="accessory-header">
+                <span class="accessory-icon">❄️</span>
+                <span class="accessory-name">Home Temperature</span>
+              </div>
+              <div class="temperature-display">{{ homeTemperature }}°C</div>
+              <div class="intensity-control">
+                <input type="range" min="16" max="30" [value]="homeTemperature" 
+                       (input)="onTemperatureChange($event)" class="temp-slider">
+                <div class="temp-markers">
+                  <span>16°</span>
+                  <span>23°</span>
+                  <span>30°</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Sleep Mode -->
+            <div class="accessory-item sleep-mode">
+              <div class="accessory-header">
+                <span class="accessory-icon">😴</span>
+                <span class="accessory-name">Sleep Mode</span>
+              </div>
+              <div class="accessory-controls">
+                <label class="toggle-switch">
+                  <input type="checkbox" [checked]="sleepModeOn" (change)="toggleSleepMode()">
+                  <span class="slider"></span>
+                </label>
+              </div>
+              <div class="sleep-mode-info" *ngIf="sleepModeOn">
+                <p>• Lights dimmed to 20%</p>
+                <p>• Volume reduced by 70%</p>
+                <p>• Temperature set to 21°C</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3D Home View Card -->
+      <section class="dashboard-card home-3d-section">
+        <div class="home-3d-card">
+          <!-- Card Header -->
+          <div class="card-header">
+            <h3 class="card-title">Home 3D View</h3>
+            <div class="view-controls">
+              <button class="view-btn active" (click)="setViewMode('isometric')">Isometric</button>
+              <button class="view-btn" (click)="setViewMode('topdown')">Top Down</button>
+              <button class="view-btn" (click)="toggleLights()">
+                <span class="btn-icon">{{ homeLightsOn ? '💡' : '🌙' }}</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 3D Home Visualization -->
+          <div class="home-visualization">
+            <div class="isometric-home" [class.lights-on]="homeLightsOn">
+              <!-- Simplified 3D View -->
+              <div class="building-outline">
+                <div class="room living-room" (click)="selectRoom3D('living-room')" [class.active]="selectedRoom === 'living-room'">
+                  <div class="room-label">Living Room</div>
+                </div>
+                <div class="room kitchen" (click)="selectRoom3D('kitchen')" [class.active]="selectedRoom === 'kitchen'">
+                  <div class="room-label">Kitchen</div>
+                </div>
+                <div class="room bedroom" (click)="selectRoom3D('bedroom')" [class.active]="selectedRoom === 'bedroom'">
+                  <div class="room-label">Bedroom</div>
+                </div>
+                <div class="room office" (click)="selectRoom3D('office')" [class.active]="selectedRoom === 'office'">
+                  <div class="room-label">Office</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Room Details Panel -->
+          <div class="room-details" *ngIf="selectedRoom">
+            <div class="details-header">
+              <h4>{{ getRoomName(selectedRoom) }}</h4>
+              <button class="close-btn" (click)="deselectRoom()">×</button>
+            </div>
+            <div class="details-content">
+              <div class="room-stats">
+                <div class="stat">
+                  <span class="stat-value">{{ getRoomDeviceCount(selectedRoom) }}</span>
+                  <span class="stat-label">Devices</span>
+                </div>
+                <div class="stat">
+                  <span class="stat-value">{{ getRoomTemperature(selectedRoom) }}</span>
+                  <span class="stat-label">Temperature</span>
+                </div>
+              </div>
+           <div class="quick-actions">
+          <button class="action-btn" (click)="toggleRoomLights(selectedRoom)">
+      <span class="action-icon">💡</span>
+        <span>Lights</span>
+                </button>
+                <button class="action-btn" (click)="adjustRoomTemperature(selectedRoom)">
+                  <span class="action-icon">❄️</span>
+         <span>Climate</span>
+                </button>
+     </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Jarvis AI Card -->
+      <section class="dashboard-card jarvis-section">
+        <div class="jarvis-card">
+    <div class="card-header">
+            <h3 class="card-title">Jarvis AI Assistant</h3>
+    <div class="ai-status" [class]="jarvisStatus">
+          <div class="status-dot"></div>
+       <span class="status-text">{{ jarvisStatus }}</span>
+            </div>
+          </div>
+          
+          <div class="jarvis-interface">
+            <div class="jarvis-messages">
+              <div *ngFor="let message of jarvisMessages" 
+                   class="message" 
+                   [class]="message.type">
+                <div class="message-content">{{ message.content }}</div>
+                <div class="message-time">{{ message.time }}</div>
+              </div>
+            </div>
+            
+            <div class="jarvis-input">
+              <input type="text" placeholder="Ask Jarvis anything..." 
+                     [(ngModel)]="jarvisInput" 
+                                      (keyup.enter)="sendToJarvis()"
+                 class="jarvis-text-input">
+        <button class="send-btn" (click)="sendToJarvis()">
+            <span class="send-icon">🎤</span>
+          </button>
+            </div>
+          </div>
+          
+          <div class="quick-commands">
+            <button *ngFor="let command of quickCommands" 
+                    class="command-btn" 
+                    (click)="executeQuickCommand(command)">
+              {{ command }}
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>

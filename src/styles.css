@@ -1,0 +1,306 @@
+/* Scroll Animation Classes */
+.animate-enter {
+  animation-fill-mode: both;
+}
+
+.animate-leave {
+  animation-fill-mode: both;
+}
+
+.fade-in-10 {
+  animation-name: fadeIn10;
+}
+
+@keyframes fadeIn10 {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.slide-in-from-l-8 {
+  animation-name: slideInFromLeft8;
+}
+
+@keyframes slideInFromLeft8 {
+  from {
+    transform: translateX(-2rem);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.slide-in-from-r-8 {
+  animation-name: slideInFromRight8;
+}
+
+@keyframes slideInFromRight8 {
+  from {
+    transform: translateX(2rem);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.slide-in-from-t-20 {
+  animation-name: slideInFromTop20;
+}
+
+@keyframes slideInFromTop20 {
+  from {
+    transform: translateY(-5rem);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.slide-in-from-b-20 {
+  animation-name: slideInFromBottom20;
+}
+
+@keyframes slideInFromBottom20 {
+  from {
+    transform: translateY(5rem);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.slide-in-from-t-12 {
+  animation-name: slideInFromTop12;
+}
+
+@keyframes slideInFromTop12 {
+  from {
+    transform: translateY(-3rem);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.slide-in-from-t-16 {
+  animation-name: slideInFromTop16;
+}
+
+@keyframes slideInFromTop16 {
+  from {
+    transform: translateY(-4rem);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.spin-in-45 {
+  animation-name: spinIn45;
+}
+
+@keyframes spinIn45 {
+  from {
+    transform: rotate(-45deg);
+    opacity: 0;
+  }
+  to {
+    transform: rotate(0);
+    opacity: 1;
+  }
+}
+
+/* FIXED: Changed from spin-in-[-45deg] to spin-in-negative-45 */
+.spin-in-negative-45 {
+  animation-name: spinInNegative45;
+}
+
+@keyframes spinInNegative45 {
+  from {
+    transform: rotate(-45deg);
+    opacity: 0;
+  }
+  to {
+    transform: rotate(0);
+    opacity: 1;
+  }
+}
+
+.zoom-in-50 {
+  animation-name: zoomIn50;
+}
+
+@keyframes zoomIn50 {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.zoom-in-75 {
+  animation-name: zoomIn75;
+}
+
+@keyframes zoomIn75 {
+  from {
+    transform: scale(0.75);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-duration-1000 {
+  animation-duration: 1000ms;
+}
+
+.fade-out-0 {
+  animation-name: fadeOut0;
+}
+
+@keyframes fadeOut0 {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Additional utility classes */
+.animate-bounce {
+  animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.bg-primary {
+  background: linear-gradient(45deg, #00f3ff, #ff00ff);
+}
+
+.text-primary-contrast {
+  color: white;
+}
+
+.border-primary {
+  border-color: #00f3ff;
+}
+
+.bg-purple-500 {
+  background-color: #8b5cf6;
+}
+
+.bg-teal-500 {
+  background-color: #14b8a6;
+}
+
+.bg-indigo-500 {
+  background-color: #6366f1;
+}
+
+.text-muted-color {
+  color: #6b7280;
+}
+
+.border-surface {
+  border-color: #e5e7eb;
+}
+
+/* Add these to your existing styles.css */
+:root {
+  --primary-bg: #ffffff;
+  --secondary-bg: #f8fafc;
+  --text-primary: #1a202c;
+  --text-secondary: #4a5568;
+  --neon-blue: #00f3ff;
+  --neon-pink: #ff00ff;
+  --neon-green: #00ff88;
+  --neon-purple: #8a2be2;
+}
+
+/* Floating Animation */
+@keyframes float {
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg); 
+  }
+  50% { 
+    transform: translateY(-20px) rotate(180deg); 
+  }
+}
+
+/* Vibrate Animation */
+@keyframes vibrate {
+  0%, 100% { 
+    transform: translateY(0); 
+  }
+  50% { 
+    transform: translateY(-10px); 
+  }
+}
+
+/* Neon Glow Effects */
+.neon-glow-blue {
+  filter: drop-shadow(0 0 10px #00f3ff) 
+          drop-shadow(0 0 20px #00f3ff);
+}
+
+.neon-glow-pink {
+  filter: drop-shadow(0 0 10px #ff00ff) 
+          drop-shadow(0 0 20px #ff00ff);
+}
+
+.neon-glow-green {
+  filter: drop-shadow(0 0 10px #00ff88) 
+          drop-shadow(0 0 20px #00ff88);
+}
+
+.neon-glow-purple {
+  filter: drop-shadow(0 0 10px #8a2be2) 
+          drop-shadow(0 0 20px #8a2be2);
+}
+
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+  color: white;
+  min-height: 100vh;
+}
+
+html, body {
+  height: 100%;
+}

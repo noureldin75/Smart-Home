@@ -1,0 +1,41 @@
+<div *ngIf="showWelcome" @fadeOut class="welcome-section">
+  
+  <!-- Animated Floating Background Shapes -->
+  <div *ngFor="let shape of floatingShapes" 
+       class="floating-shape"
+       [class]="'shape-' + shape.type + ' neon-glow-' + shape.color"
+       [style.top]="shape.top + '%'"
+       [style.left]="shape.left + '%'"
+       [style.animation-delay]="shape.animationDelay + 's'">
+  </div>
+
+  <!-- Header with Logo and Slogan -->
+  <header class="welcome-header">
+    <div class="logo">
+      <!-- SVG Gradient Text -->
+      <svg class="logo-svg" viewBox="0 0 400 100">
+        <defs>
+          <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#00f3ff;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#ff00ff;stop-opacity:1" />
+          </linearGradient>
+        </defs>
+        <text x="50%" y="50%" dy="0.35em" text-anchor="middle" class="logo-text">
+          RESINEX
+        </text>
+      </svg>
+      
+      <p class="slogan">
+        Crafting Digital Excellence with Innovative Solutions
+      </p>
+    </div>
+  </header>
+
+  <!-- Scroll Down Button -->
+  <button (click)="scrollToHome()" class="scroll-down-btn">
+    <svg class="scroll-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+    </svg>
+  </button>
+
+</div>
