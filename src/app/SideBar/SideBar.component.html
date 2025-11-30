@@ -1,0 +1,200 @@
+<nav class="smart-sidebar" [class.expanded]="isSidebarExpanded" [class.collapsed]="!isSidebarExpanded">
+    
+    <div class="sidebar-header">
+      <div class="header-glow"></div>
+      <div class="logo-container">
+        <div class="logo-orb" [class.spinning]="isSidebarExpanded">
+          <div class="orb-core"></div>
+          <div class="orb-ring"></div>
+          <div class="orb-pulse"></div>
+        </div>
+        <div class="logo-text" *ngIf="isSidebarExpanded">
+          <h2>SMART HOME</h2>
+          <p>Control Center</p>
+        </div>
+      </div>
+      <button class="sidebar-toggle" (click)="onToggleSidebar()" [class.expanded]="isSidebarExpanded">
+        <div class="toggle-icon">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </button>
+    </div>
+
+    <div class="connection-status" *ngIf="isSidebarExpanded">
+      <div class="status-indicators">
+        <div class="status-item online">
+          <div class="status-dot"></div>
+          <span>System Online</span>
+        </div>
+        <div class="status-item active">
+          <div class="status-dot"></div>
+          <span>{{ connectedDevices }} Devices</span>
+        </div>
+      </div>
+      <div class="network-bars">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+      </div>
+    </div>
+
+    <div class="nav-menu">
+      <div class="nav-item profile-item" [class.active]="activeSection === 'profile'" (click)="setActiveSection('profile')">
+        <div class="nav-icon">
+          <div class="icon-wrapper">
+            <div class="icon-glow"></div>
+            <span class="emoji">👤</span>
+            <div class="status-indicator online"></div>
+          </div>
+        </div>
+        <div class="nav-content" *ngIf="isSidebarExpanded">
+          <span class="nav-label">Profile</span>
+          <span class="nav-subtitle">User Settings</span>
+        </div>
+        <div class="nav-badge" *ngIf="isSidebarExpanded && profileNotifications > 0">
+          {{ profileNotifications }}
+        </div>
+      </div>
+
+      <div class="nav-item" [class.active]="activeSection === 'home-parts'" (click)="onToggleHomeParts()"  routerLink="/HomeParts" >
+        <div class="nav-icon">
+          <div class="icon-wrapper">
+            <div class="icon-glow"></div>
+            <span class="emoji">🏠</span>
+          </div>
+        </div>
+        <div class="nav-content" *ngIf="isSidebarExpanded">
+          <span class="nav-label">Home Parts</span>
+          <span class="nav-subtitle">{{ activeRooms }} Active</span>
+        </div>
+        <div class="nav-arrow" *ngIf="isSidebarExpanded" [class.expanded]="homePartsExpanded">
+          ▼
+        </div>
+      </div>
+
+      <div class="submenu" *ngIf="homePartsExpanded && isSidebarExpanded">
+        <div *ngFor="let room of rooms" class="submenu-item" (click)="selectRoom(room)">
+          <div class="room-icon">
+            <span class="emoji">{{ room.icon }}</span>
+            <div class="room-status" [class]="room.status"></div>
+          </div>
+          <span class="room-name">{{ room.name }}</span>
+          <div class="room-info">
+            <span class="device-count">{{ room.devices }} dev</span>
+            <span class="temperature">{{ room.temperature }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-item" [class.active]="activeSection === 'devices'" (click)="setActiveSection('devices')">
+        <div class="nav-icon">
+          <div class="icon-wrapper">
+            <div class="icon-glow"></div>
+            <span class="emoji">📱</span>
+          </div>
+        </div>
+        <div class="nav-content" *ngIf="isSidebarExpanded">
+          <span class="nav-label">Devices</span>
+          <span class="nav-subtitle">{{ connectedDevices }} Connected</span>
+        </div>
+        <div class="nav-badge" *ngIf="isSidebarExpanded">
+          {{ connectedDevices }}
+        </div>
+      </div>
+
+      <div class="nav-item" [class.active]="activeSection === 'security'" (click)="setActiveSection('security')"  routerLink="/Security">
+        <div class="nav-icon">
+          <div class="icon-wrapper">
+            <div class="icon-glow"></div>
+            <span class="emoji">🔒</span>
+          </div>
+        </div>
+        <div class="nav-content" *ngIf="isSidebarExpanded">
+          <span class="nav-label">Security</span>
+          <span class="nav-subtitle" [class.armed]="securityArmed"> 
+            {{ securityArmed ? 'Armed' : 'Disarmed' }}
+          </span>
+        </div>
+        <div class="security-status" *ngIf="isSidebarExpanded" [class.armed]="securityArmed">
+          <div class="status-dot"></div>
+        </div>
+      </div>
+
+      <div class="nav-item" [class.active]="activeSection === 'analytics'" (click)="setActiveSection('analytics')"  routerLink="/EnergyAnalytics">
+        
+        <div class="nav-icon">
+          <div class="icon-wrapper">
+            <div class="icon-glow"></div>
+            <span class="emoji">📈</span>
+          </div>
+        </div>
+        <div class="nav-content" *ngIf="isSidebarExpanded">
+          <span class="nav-label">Analytics</span>
+          <span class="nav-subtitle">Usage Data</span>
+        </div>
+        <div class="analytics-spark" *ngIf="isSidebarExpanded">
+          <div class="spark-line">
+            <div *ngFor="let point of sparklineData" class="spark-point" [style.height]="point + '%'"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-item ai-item" [class.active]="activeSection === 'jarvis'" (click)="setActiveSection('jarvis')">
+        <div class="nav-icon">
+          <div class="icon-wrapper">
+            <div class="icon-glow"></div>
+            <span class="emoji">🤖</span>
+            <div class="ai-pulse"></div>
+          </div>
+        </div>
+        <div class="nav-content" *ngIf="isSidebarExpanded">
+          <span class="nav-label">Jarvis AI</span>
+          <span class="nav-subtitle">AI Assistant</span>
+        </div>
+        <div class="ai-status" *ngIf="isSidebarExpanded">
+          <div class="ai-dot"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-bottom">
+      <div class="nav-item mode-toggle" (click)="onToggleDarkMode()">
+        <div class="nav-icon">
+          <div class="icon-wrapper">
+            <div class="icon-glow"></div>
+            <span class="emoji">{{ isDarkMode ? '☀️' : '🌙' }}</span>
+          </div>
+        </div>
+        <div class="nav-content" *ngIf="isSidebarExpanded">
+          <span class="nav-label">{{ isDarkMode ? 'Light Mode' : 'Dark Mode' }}</span>
+        </div>
+        <div class="mode-switch" *ngIf="isSidebarExpanded" [class.active]="isDarkMode">
+          <div class="switch-track">
+            <div class="switch-thumb"></div>
+          </div>
+        </div>
+      </div>
+      <div class="nav-item logout-item" (click)="onLogout()">
+        <div class="nav-icon">
+          <div class="icon-wrapper">
+            <div class="icon-glow-red"></div>
+            <span class="emoji">🚪</span>
+          </div>
+        </div>
+        <div class="nav-content" *ngIf="isSidebarExpanded">
+          <span class="nav-label">Log Out</span>
+        </div>
+        <div class="logout-arrow" *ngIf="isSidebarExpanded">↪</div>
+      </div>
+    </div>
+
+    <div class="ambient-effects">
+      <div class="glow-orb orb-1"></div>
+      <div class="glow-orb orb-2"></div>
+      <div class="glow-orb orb-3"></div>
+      <div class="connection-grid"></div>
+    </div>
+  </nav>

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { HomepagesecComponent } from '../homepagesec/homepagesec.component';
-
+import { RouterLink } from '@angular/router';
 interface Room {
   name: string;
   icon: string;
@@ -57,7 +57,7 @@ interface PowerConsumption {
 @Component({
   selector: 'app-homepage',
   standalone: true,
-  imports: [CommonModule, FormsModule, HomepagesecComponent],
+  imports: [CommonModule, FormsModule, HomepagesecComponent,RouterLink],
   templateUrl: './homepage.component.html',
   styleUrls: ['./homepage.component.css'],
   animations: [
