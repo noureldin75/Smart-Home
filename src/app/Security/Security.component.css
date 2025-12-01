@@ -21,7 +21,7 @@
   transition: all 0.3s ease;
 
   margin-left: 350px;
-  padding: 2rem;             
+  padding: 2rem;
   box-sizing: border-box;
 }
 
@@ -113,6 +113,7 @@
   position: relative;
   border: 1px solid rgba(255, 255, 255, 0.1);
   transition: border-color 0.3s;
+  cursor: pointer;
 }
 .camera-card:hover {
   border-color: #00f3ff;
@@ -156,6 +157,15 @@
   font-size: 0.8rem;
   font-weight: 600;
 }
+.idle-status {
+  display: flex;
+  align-items: center;
+  color: #15c639;
+  font-size: 0.8rem;
+  font-weight: 600;
+
+}
+
 
 .dot {
   width: 8px;
