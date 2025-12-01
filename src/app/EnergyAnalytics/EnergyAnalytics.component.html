@@ -25,37 +25,71 @@
       </div>
     </div>
 
-   <div class="chart-section" *ngIf="chartOptions">
-      <div class="chart-header">
+    <div class="chart-section" *ngIf="chartOptions">
+      <div class="header-section">
         <h3>Hourly Usage</h3>
         <span class="badge">Last 24 Hours</span>
       </div>
 
       <div id="chart">
-        <apx-chart
-          [series]="chartOptions.series"
-          [chart]="chartOptions.chart"
-          [dataLabels]="chartOptions.dataLabels"
-          [plotOptions]="chartOptions.plotOptions"
-          [yaxis]="chartOptions.yaxis"
-          [xaxis]="chartOptions.xaxis"
-          [legend]="chartOptions.legend"
-          [colors]="chartOptions.colors"
-          [grid]="chartOptions.grid"
-          [fill]="chartOptions.fill"
-          [tooltip]="chartOptions.tooltip"
-        ></apx-chart>
+        <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart" [dataLabels]="chartOptions.dataLabels"
+          [plotOptions]="chartOptions.plotOptions" [yaxis]="chartOptions.yaxis" [xaxis]="chartOptions.xaxis"
+          [legend]="chartOptions.legend" [colors]="chartOptions.colors" [grid]="chartOptions.grid"
+          [fill]="chartOptions.fill" [tooltip]="chartOptions.tooltip"></apx-chart>
       </div>
-       <div class="peak-usage">
+      <div class="peak-usage">
         <div class="usage-icon">📈</div>
         <div class="usage-content">
           <h3>Peak Usage: 2 PM - 6 PM</h3>
           <p>Consider shifting high-power activities to off-peak hours.</p>
         </div>
       </div>
-   </div>
+    </div>
+    <div class="actions-section">
 
-     
+      <div class="header-section">
+        <h3 class="section-title">AI Insights</h3>
+        <span class="badge-count">{{ actions.length }} Actions</span>
+      </div>
+
+      <div class="actions-list">
+
+        <div *ngFor="let item of actions" class="action-card" [ngClass]="'type-' + item.type">
+          <div class="card-top">
+            <div class="icon-box">
+              ⚠️
+            </div>
+            <div class="text-content">
+              <h3 class="title">{{ item.title }}</h3>
+              <p class="description">{{ item.description }}</p>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="card-bottom">
+            <div class="savings-badge">
+              💰 {{ item.savingsAmount }}
+            </div>
+            <button class="action-btn" (click)="onActionClick(item)">
+              {{ item.actionButtonText }}
+            </button>
+          </div>
+
+
+        </div>
+       
+
+      </div>
+       <div class="eco-card">
+          <div class="eco-icon">🌿</div>
+          <h3>Activate Eco Mode</h3>
+          <p>Automatically optimize all devices for maximum energy efficiency</p>
+          <button class="eco-btn">Enable Eco Mode</button>
+        </div>
+    </div>
+
+
 
   </main>
 </div>
