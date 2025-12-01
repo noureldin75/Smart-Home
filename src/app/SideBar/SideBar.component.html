@@ -1,6 +1,6 @@
 <nav class="smart-sidebar" [class.expanded]="isSidebarExpanded" [class.collapsed]="!isSidebarExpanded">
 
-  <div class="sidebar-header" routerLink="/Home" style="cursor: pointer;">
+  <div class="sidebar-header" >
     <div class="header-glow"></div>
     <div class="logo-container" routerLink="/Home" style="cursor: pointer;">
       <div class="logo-orb" [class.spinning]="isSidebarExpanded">
@@ -89,7 +89,7 @@
       </div>
     </div>
 
-  
+
 
     <div class="nav-item" [class.active]="activeSection === 'security'" (click)="setActiveSection('security')" routerLink="/Security">
       <div class="nav-icon">

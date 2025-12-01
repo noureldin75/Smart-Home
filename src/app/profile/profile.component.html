@@ -1,1 +1,128 @@
-<p>profile works!</p>
+<div class="page-container">
+  <app-sidebar #sidebarRef class="sidebar"></app-sidebar>
+
+  <main class="main-content" [class.collapsed]="!sidebarRef.isSidebarExpanded">
+
+    <div class="profile-page-container">
+
+      <div class="dashboard-card profile-header">
+        <div class="header-content">
+          <div class="avatar-section">
+            <div class="avatar-circle">
+              <i class="fas fa-user-tie"></i>
+            </div>
+          </div>
+          <div class="profile-info">
+            <div class="info-top-row">
+              <div class="name-role">
+                <h1 class="user-name">{{ profileData.name }}</h1>
+                <div class="user-role admin">{{ profileData.role }}</div>
+              </div>
+              <button class="edit-button" (click)="openEditMenu()">
+                <i class="fas fa-edit"></i>
+                Edit Profile
+              </button>
+            </div>
+            <p class="user-bio">{{ profileData.bio }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="main-content-grid">
+
+        <div class="dashboard-card contact-info-card">
+          <h3 class="card-title gradient-text-contact">Contact Information</h3>
+          <div class="contact-list">
+
+            <div class="contact-item">
+              <div class="contact-icon-wrapper">
+                <i class="fas fa-envelope-open-text contact-icon blue-icon"></i>
+              </div>
+              <div class="contact-value">{{ profileData.email }}</div>
+            </div>
+
+            <div class="contact-item">
+              <div class="contact-icon-wrapper">
+                <i class="fas fa-mobile-alt contact-icon blue-icon"></i>
+              </div>
+              <div class="contact-value">{{ profileData.phone }}</div>
+            </div>
+
+            <div class="contact-item">
+              <div class="contact-icon-wrapper">
+                <i class="fas fa-map-marker-alt contact-icon blue-icon"></i>
+              </div>
+              <div class="contact-value">{{ profileData.address }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dashboard-card account-stats-card">
+          <h3 class="card-title gradient-text-stats">Account Stats</h3>
+          <div class="stats-grid">
+            <div class="stat-item"><div class="stat-value neon-blue">Jan 2024</div><div class="stat-label">Member Since</div></div>
+            <div class="stat-item"><div class="stat-value neon-magenta">52</div><div class="stat-label">Devices Managed</div></div>
+            <div class="stat-item"><div class="stat-value neon-green">18%</div><div class="stat-label">Energy Saved</div></div>
+            <div class="stat-item"><div class="stat-value neon-orange">24</div><div class="stat-label">Automations</div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="modal-overlay" [class.open]="isEditMenuOpen" (click)="closeEditMenu()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+
+        <div class="modal-header">
+          <h3>Edit Profile Menu</h3>
+          <button class="close-button" (click)="closeEditMenu()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <form (ngSubmit)="saveChanges()">
+
+          <div class="form-group avatar-form-group">
+            <div class="current-avatar-preview">
+              <i class="fas fa-camera"></i>
+            </div>
+            <div class="avatar-controls">
+              <label>Profile Photo</label>
+              <button type="button" class="change-photo-btn">Change Photo</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input id="name" type="text" [(ngModel)]="editFormData.name" name="name" required>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input id="email" type="email" [(ngModel)]="editFormData.email" name="email" required>
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input id="phone" type="text" [(ngModel)]="editFormData.phone" name="phone">
+          </div>
+
+          <div class="form-group">
+            <label for="password">Update Password</label>
+            <input id="password" type="password" [(ngModel)]="editFormData.password" name="password">
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" class="cancel-btn" (click)="closeEditMenu()">
+              Cancel
+            </button>
+            <button type="submit" class="save-btn">
+              Save Changes
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </main>
+</div>

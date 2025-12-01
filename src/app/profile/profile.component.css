@@ -1,0 +1,529 @@
+.page-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background: var(--bg-primary);
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  transition: background 0.3s ease;
+}
+
+.main-content.collapsed {
+  margin-left: 100px;
+}
+
+.main-content {
+  flex-grow: 1;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: all 0.3s ease;
+  margin-left: 350px;
+  padding: 2rem;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+/* ============================================
+   PROFILE DASHBOARD - UNIFIED THEME STYLES
+   (Based on ENERGY ANALYTICS CSS)
+   ============================================ */
+
+/* --- Theme Variables (Adjust based on your global definition) --- */
+:root {
+  /* Base Colors inferred from Energy Analytics Theme */
+  --bg-primary: #0f1929; /* Deep dark background */
+  --bg-card: #182233;     /* Standard card background */
+  --bg-card-hover: #1f2b40;
+  --input-bg: #29384e;
+  --border-secondary: rgba(255, 255, 255, 0.1);
+  --border-primary: rgba(0, 243, 255, 0.3); /* Based on the blue glow/accent */
+
+  --text-main: #FFFFFF;
+  --text-secondary: #a0a8b4;
+  --text-muted: #8c96a3;
+
+  /* Neon/Accent Colors (Profile Specific) */
+  --color-neon-blue: #00f3ff;     /* Blue glow/Cyan accent */
+  --color-neon-magenta: #ff00ff; /* Magenta glow/Accent */
+  --color-neon-green: #00ff88;   /* Green accent for Admin/EcoScore */
+  --color-neon-orange: #ffb300;   /* Orange accent */
+
+  /* Gradients & Shadows */
+  --gradient-avatar: linear-gradient(45deg, var(--color-neon-blue), var(--color-neon-magenta));
+  --gradient-primary: linear-gradient(45deg, var(--color-neon-blue), var(--color-neon-magenta));
+  --shadow-card: 0 4px 15px rgba(0, 0, 0, 0.4);
+  --shadow-card-hover: 0 8px 25px rgba(0, 0, 0, 0.5);
+  --glow-cyan: 0 0 15px rgba(0, 243, 255, 0.2);
+}
+
+.profile-page-container {
+  padding: 0; /* Handled by main-content padding */
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  /* Note: In a real Angular app, this container is typically what receives the main-content padding. */
+}
+
+/* --- Card Base Style (Unified) --- */
+.dashboard-card {
+  background-color: var(--bg-card);
+  border-radius: 16px;
+  border: 1px solid var(--border-secondary);
+  box-shadow: var(--shadow-card);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  padding: 1.5rem;
+}
+/* Apply hover style similar to energy-card */
+.dashboard-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-card-hover), var(--glow-cyan);
+  border-color: var(--border-primary);
+}
+
+.card-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  /* Use the primary gradient style */
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+
+/* --- Profile Header Card (Top Section) --- */
+.profile-header {
+  margin-bottom: 2rem;
+  /* Special hover effect disabled for header card, keep it subtle */
+}
+.profile-header:hover {
+  transform: none;
+  box-shadow: var(--shadow-card);
+  border-color: var(--border-secondary);
+}
+
+
+.header-content {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+/* Avatar Styling (Replicated from the final image look) */
+.avatar-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+
+  /* Neon border/glow */
+  border: 3px solid transparent;
+  background-image: var(--gradient-avatar);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-card); /* Dark inner circle */
+
+  /* Stronger shadow/glow */
+  box-shadow: 0 0 20px rgba(0, 243, 255, 0.5),
+  inset 0 0 10px rgba(0, 243, 255, 0.2);
+}
+
+.avatar-circle > i {
+  font-size: 4rem;
+  /* Gradient fill for the icon itself */
+  background: var(--gradient-avatar);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.profile-info {
+  flex: 1;
+}
+
+.info-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.user-name {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.user-role {
+  /* Use the green accent for the Admin badge */
+  background: rgba(0, 255, 136, 0.2);
+  border: 1px solid rgba(0, 255, 136, 0.3);
+  color: var(--color-neon-green);
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-left: 0.75rem;
+  display: inline-block;
+}
+
+.edit-button {
+  padding: 0.6rem 1.25rem;
+  /* Consistent with action-btn styling for hover/border */
+  background: var(--input-bg);
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
+  color: var(--color-neon-blue);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+}
+.edit-button:hover {
+  background: var(--bg-card-hover);
+  box-shadow: 0 0 15px var(--color-neon-blue);
+}
+
+.user-bio {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* --- Main Content Grid --- */
+.main-content-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+}
+
+/* --- Contact Information Card (Flat List Style) --- */
+
+.contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.25rem 1.5rem;
+  /* Background for contact item: slightly darker than card background */
+  background-color: #162030;
+  border-radius: 12px;
+  border: 1px solid var(--border-secondary);
+  transition: all 0.2s ease;
+}
+.contact-item:hover {
+  border-color: var(--color-neon-blue);
+  background-color: #1a2434;
+}
+
+.contact-icon-wrapper {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Use transparent background as per image */
+  background: transparent;
+}
+
+.contact-icon {
+  font-size: 1.3rem;
+}
+
+.contact-icon.blue-icon {
+  color: var(--color-neon-blue);
+}
+
+.contact-value {
+  color: var(--text-main);
+  font-size: 1rem;
+  font-weight: 500;
+  flex: 1;
+}
+
+/* --- Account Stats Card (Separate Blocks) --- */
+.stats-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.stat-item {
+  padding: 1.5rem 1rem;
+  /* Slightly different background for visual separation */
+  background: var(--input-bg);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  text-align: center;
+  line-height: 1.2;
+  transition: transform 0.2s ease;
+}
+.stat-item:hover {
+  transform: scale(1.02);
+}
+
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  /* Text Shadow for Neon Effect, similar to energy card values */
+  text-shadow: 0 0 8px currentColor;
+}
+
+/* Specific colors for stats (using theme-defined colors) */
+.stat-value.neon-blue { color: var(--color-neon-blue); }
+.stat-value.neon-magenta { color: var(--color-neon-magenta); }
+.stat-value.neon-green { color: var(--color-neon-green); }
+.stat-value.neon-orange { color: var(--color-neon-orange); }
+
+.stat-label {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+/* --- Media Query for Responsiveness --- */
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .main-content-grid {
+    grid-template-columns: 1fr;
+  }
+  .info-top-row {
+    flex-direction: column;
+    align-items: center;
+  }
+  .edit-button {
+    margin-top: 1rem;
+  }
+}
+/* ============================================
+   MODAL STYLES (EDIT PROFILE MENU)
+   ============================================ */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Slightly lighter, more blurred background to ensure the modal stands out */
+  background-color: rgba(10, 20, 30, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-content {
+  /* Use a slightly different, brighter background for the modal itself */
+  background-color: #1f2b40; /* Lighter than --bg-card (which is #182233) */
+  border-radius: 16px;
+  padding: 2rem;
+  width: 90%;
+  max-width: 450px;
+
+  /* Stronger, more focused border and glow */
+  border: 2px solid var(--color-neon-blue); /* Thicker border */
+  box-shadow: 0 15px 50px rgba(0, 243, 255, 0.4), /* Stronger outer glow */
+  0 0 20px rgba(0, 243, 255, 0.2);
+
+  transform: translateY(50px) scale(0.95);
+  opacity: 0;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+.modal-overlay.open .modal-content {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.modal-header h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  /* Ensure title is bright white */
+  color: var(--text-main);
+}
+
+.close-button {
+  background: transparent;
+  border: none;
+  color: var(--color-neon-magenta); /* Use a bright accent color for the close icon */
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: color 0.2s, transform 0.2s;
+}
+
+.close-button:hover {
+  color: var(--color-neon-blue);
+  transform: rotate(90deg); /* Cool effect on hover */
+}
+
+/* --- Form Styles --- */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 0.4rem;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  /* Input field border defined clearly */
+  border: 1px solid #3d4a60;
+  background-color: #162030; /* Darker than modal background for depth */
+  color: var(--text-main);
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
+  border-color: var(--color-neon-blue);
+  outline: none;
+  /* Subtle blue focus glow */
+  box-shadow: 0 0 0 3px rgba(0, 243, 255, 0.3);
+}
+
+/* --- Avatar Form Group --- */
+.avatar-form-group {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding-bottom: 1rem;
+  /* Use the bright accent color for the divider line */
+  border-bottom: 1px dashed var(--color-neon-magenta);
+  margin-bottom: 1.5rem;
+}
+
+.current-avatar-preview {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  /* Strong glow on the avatar preview in the modal */
+  box-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+  border: 3px solid transparent;
+  background-image: var(--gradient-avatar);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px;
+}
+
+.current-avatar-preview i {
+  color: var(--color-neon-blue); /* Icon color set to blue accent */
+  background: #1f2b40; /* Matches modal background */
+  border-radius: 50%;
+  padding: 10px;
+}
+
+.avatar-controls {
+  flex-grow: 1;
+}
+
+.avatar-controls label {
+  font-size: 1rem;
+  color: var(--text-main);
+  margin-bottom: 0.5rem;
+}
+
+.change-photo-btn {
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border: 1px solid var(--color-neon-magenta);
+  border-radius: 8px;
+  color: var(--color-neon-magenta);
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+.change-photo-btn:hover {
+  background: rgba(255, 0, 255, 0.15);
+  box-shadow: 0 0 8px rgba(255, 0, 255, 0.4);
+}
+
+/* --- Action Buttons --- */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.cancel-btn, .save-btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 1rem;
+}
+
+.cancel-btn {
+  background: transparent;
+  border: 1px solid var(--text-secondary);
+  color: var(--text-secondary);
+}
+.cancel-btn:hover {
+  background: var(--input-bg);
+  border-color: var(--text-main);
+  color: var(--text-main);
+}
+
+.save-btn {
+  /* Use the strong gradient for the save button */
+  background: linear-gradient(45deg, var(--color-neon-blue), var(--color-neon-magenta));
+  border: none;
+  color: #000;
+  box-shadow: 0 4px 15px rgba(0, 243, 255, 0.4);
+}
+.save-btn:hover {
+  transform: translateY(-1px); /* Little lift effect */
+  box-shadow: 0 6px 20px rgba(0, 243, 255, 0.6);
+}
