@@ -13,22 +13,17 @@ import {FormsModule} from "@angular/forms";
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent {
-  // --- Data State ---
   isEditMenuOpen: boolean = false;
-
-
-  // Data displayed on the profile card (Source of truth)
   profileData: any = {
-    name: 'John Doe',
-    role: 'Admin',
-    bio: 'Smart home enthusiast and tech lover. Managing the family home automation system.',
-    email: 'john.doe@example.com',
-    phone: '+1 (555) 123-4567',
-    address: '123 Smart Home Lane, San Francisco, CA 94102'
+    name: 'Youssef Marakby',
+    role: 'Home Member',
+    bio: 'I love my children',
+    email: 'youssefashraf@gamail.com',
+    phone: '01021838444',
+    address: 'Tosson,Alexandria'
   };
   editFormData: any = {};
   ngOnInit(): void {
-    // Initialize the form data with current profile data when component loads
     this.resetForm();
   }
   openEditMenu(): void {
@@ -49,7 +44,7 @@ export class ProfileComponent {
     // Creates a shallow copy of the profile data
     this.editFormData = {
       ...this.profileData,
-      password: '' // Never populate the password field
+      password: ''
     };
   }
 
@@ -66,7 +61,8 @@ export class ProfileComponent {
     // 2. Close the modal
     this.isEditMenuOpen = false;
 
-    // In a real application: You would call a service method here (e.g., this.userService.updateProfile(this.editFormData))
+
   }
+
 
 }

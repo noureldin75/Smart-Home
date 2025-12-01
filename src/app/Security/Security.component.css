@@ -95,16 +95,18 @@
 
 .top-section-grid {
   display: grid;
-  grid-template-columns: 2.5fr 1fr;
+  grid-template-columns: 2.3fr 1.7fr;
   gap: 2rem;
   flex-shrink: 0;
   min-height: 400px;
+  padding-bottom: 3rem;
 }
 
 .camera-feeds-panel {
   display: flex;
   flex-direction: column;
   height: 100%;
+  width: 99%;
 }
 
 .camera-grid {
@@ -225,6 +227,7 @@
 
 .activity-log-column {
   height: 100%;
+
 }
 
 .activity-log-panel {
