@@ -6,7 +6,7 @@ export interface Device {
   id: number;
   name: string;
   // Added all the new types from your data
-  type: 'AC' | 'LIGHT' | 'TV' | 'FAN' | 'WIFI' | 'OTHER' | 'BLINDS' | 'AUDIO' | 'SENSOR' | 'PLUG' | 'CLOCK' | 'HUMIDIFIER' | 'FRIDGE' | 'COFFEE' | 'DISHWASHER' | 'MICROWAVE' | 'OVEN';
+  type: 'AC' | 'LIGHT' | 'TV' | 'FAN' | 'WIFI' | 'OTHER' | 'BLINDS' | 'AUDIO' | 'SENSOR' | 'PLUG' | 'CLOCK' | 'HUMIDIFIER' | 'FRIDGE' | 'COFFEE' | 'DISHWASHER' | 'MICROWAVE' | 'OVEN'| 'SPRINKLER';
   room: string;
   isOn: boolean;
   consumption: number;
@@ -32,7 +32,8 @@ export class DeviceService {
     { name: 'Bathroom',      icon: '🛁', temperature: 23 },
     { name: 'Garage',         icon: '🚗', temperature: 18 },
     { name: 'Office',         icon: '💼', temperature: 21 },
-    
+    {name:'Garden', icon:'🌳', temperature:19},
+
   ];
 
   // 4. Your Data
@@ -62,7 +63,21 @@ export class DeviceService {
     { id: 404, name: 'Dishwasher',     type: 'DISHWASHER', room: 'Kitchen', isOn: false, consumption: 1.22 },
     { id: 405, name: 'Microwave',      type: 'MICROWAVE', room: 'Kitchen', isOn: false, consumption: 0.89 },
     { id: 406, name: 'Smart Oven',     type: 'OVEN', room: 'Kitchen', isOn: false,  consumption: 1.74 },
-    { id: 407, name: 'Hood Fan',       type: 'FAN',  room: 'Kitchen', isOn: false,  consumption: 0.13 }
+    { id: 407, name: 'Hood Fan',       type: 'FAN',  room: 'Kitchen', isOn: false,  consumption: 0.13 },
+
+    // Room 4 — Garden
+    { id: 501, name: 'Garden Lights', type: 'LIGHT', room: 'Garden', isOn: true, consumption: 0.05 },
+    { id: 502, name: 'Sprinkler System', type: 'SPRINKLER', room: 'Garden', isOn: false, consumption: 0.20 },
+
+    // Room 5 — Bathroom
+    { id: 601, name: 'Bathroom Lights', type: 'LIGHT', room: 'Bathroom', isOn: true,  consumption: 0.04 },
+    { id: 602, name: 'Exhaust Fan',     type: 'FAN',   room: 'Bathroom', isOn: false, consumption: 0.10 },
+    { id: 603, name: 'Heated Mirror',   type: 'OTHER', room: 'Bathroom', isOn: true,  consumption: 0.08 },
+
+    // Room 6 — Garage
+    { id: 701, name: 'Garage Lights',  type: 'LIGHT', room: 'Garage', isOn: false, consumption: 0.05 },
+    { id: 702, name: 'EV Charger',     type: 'OTHER', room: 'Garage', isOn: true,  consumption: 2.50 },
+
   ];
 
   constructor() { }
