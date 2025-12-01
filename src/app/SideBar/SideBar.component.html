@@ -89,21 +89,7 @@
       </div>
     </div>
 
-    <div class="nav-item" [class.active]="activeSection === 'devices'" (click)="setActiveSection('devices')">
-      <div class="nav-icon">
-        <div class="icon-wrapper">
-          <div class="icon-glow"></div>
-          <span class="emoji">📱</span>
-        </div>
-      </div>
-      <div class="nav-content" *ngIf="isSidebarExpanded">
-        <span class="nav-label">Devices</span>
-        <span class="nav-subtitle">{{ connectedDevices }} Connected</span>
-      </div>
-      <div class="nav-badge" *ngIf="isSidebarExpanded">
-        {{ connectedDevices }}
-      </div>
-    </div>
+  
 
     <div class="nav-item" [class.active]="activeSection === 'security'" (click)="setActiveSection('security')" routerLink="/Security">
       <div class="nav-icon">

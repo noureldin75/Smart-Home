@@ -88,6 +88,42 @@
           <button class="eco-btn">Enable Eco Mode</button>
         </div>
     </div>
+    <!-- 3. NEW SECTION: Energy Hungry Devices List -->
+    <div class="device-ranking-section">
+      <div class="header-section">
+        <h3>Energy Hungry Devices</h3>
+        <span class="subtitle">Ranked by consumption</span>
+      </div>
+
+      <div class="ranking-list">
+        <div *ngFor="let device of sortedDevices; let i = index" class="rank-item" [class.rank-one]="i === 0">
+          
+          <!-- Rank # -->
+          <div class="rank-badge">#{{ i + 1 }}</div>
+
+          <!-- Icon -->
+          <div class="device-icon-box">{{ getDeviceIcon(device.type) }}</div>
+
+          <!-- Info & Progress -->
+          <div class="device-details">
+            <div class="device-title-row">
+              <h4>{{ device.name }}</h4>
+              <span class="device-meta">📍 {{ device.room }} • {{ device.consumption }} kW/h</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" [style.width.%]="getPercentage(device.consumption)"></div>
+            </div>
+          </div>
+
+          <!-- Stats -->
+          <div class="device-stats">
+            <span class="percent-text">{{ getPercentage(device.consumption) | number:'1.0-0' }}%</span>
+            <span class="cost-text">AED {{ getCost(device.consumption) | number:'1.0-0' }}</span>
+          </div>
+
+        </div>
+      </div>
+    </div>
 
 
 

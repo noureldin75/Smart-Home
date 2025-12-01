@@ -3,15 +3,15 @@
   <nav class="smart-sidebar" [class.expanded]="isSidebarExpanded" [class.collapsed]="!isSidebarExpanded">
     
     <!-- Sidebar Header with Animated Logo -->
-    <div class="sidebar-header" routerLink="/Home" style="cursor: pointer;">
+    <div class="sidebar-header" >
       <div class="header-glow"></div>
-      <div class="logo-container" routerLink="/Home" style="cursor: pointer;">
+      <div class="logo-container">
         <div class="logo-orb" [class.spinning]="isSidebarExpanded" >
           <div class="orb-core"></div>
           <div class="orb-ring"></div>
           <div class="orb-pulse"></div>
         </div>
-        <div class="logo-text" *ngIf="isSidebarExpanded" routerLink="/Home" style="cursor: pointer;" >
+        <div class="logo-text" *ngIf="isSidebarExpanded"  >
           <h2>SMART HOME</h2>
           <p>Control Center</p>
         </div>
@@ -92,22 +92,7 @@
           </div>
         </div>
       </div>
-      <!-- Devices Section -->
-      <div class="nav-item" [class.active]="activeSection === 'devices'" (click)="setActiveSection('devices')">
-        <div class="nav-icon">
-          <div class="icon-wrapper">
-            <div class="icon-glow"></div>
-            <span class="emoji">📱</span>
-          </div>
-        </div>
-        <div class="nav-content" *ngIf="isSidebarExpanded">
-          <span class="nav-label">Devices</span>
-          <span class="nav-subtitle">{{ connectedDevices }} Connected</span>
-        </div>
-        <div class="nav-badge" *ngIf="isSidebarExpanded">
-          {{ connectedDevices }}
-        </div>
-      </div>
+     
       <!-- Security Section -->
       <div class="nav-item" [class.active]="activeSection === 'security'" (click)="setActiveSection('security')" routerLink="/Security">
         <div class="nav-icon">

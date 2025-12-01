@@ -102,4 +102,8 @@ export class DeviceService {
       console.log(`Toggled ${device.name} to ${device.isOn}`);
     }
   }
+  // D. Get All Devices (For Energy Analytics)
+  getAllDevices(): Observable<Device[]> {
+    return of(this.mockDevices);
+  }
 }
