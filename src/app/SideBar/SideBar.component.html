@@ -1,14 +1,14 @@
 <nav class="smart-sidebar" [class.expanded]="isSidebarExpanded" [class.collapsed]="!isSidebarExpanded">
     
-  <div class="sidebar-header">
+  <div class="sidebar-header" routerLink="/Home" style="cursor: pointer;">
     <div class="header-glow"></div>
-    <div class="logo-container">
+    <div class="logo-container" routerLink="/Home" style="cursor: pointer;">
       <div class="logo-orb" [class.spinning]="isSidebarExpanded">
         <div class="orb-core"></div>
         <div class="orb-ring"></div>
         <div class="orb-pulse"></div>
       </div>
-      <div class="logo-text" *ngIf="isSidebarExpanded">
+      <div class="logo-text" *ngIf="isSidebarExpanded" >
         <h2>SMART HOME</h2>
         <p>Control Center</p>
       </div>

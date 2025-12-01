@@ -31,7 +31,6 @@ export class DeviceService {
     { name: 'Kitchen',        icon: '🍳', temperature: 24 },
     { name: 'Bathroom',      icon: '🛁', temperature: 23 },
     { name: 'Garage',         icon: '🚗', temperature: 18 },
-    { name: 'Office',         icon: '💼', temperature: 21 },
     {name:'Garden', icon:'🌳', temperature:19},
 
   ];

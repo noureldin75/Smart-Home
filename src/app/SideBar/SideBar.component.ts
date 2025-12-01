@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
 
 interface Room {
   name: string;
@@ -13,7 +13,7 @@ interface Room {
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive],
+  imports: [CommonModule, RouterLink, RouterLinkActive,RouterModule],
   templateUrl: './SideBar.component.html',
   styleUrls: ['./SideBar.component.css']
 })
