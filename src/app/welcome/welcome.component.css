@@ -7,7 +7,8 @@
   align-items: center;
   justify-content: center;
   overflow: visible;
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+  background: var(--bg-primary);
+  transition: background 0.3s ease;
 }
 
 .welcome-header {
@@ -18,7 +19,7 @@
 
 .logo {
   margin-bottom: 2rem;
-  padding-top: 20px; 
+  padding-top: 20px;
   padding-bottom: 20px;
 }
 
@@ -38,7 +39,7 @@
 
 .slogan {
   font-size: 1.5rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--text-secondary);
   font-weight: 500;
 }
 
@@ -53,14 +54,14 @@
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: conic-gradient(from 45deg, #00f3ff, #ff00ff);
+  background: conic-gradient(from 45deg, var(--accent-cyan), var(--accent-purple));
   opacity: 0.7;
 }
 
 .shape-square {
   width: 50px;
   height: 50px;
-  background: conic-gradient(from 90deg, #00ff88, #00f3ff);
+  background: conic-gradient(from 90deg, var(--accent-green), var(--accent-cyan));
   transform: rotate(45deg);
   opacity: 0.7;
 }
@@ -70,15 +71,15 @@
   height: 0;
   border-left: 30px solid transparent;
   border-right: 30px solid transparent;
-  border-bottom: 52px solid #ff00ff;
+  border-bottom: 52px solid var(--accent-purple);
   opacity: 0.7;
 }
 
 /* Scroll Down Button */
 .scroll-down-btn {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--bg-glass);
   backdrop-filter: blur(10px);
-  border: 2px solid #00f3ff;
+  border: 2px solid var(--accent-cyan);
   border-radius: 50%;
   padding: 20px;
   transition: all 0.3s ease;
@@ -89,8 +90,9 @@
 }
 
 .scroll-down-btn:hover {
-  background: #00f3ff;
+  background: var(--accent-cyan);
   transform: scale(1.1);
+  box-shadow: 0 0 20px var(--accent-cyan);
 }
 
 .scroll-down-btn:hover .scroll-icon {
@@ -100,46 +102,48 @@
 .scroll-icon {
   width: 2rem;
   height: 2rem;
-  color: #00f3ff;
+  color: var(--accent-cyan);
 }
 
 @keyframes float {
-  0%, 100% { 
-    transform: translateY(0px) rotate(0deg); 
+
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
   }
-  50% { 
-    transform: translateY(-20px) rotate(180deg); 
+
+  50% {
+    transform: translateY(-20px) rotate(180deg);
   }
 }
 
 @keyframes vibrate {
-  0%, 100% { 
-    transform: translateY(0); 
+
+  0%,
+  100% {
+    transform: translateY(0);
   }
-  50% { 
-    transform: translateY(-10px); 
+
+  50% {
+    transform: translateY(-10px);
   }
 }
 
 /*neon glow*/
 .neon-glow-blue {
-  filter: drop-shadow(0 0 10px #00f3ff) 
-          drop-shadow(0 0 20px #00f3ff);
+  filter: drop-shadow(0 0 10px var(--accent-cyan)) drop-shadow(0 0 20px var(--accent-cyan));
 }
 
 .neon-glow-pink {
-  filter: drop-shadow(0 0 10px #ff00ff) 
-          drop-shadow(0 0 20px #ff00ff);
+  filter: drop-shadow(0 0 10px var(--accent-purple)) drop-shadow(0 0 20px var(--accent-purple));
 }
 
 .neon-glow-green {
-  filter: drop-shadow(0 0 10px #00ff88) 
-          drop-shadow(0 0 20px #00ff88);
+  filter: drop-shadow(0 0 10px var(--accent-green)) drop-shadow(0 0 20px var(--accent-green));
 }
 
 .neon-glow-purple {
-  filter: drop-shadow(0 0 10px #8a2be2) 
-          drop-shadow(0 0 20px #8a2be2);
+  filter: drop-shadow(0 0 10px #8a2be2) drop-shadow(0 0 20px #8a2be2);
 }
 
 /* Responsive */
@@ -147,12 +151,65 @@
   .logo-text {
     font-size: 4rem;
   }
-  
+
   .slogan {
     font-size: 1.25rem;
   }
-  
+
   .floating-shape {
     transform: scale(0.7);
   }
+}
+
+/* ============================================
+   LIGHT MODE PREMIUM ENHANCEMENTS
+   ============================================ */
+
+.light-mode .welcome-section {
+  background: var(--bg-primary);
+}
+
+.light-mode .logo-text {
+  filter: drop-shadow(0 0 10px rgba(14, 165, 233, 0.3));
+}
+
+.light-mode .slogan {
+  color: var(--text-secondary);
+}
+
+.light-mode .shape-circle {
+  background: conic-gradient(from 45deg, #0ea5e9, #a855f7);
+  opacity: 0.8;
+  filter: drop-shadow(0 0 10px rgba(14, 165, 233, 0.3));
+}
+
+.light-mode .shape-square {
+  background: conic-gradient(from 90deg, #10b981, #0ea5e9);
+  opacity: 0.8;
+  filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.3));
+}
+
+.light-mode .shape-triangle {
+  border-bottom-color: #a855f7;
+  opacity: 0.8;
+  filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.3));
+}
+
+.light-mode .scroll-down-btn {
+  background: rgba(255, 255, 255, 0.5);
+  border-color: #0ea5e9;
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2);
+}
+
+.light-mode .scroll-down-btn:hover {
+  background: #0ea5e9;
+  box-shadow: 0 8px 20px rgba(14, 165, 233, 0.4);
+}
+
+.light-mode .scroll-icon {
+  color: #0ea5e9;
+}
+
+.light-mode .scroll-down-btn:hover .scroll-icon {
+  color: white;
 }
