@@ -1,7 +1,7 @@
 <div class="homepage-container">
   <!-- Modern Smart Home Sidebar -->
   <nav class="smart-sidebar" [class.expanded]="isSidebarExpanded" [class.collapsed]="!isSidebarExpanded">
-    
+
     <!-- Sidebar Header with Animated Logo -->
     <div class="sidebar-header" >
       <div class="header-glow"></div>
@@ -46,7 +46,7 @@
     <!-- Navigation Menu -->
     <div class="nav-menu">
       <!-- Profile Section -->
-      <div class="nav-item profile-item" [class.active]="activeSection === 'profile'" (click)="setActiveSection('profile')">
+      <div routerLink="/Profile" routerLinkActive="Active" class="nav-item profile-item" [class.active]="activeSection === 'profile'" (click)="setActiveSection('profile')">
         <div class="nav-icon">
           <div class="icon-wrapper">
             <div class="icon-glow"></div>
@@ -63,7 +63,7 @@
         </div>
       </div>
       <!-- Home Parts Section -->
-      <div class="nav-item" [class.active]="activeSection === 'home-parts'" (click)="toggleHomeParts() " routerLink="/HomeParts">
+      <div  class="nav-item" [class.active]="activeSection === 'home-parts'" (click)="toggleHomeParts() " routerLink="/HomeParts">
         <div class="nav-icon">
           <div class="icon-wrapper">
             <div class="icon-glow"></div>
@@ -103,7 +103,7 @@
         </div>
         <div class="nav-content" *ngIf="isSidebarExpanded">
           <span class="nav-label">Security</span>
-          <span class="nav-subtitle" [class.armed]="securityArmed"> 
+          <span class="nav-subtitle" [class.armed]="securityArmed">
             {{ securityArmed ? 'Armed' : 'Disarmed' }}
           </span>
         </div>
@@ -196,7 +196,7 @@
         <h1 class="welcome-title">Welcome to Your Smart Home</h1>
         <p class="welcome-slogan">Everything is under your intelligent control</p>
       </div>
-      
+
       <div class="top-bar-right">
         <div class="search-bar">
           <input type="text" placeholder="Search devices, rooms, settings..." class="search-input">
@@ -207,12 +207,12 @@
             <span class="action-icon">🔔</span>
             <span class="notification-badge">3</span>
           </button>
-          
+
           <button class="action-btn settings-btn" (click)="openSettings()">
             <span class="action-icon">⚙️</span>
           </button>
-          
-          <div class="user-avatar">
+
+          <div routerLink="/Profile" routerLinkActive="Active" class="user-avatar" style="cursor: pointer">
             <span class="avatar-fallback">👤</span>
           </div>
         </div>
@@ -222,8 +222,8 @@
     <section class="recent-activities">
       <h2 class="section-title">Recent Activities</h2>
       <div class="activities-grid">
-        <div *ngFor="let activity of recentActivities" 
-             class="activity-item" 
+        <div *ngFor="let activity of recentActivities"
+             class="activity-item"
              [class]="'priority-' + activity.priority">
           <div class="activity-icon">{{ activity.icon }}</div>
           <div class="activity-content">
@@ -237,7 +237,7 @@
 
     <!-- Dashboard Grid -->
     <div class="dashboard-grid">
-      
+
       <!-- Weather Card -->
       <section class="dashboard-card weather-section">
         <div class="weather-card" [class.expanded]="weatherExpanded" (click)="toggleWeather()">
@@ -272,7 +272,7 @@
 
 
        <div class="detail-icon">💧</div>
-            
+
        <div class="detail-info">
      <div class="detail-label">Humidity</div>
              <div class="detail-value">{{ currentWeather.humidity }}%</div>
@@ -340,7 +340,7 @@
               <span class="status-text">{{ securityStatus }}</span>
             </div>
           </div>
-          
+
           <div class="camera-feed">
             <div class="camera-placeholder">
               <div class="camera-icon">📹</div>
@@ -351,7 +351,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="security-controls">
             <button class="security-btn lock-btn" (click)="toggleDoorLock()">
               <span class="btn-icon">🔒</span>
@@ -375,7 +375,7 @@
               <span class="power-trend">↓ 12%</span>
             </div>
           </div>
-          
+
           <div class="power-chart">
             <div class="chart-container">
               <div *ngFor="let hour of powerConsumption" class="chart-bar">
@@ -384,7 +384,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="power-breakdown">
             <div class="breakdown-item">
               <span class="breakdown-label">Lighting</span>
@@ -418,7 +418,7 @@
             <h3 class="card-title">Family Members</h3>
             <span class="members-count">{{ getOnlineMembers() }} Online</span>
           </div>
-          
+
           <div class="members-grid">
             <div *ngFor="let member of familyMembers" class="member-item">
               <div class="member-avatar" [class]="member.status">
@@ -434,9 +434,9 @@
               </div>
             </div>
           </div>
-          
+
           <div class="quick-actions">
-           
+
           </div>
         </div>
       </section>
@@ -451,7 +451,7 @@
               <span class="wifi-strength">Excellent</span>
             </div>
           </div>
-          
+
           <div class="accessories-grid">
             <!-- Outdoor Lights -->
             <div class="accessory-item">
@@ -466,7 +466,7 @@
                 </label>
               </div>
             </div>
-            
+
             <!-- Window Locks -->
             <div class="accessory-item">
               <div class="accessory-header">
@@ -480,7 +480,7 @@
                 </label>
               </div>
             </div>
-            
+
             <!-- Temperature Control -->
             <div class="accessory-item temperature-control">
               <div class="accessory-header">
@@ -489,7 +489,7 @@
               </div>
               <div class="temperature-display">{{ homeTemperature }}°C</div>
               <div class="intensity-control">
-                <input type="range" min="16" max="30" [value]="homeTemperature" 
+                <input type="range" min="16" max="30" [value]="homeTemperature"
                        (input)="onTemperatureChange($event)" class="temp-slider">
                 <div class="temp-markers">
                   <span>16°</span>
@@ -498,7 +498,7 @@
                 </div>
               </div>
             </div>
-            
+
             <!-- Sleep Mode -->
             <div class="accessory-item sleep-mode">
               <div class="accessory-header">
@@ -599,20 +599,20 @@
        <span class="status-text">{{ jarvisStatus }}</span>
             </div>
           </div>
-          
+
           <div class="jarvis-interface">
             <div class="jarvis-messages">
-              <div *ngFor="let message of jarvisMessages" 
-                   class="message" 
+              <div *ngFor="let message of jarvisMessages"
+                   class="message"
                    [class]="message.type">
                 <div class="message-content">{{ message.content }}</div>
                 <div class="message-time">{{ message.time }}</div>
               </div>
             </div>
-            
+
             <div class="jarvis-input">
-              <input type="text" placeholder="Ask Jarvis anything..." 
-                     [(ngModel)]="jarvisInput" 
+              <input type="text" placeholder="Ask Jarvis anything..."
+                     [(ngModel)]="jarvisInput"
                                       (keyup.enter)="sendToJarvis()"
                  class="jarvis-text-input">
         <button class="send-btn" (click)="sendToJarvis()">
@@ -620,10 +620,10 @@
           </button>
             </div>
           </div>
-          
+
           <div class="quick-commands">
-            <button *ngFor="let command of quickCommands" 
-                    class="command-btn" 
+            <button *ngFor="let command of quickCommands"
+                    class="command-btn"
                     (click)="executeQuickCommand(command)">
               {{ command }}
             </button>

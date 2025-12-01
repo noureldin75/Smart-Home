@@ -1,5 +1,5 @@
 <nav class="smart-sidebar" [class.expanded]="isSidebarExpanded" [class.collapsed]="!isSidebarExpanded">
-    
+
   <div class="sidebar-header" routerLink="/Home" style="cursor: pointer;">
     <div class="header-glow"></div>
     <div class="logo-container" routerLink="/Home" style="cursor: pointer;">
@@ -42,7 +42,7 @@
   </div>
 
   <div class="nav-menu">
-    <div class="nav-item profile-item" [class.active]="activeSection === 'profile'" (click)="setActiveSection('profile')">
+    <div routerLink="/Profile" routerLinkActive="Active" class="nav-item profile-item" [class.active]="activeSection === 'profile'" (click)="setActiveSection('profile')">
       <div class="nav-icon">
         <div class="icon-wrapper">
           <div class="icon-glow"></div>
@@ -100,7 +100,7 @@
       </div>
       <div class="nav-content" *ngIf="isSidebarExpanded">
         <span class="nav-label">Security</span>
-        <span class="nav-subtitle" [class.armed]="securityArmed"> 
+        <span class="nav-subtitle" [class.armed]="securityArmed">
           {{ securityArmed ? 'Armed' : 'Disarmed' }}
         </span>
       </div>

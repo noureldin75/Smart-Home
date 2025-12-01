@@ -4,10 +4,12 @@ import { HomepageComponent } from './homepage/homepage.component';
 import { EnergyAnalyticsComponent } from './EnergyAnalytics/EnergyAnalytics.component';
 import { HomePartsComponent } from './HomeParts/HomeParts.component';
 import { SecurityComponent } from './Security/Security.component';
+import {ProfileComponent} from "./profile/profile.component";
 
 export const routes: Routes = [
     { path:'Home', component: HomepageComponent },
     {path:'EnergyAnalytics',component:EnergyAnalyticsComponent},
     {path:'HomeParts',component:HomePartsComponent},
     {path:'Security',component:SecurityComponent},
+  {path:'Profile',component:ProfileComponent},
 ];

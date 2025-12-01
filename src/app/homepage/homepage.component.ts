@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { HomepagesecComponent } from '../homepagesec/homepagesec.component';
-import { RouterLink } from '@angular/router';
+import {RouterLink, RouterLinkActive} from '@angular/router';
 interface Room {
   name: string;
   icon: string;
@@ -57,7 +57,7 @@ interface PowerConsumption {
 @Component({
   selector: 'app-homepage',
   standalone: true,
-  imports: [CommonModule, FormsModule, HomepagesecComponent, RouterLink],
+  imports: [CommonModule, FormsModule, HomepagesecComponent, RouterLink, RouterLinkActive],
   templateUrl: './homepage.component.html',
   styleUrls: ['./homepage.component.css'],
   animations: [
@@ -181,7 +181,7 @@ export class HomepageComponent implements OnInit {
       this.isDarkMode = true;
       document.body.classList.remove('light-mode');
     }
-    
+
     this.simulateRealTimeUpdates();
     this.simulateWeatherUpdates();
     this.simulateJarvisActivity();
@@ -232,14 +232,14 @@ export class HomepageComponent implements OnInit {
 
   toggleDarkMode() {
     this.isDarkMode = !this.isDarkMode;
-    
+
     // Toggle the light-mode class on body element
     if (this.isDarkMode) {
       document.body.classList.remove('light-mode');
     } else {
       document.body.classList.add('light-mode');
     }
-    
+
     // Save preference to localStorage
     localStorage.setItem('theme', this.isDarkMode ? 'dark' : 'light');
   }
