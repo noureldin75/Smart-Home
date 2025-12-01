@@ -25,6 +25,7 @@
   transition: all 0.3s ease;
   margin-left: 350px;
   padding: 2rem;
+  padding: 2rem;
   box-sizing: border-box;
 }
 
@@ -183,6 +184,15 @@
   font-size: 0.8rem;
   font-weight: 600;
 }
+.idle-status {
+  display: flex;
+  align-items: center;
+  color: #15c639;
+  font-size: 0.8rem;
+  font-weight: 600;
+
+}
+
 
 .dot {
   width: 8px;
