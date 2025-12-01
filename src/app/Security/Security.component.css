@@ -184,6 +184,7 @@
   font-size: 0.8rem;
   font-weight: 600;
 }
+
 .idle-status {
   display: flex;
   align-items: center;
@@ -205,8 +206,17 @@
 }
 
 @keyframes pulseDot {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.2); opacity: 0.7; }
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.2);
+    opacity: 0.7;
+  }
 }
 
 /* ============================================
@@ -591,9 +601,9 @@
 
 /* Enhanced Camera Info for Light Mode */
 .light-mode .camera-info {
-  background: linear-gradient(145deg, 
-    rgba(255, 255, 255, 0.95), 
-    rgba(248, 250, 252, 0.98));
+  background: linear-gradient(145deg,
+      rgba(255, 255, 255, 0.95),
+      rgba(248, 250, 252, 0.98));
   border: 1px solid rgba(56, 189, 248, 0.2);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
@@ -619,49 +629,49 @@
 }
 
 .light-mode .log-entry:hover {
-  background: linear-gradient(145deg, 
-    rgba(240, 249, 255, 0.6), 
-    rgba(224, 242, 254, 0.7));
+  background: linear-gradient(145deg,
+      rgba(240, 249, 255, 0.6),
+      rgba(224, 242, 254, 0.7));
   border-radius: 0.75rem;
   box-shadow: 0 2px 8px rgba(56, 189, 248, 0.15);
 }
 
 /* Enhanced Log Icon Wrappers for Light Mode */
 .light-mode .log-icon-wrapper {
-  background: linear-gradient(145deg, 
-    rgba(255, 255, 255, 0.9), 
-    rgba(248, 250, 252, 0.95));
+  background: linear-gradient(145deg,
+      rgba(255, 255, 255, 0.9),
+      rgba(248, 250, 252, 0.95));
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .light-mode .log-icon-wrapper.motion {
-  background: linear-gradient(145deg, 
-    rgba(254, 226, 226, 0.8), 
-    rgba(254, 202, 202, 0.9));
+  background: linear-gradient(145deg,
+      rgba(254, 226, 226, 0.8),
+      rgba(254, 202, 202, 0.9));
   border-color: rgba(239, 68, 68, 0.5);
   box-shadow: 0 0 12px rgba(239, 68, 68, 0.3);
 }
 
 .light-mode .log-icon-wrapper.door {
-  background: linear-gradient(145deg, 
-    rgba(219, 234, 254, 0.8), 
-    rgba(191, 219, 254, 0.9));
+  background: linear-gradient(145deg,
+      rgba(219, 234, 254, 0.8),
+      rgba(191, 219, 254, 0.9));
   border-color: rgba(59, 130, 246, 0.5);
   box-shadow: 0 0 12px rgba(59, 130, 246, 0.3);
 }
 
 .light-mode .log-icon-wrapper.alarm {
-  background: linear-gradient(145deg, 
-    rgba(255, 237, 213, 0.8), 
-    rgba(254, 215, 170, 0.9));
+  background: linear-gradient(145deg,
+      rgba(255, 237, 213, 0.8),
+      rgba(254, 215, 170, 0.9));
   border-color: rgba(249, 115, 22, 0.5);
   box-shadow: 0 0 12px rgba(249, 115, 22, 0.3);
 }
 
 .light-mode .log-icon-wrapper.system {
-  background: linear-gradient(145deg, 
-    rgba(209, 250, 229, 0.8), 
-    rgba(167, 243, 208, 0.9));
+  background: linear-gradient(145deg,
+      rgba(209, 250, 229, 0.8),
+      rgba(167, 243, 208, 0.9));
   border-color: rgba(16, 185, 129, 0.5);
   box-shadow: 0 0 12px rgba(16, 185, 129, 0.3);
 }
@@ -692,17 +702,216 @@
 
 /* Enhanced Status Badges for Light Mode */
 .light-mode .status-badge.secured {
-  background: linear-gradient(135deg, 
-    rgba(209, 250, 229, 0.8), 
-    rgba(167, 243, 208, 0.9));
+  background: linear-gradient(135deg,
+      rgba(209, 250, 229, 0.8),
+      rgba(167, 243, 208, 0.9));
   border: 1px solid rgba(16, 185, 129, 0.4);
   box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15);
 }
 
 .light-mode .status-badge.active-count {
-  background: linear-gradient(135deg, 
-    rgba(224, 242, 254, 0.8), 
-    rgba(186, 230, 253, 0.9));
+  background-color: var(--accent-green);
+  box-shadow: 0 0 8px var(--accent-green);
+}
+
+.bg-red-500 {
+  background-color: var(--accent-red);
+  box-shadow: 0 0 8px var(--accent-red);
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+
+@media (max-width: 1200px) {
+  .top-section-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .bottom-section-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .activity-log-column,
+  .activity-log-panel {
+    height: auto;
+    min-height: 400px;
+  }
+
+  .log-entry {
+    padding: 1rem 0.5rem 1rem 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .main-content {
+    padding: 1rem;
+    gap: 1rem;
+    margin-left: 0 !important;
+  }
+
+  .panel-base {
+    padding: 1rem;
+  }
+
+  .camera-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .log-icon-wrapper {
+    width: 28px;
+    height: 28px;
+  }
+
+  .devices-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ============================================
+   LIGHT MODE PREMIUM ENHANCEMENTS
+   ============================================ */
+
+/* Enhanced Panel Base for Light Mode */
+.light-mode .panel-base {
+  background: linear-gradient(145deg, #FFFFFF 0%, #F8FAFC 100%);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.1);
+}
+
+/* Enhanced Camera Cards for Light Mode */
+.light-mode .camera-card {
+  background: linear-gradient(145deg, #F8FAFC 0%, #F1F5F9 100%);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+}
+
+.light-mode .camera-card:hover {
+  border-color: rgba(14, 165, 233, 0.5);
+  box-shadow: 0 8px 20px rgba(56, 189, 248, 0.2);
+  transform: scale(1.02);
+}
+
+/* Enhanced Camera Info for Light Mode */
+.light-mode .camera-info {
+  background: linear-gradient(145deg,
+      rgba(255, 255, 255, 0.95),
+      rgba(248, 250, 252, 0.98));
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Enhanced Activity Log for Light Mode */
+.light-mode .log-timeline {
+  scrollbar-color: rgba(14, 165, 233, 0.5) rgba(240, 249, 255, 0.5);
+}
+
+.light-mode .log-timeline::-webkit-scrollbar-track {
+  background: rgba(240, 249, 255, 0.5);
+}
+
+.light-mode .log-timeline::-webkit-scrollbar-thumb {
+  background: rgba(14, 165, 233, 0.5);
+  border: 1px solid rgba(240, 249, 255, 0.5);
+}
+
+/* Enhanced Log Entries for Light Mode */
+.light-mode .log-entry {
+  background: transparent;
+  transition: all 0.3s ease;
+}
+
+.light-mode .log-entry:hover {
+  background: linear-gradient(145deg,
+      rgba(240, 249, 255, 0.6),
+      rgba(224, 242, 254, 0.7));
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(56, 189, 248, 0.15);
+}
+
+/* Enhanced Log Icon Wrappers for Light Mode */
+.light-mode .log-icon-wrapper {
+  background: linear-gradient(145deg,
+      rgba(255, 255, 255, 0.9),
+      rgba(248, 250, 252, 0.95));
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.light-mode .log-icon-wrapper.motion {
+  background: linear-gradient(145deg,
+      rgba(254, 226, 226, 0.8),
+      rgba(254, 202, 202, 0.9));
+  border-color: rgba(239, 68, 68, 0.5);
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.3);
+}
+
+.light-mode .log-icon-wrapper.door {
+  background: linear-gradient(145deg,
+      rgba(219, 234, 254, 0.8),
+      rgba(191, 219, 254, 0.9));
+  border-color: rgba(59, 130, 246, 0.5);
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.3);
+}
+
+.light-mode .log-icon-wrapper.alarm {
+  background: linear-gradient(145deg,
+      rgba(255, 237, 213, 0.8),
+      rgba(254, 215, 170, 0.9));
+  border-color: rgba(249, 115, 22, 0.5);
+  box-shadow: 0 0 12px rgba(249, 115, 22, 0.3);
+}
+
+.light-mode .log-icon-wrapper.system {
+  background: linear-gradient(145deg,
+      rgba(209, 250, 229, 0.8),
+      rgba(167, 243, 208, 0.9));
+  border-color: rgba(16, 185, 129, 0.5);
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.3);
+}
+
+/* Enhanced Device Cards for Light Mode */
+.light-mode .device-card {
+  background: linear-gradient(145deg, #FFFFFF 0%, #F8FAFC 100%);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+.light-mode .device-card:hover {
+  background: linear-gradient(145deg, #F0F9FF 0%, #E0F2FE 100%);
+  border-color: rgba(14, 165, 233, 0.4);
+  box-shadow: 0 8px 20px rgba(56, 189, 248, 0.2);
+}
+
+/* Enhanced Category Cards for Light Mode */
+.light-mode .category-card {
+  background: linear-gradient(145deg, #FFFFFF 0%, #F8FAFC 100%);
+  border: 1px solid rgba(56, 189, 248, 0.15);
+}
+
+.light-mode .category-card:hover {
+  background: linear-gradient(145deg, #F0F9FF 0%, #E0F2FE 100%);
+  border-color: rgba(14, 165, 233, 0.3);
+  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.15);
+}
+
+/* Enhanced Status Badges for Light Mode */
+.light-mode .status-badge.secured {
+  background: linear-gradient(135deg,
+      rgba(209, 250, 229, 0.8),
+      rgba(167, 243, 208, 0.9));
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15);
+}
+
+.light-mode .status-badge.active-count {
+  background: linear-gradient(135deg,
+      rgba(224, 242, 254, 0.8),
+      rgba(186, 230, 253, 0.9));
   border: 1px solid rgba(14, 165, 233, 0.4);
   box-shadow: 0 2px 8px rgba(14, 165, 233, 0.15);
+}
+
+.light-mode .idle-status {
+  color: #10b981;
 }
