@@ -1,37 +1,41 @@
+/* ============================================
+   SECURITY COMPONENT - THEME-AWARE STYLES
+   ============================================ */
 
 /* Core Layout and Theme */
-
 .page-container {
   display: flex;
   height: 100vh;
   width: 100vw;
   overflow: hidden;
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
-  font-family: 'Inter', sans-serif;
+  background: var(--bg-primary);
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  transition: background 0.3s ease;
 }
+
 .main-content.collapsed {
   margin-left: 100px;
 }
-.main-content {
 
+.main-content {
   flex-grow: 1;
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
   transition: all 0.3s ease;
-
   margin-left: 350px;
-  padding: 2rem;             
+  padding: 2rem;
   box-sizing: border-box;
 }
 
 .panel-base {
-  background-color: #121223; /* A slightly lighter dark background */
+  background-color: var(--bg-card);
   border-radius: 1.5rem;
   padding: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  color: #e2e8f0;
+  border: 1px solid var(--border-secondary);
+  box-shadow: var(--shadow-card);
+  color: var(--text-main);
+  transition: all 0.3s ease;
 }
 
 .panel-header {
@@ -47,16 +51,21 @@
   background: linear-gradient(45deg, #a855f7, #00f3ff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
+
 .panel-title.text-cyan-400 {
   background: linear-gradient(45deg, #00f3ff, #06b6d4);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
+
 .panel-title.text-purple-400 {
   background: linear-gradient(45deg, #a855f7, #9333ea);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .status-badge {
@@ -68,24 +77,27 @@
 }
 
 .status-badge.secured {
-  background: rgba(16, 185, 129, 0.15); /* Greenish background */
-  color: #10b981; /* Tailwind green */
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
   border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
 .status-badge.active-count {
   background: rgba(0, 243, 255, 0.1);
-  color: #00f3ff;
+  color: var(--accent-cyan);
   border: 1px solid rgba(0, 243, 255, 0.3);
 }
 
-/* --- Top Section Grid (Cameras + Activity Log) --- */
+/* ============================================
+   TOP SECTION GRID (Cameras + Activity Log)
+   ============================================ */
+
 .top-section-grid {
   display: grid;
-  grid-template-columns: 2.5fr 1fr; /* Cameras wider than Log */
+  grid-template-columns: 2.5fr 1fr;
   gap: 2rem;
-  flex-shrink: 0; /* Prevents it from shrinking */
-  min-height: 400px; /* Minimum height for this section */
+  flex-shrink: 0;
+  min-height: 400px;
 }
 
 .camera-feeds-panel {
@@ -96,7 +108,7 @@
 
 .camera-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* TWO CAMERAS PER ROW */
+  grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
   flex-grow: 1;
 }
@@ -105,17 +117,22 @@
   background-color: #000000;
   border-radius: 0.75rem;
   overflow: hidden;
-  height: 200px; /* Fixed height for camera cards */
+  height: 200px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   position: relative;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: border-color 0.3s;
+  border: 1px solid var(--border-secondary);
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
+
+.light-mode .camera-card {
+  background-color: #f5f5f5;
+}
+
 .camera-card:hover {
-  border-color: #00f3ff;
+  border-color: var(--accent-cyan);
   box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
 }
 
@@ -125,9 +142,9 @@
 }
 
 .camera-svg-icon {
-  width: 60px; /* Larger icon for cameras */
+  width: 60px;
   height: 60px;
-  color: #6b7280; /* Gray-ish color for placeholder */
+  color: var(--text-muted);
   opacity: 0.6;
 }
 
@@ -144,15 +161,25 @@
   border-radius: 0.5rem;
 }
 
+.light-mode .camera-info {
+  background-color: rgba(255, 255, 255, 0.9);
+  color: var(--text-main);
+}
+
 .camera-info .name {
   font-weight: 500;
   font-size: 0.9rem;
+  color: white;
+}
+
+.light-mode .camera-info .name {
+  color: var(--text-main);
 }
 
 .recording-status {
   display: flex;
   align-items: center;
-  color: #ef4444; /* Red for recording */
+  color: var(--accent-red);
   font-size: 0.8rem;
   font-weight: 600;
 }
@@ -161,12 +188,21 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: #ef4444;
+  background-color: var(--accent-red);
   margin-right: 0.4rem;
-  box-shadow: 0 0 5px #ef4444;
+  box-shadow: 0 0 5px var(--accent-red);
+  animation: pulseDot 1.5s ease-in-out infinite;
 }
 
-/* --- Activity Log Panel (Right Column) --- */
+@keyframes pulseDot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2); opacity: 0.7; }
+}
+
+/* ============================================
+   ACTIVITY LOG PANEL (Right Column)
+   ============================================ */
+
 .activity-log-column {
   height: 100%;
 }
@@ -181,30 +217,43 @@
   padding-top: 0.5rem;
   flex-grow: 1;
   overflow-y: auto;
-  /* Custom Scrollbar for dark theme */
   scrollbar-width: thin;
-  scrollbar-color: #9333ea #121223;
+  scrollbar-color: #9333ea var(--bg-card);
 }
-.log-timeline::-webkit-scrollbar { width: 8px; }
-.log-timeline::-webkit-scrollbar-track { background: #1a1a2e; border-radius: 4px; }
+
+.log-timeline::-webkit-scrollbar {
+  width: 8px;
+}
+
+.log-timeline::-webkit-scrollbar-track {
+  background: var(--bg-card);
+  border-radius: 4px;
+}
+
 .log-timeline::-webkit-scrollbar-thumb {
   background: #9333ea;
   border-radius: 4px;
-  border: 1px solid #1a1a2e;
+  border: 1px solid var(--bg-card);
 }
-
 
 .log-entry {
   display: flex;
-  align-items: flex-start;      /* allow icon to take natural height */
+  align-items: flex-start;
   padding: 0.75rem;
   gap: 0.75rem;
-  min-height: auto;             /* IMPORTANT: remove forced fixed height */
-  overflow: visible !important; /* prevent clipping */
+  min-height: auto;
+  overflow: visible !important;
+  transition: background 0.2s ease;
+}
+
+.log-entry:hover {
+  background: var(--bg-card-hover);
+  border-radius: 0.5rem;
 }
 
 .log-entry.high-priority {
-  border-left-color: rgba(239, 68, 68, 0.7); /* Red line for high priority */
+  border-left: 3px solid rgba(239, 68, 68, 0.7);
+  padding-left: calc(0.75rem - 3px);
 }
 
 .log-entry:first-child {
@@ -212,26 +261,52 @@
 }
 
 .log-icon-wrapper {
-  width: 40px;                  /* bigger clickable area */
+  width: 40px;
   height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: visible;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
 }
+
 .activity-svg-icon {
   width: 28px;
   height: 28px;
   flex-shrink: 0;
 }
 
-.log-icon-wrapper.motion { border-color: #ef4444; box-shadow: 0 0 5px #ef4444; }
-.log-icon-wrapper.door { border-color: #3b82f6; box-shadow: 0 0 5px #3b82f6; }
-.log-icon-wrapper.alarm { border-color: #f97316; box-shadow: 0 0 5px #f97316; }
-.log-icon-wrapper.system { border-color: #10b981; box-shadow: 0 0 5px #10b981; }
-.log-icon-wrapper.package { border-color: #f59e0b; box-shadow: 0 0 5px #f59e0b; }
-.log-icon-wrapper.light { border-color: #eab308; box-shadow: 0 0 5px #eab308; } /* New light icon color */
+.log-icon-wrapper.motion {
+  border-color: var(--accent-red);
+  box-shadow: 0 0 5px var(--accent-red);
+}
 
+.log-icon-wrapper.door {
+  border-color: #3b82f6;
+  box-shadow: 0 0 5px #3b82f6;
+}
+
+.log-icon-wrapper.alarm {
+  border-color: #f97316;
+  box-shadow: 0 0 5px #f97316;
+}
+
+.log-icon-wrapper.system {
+  border-color: var(--accent-green);
+  box-shadow: 0 0 5px var(--accent-green);
+}
+
+.log-icon-wrapper.package {
+  border-color: #f59e0b;
+  box-shadow: 0 0 5px #f59e0b;
+}
+
+.log-icon-wrapper.light {
+  border-color: #eab308;
+  box-shadow: 0 0 5px #eab308;
+}
 
 .log-content {
   margin-left: 1.5rem;
@@ -240,12 +315,13 @@
 
 .log-title {
   font-weight: 600;
-  color: white;
+  color: var(--text-main);
 }
 
-.log-location, .log-time {
+.log-location,
+.log-time {
   font-size: 0.85rem;
-  color: #94a3b8;
+  color: var(--text-secondary);
   margin-top: 0.25rem;
 }
 
@@ -258,52 +334,114 @@
   align-self: center;
   text-transform: uppercase;
 }
-.log-priority.high { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
-.log-priority.normal { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
-.log-priority.low { background: rgba(59, 130, 246, 0.15); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.3); }
 
-/* --- Bottom Section Grid (Doors & Windows + Sensors) --- */
+.log-priority.high {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--accent-red);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.log-priority.normal {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--accent-green);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.log-priority.low {
+  background: rgba(59, 130, 246, 0.15);
+  color: #3b82f6;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+/* ============================================
+   BOTTOM SECTION GRID (Doors & Windows + Sensors)
+   ============================================ */
+
 .bottom-section-grid {
   display: grid;
-  grid-template-columns: 2fr 1.5fr; /* Doors wider than Sensors */
+  grid-template-columns: 2fr 1.5fr;
   gap: 2rem;
-  flex-grow: 1; /* Allows this section to fill remaining vertical space */
+  flex-grow: 1;
   min-height: 300px;
 }
 
-/* --- Doors & Windows Grid (Left-Bottom) --- */
+/* Doors & Windows Grid */
 .doors-windows-panel {
-  /* Specific panel overrides */
+  display: flex;
+  flex-direction: column;
 }
+
 .devices-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1rem;
 }
+
 .device-card {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1.25rem;
   border-radius: 0.75rem;
-  background-color: #1e1e35;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: transform 0.2s, box-shadow 0.2s;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-secondary);
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
   cursor: pointer;
 }
+
+.light-mode .device-card {
+  background-color: var(--bg-glass);
+}
+
 .device-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0, 243, 255, 0.15);
+  box-shadow: var(--shadow-card-hover);
+  background: var(--bg-card-hover);
 }
-.device-icon { font-size: 2rem; }
-.device-info { margin-left: 0.75rem; flex-grow: 1; }
-.device-info .name { font-weight: 600; color: #e2e8f0; }
-.device-info .status { font-size: 0.9rem; font-weight: 500; margin-top: 0.25rem; color: #10b981; }
-.device-card.unsecured-status { border-color: #f59e0b; }
-.device-card.unsecured-status .device-info .status { color: #f59e0b; }
-.lock-icon { font-size: 1.5rem; filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3)); }
 
-/* --- Sensor Categories List (Right-Bottom) --- */
+.device-icon {
+  font-size: 2rem;
+}
+
+.device-info {
+  margin-left: 0.75rem;
+  flex-grow: 1;
+}
+
+.device-info .name {
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.device-info .status {
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-top: 0.25rem;
+  color: var(--accent-green);
+}
+
+.device-card.unsecured-status {
+  border-color: #f59e0b;
+}
+
+.device-card.unsecured-status .device-info .status {
+  color: #f59e0b;
+}
+
+.lock-icon {
+  font-size: 1.5rem;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
+  transition: filter 0.3s ease;
+}
+
+.light-mode .lock-icon {
+  filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.2));
+}
+
+/* ============================================
+   SENSOR CATEGORIES LIST (Right-Bottom)
+   ============================================ */
+
 .categories-list {
   display: flex;
   flex-direction: column;
@@ -311,56 +449,250 @@
   height: 100%;
   overflow-y: auto;
 }
+
 .category-card {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
   border-radius: 0.75rem;
-  background-color: #1e1e35;
+  background-color: var(--bg-card);
   border: 1px solid transparent;
   transition: border-color 0.2s, background-color 0.2s;
 }
-.category-card:hover { background-color: #242440; border-color: rgba(255, 255, 255, 0.15); }
-.category-name { font-weight: 500; color: #cbd5e1; }
-.category-status { display: flex; align-items: center; gap: 0.75rem; }
-.category-status .count { font-size: 0.9rem; font-weight: 600; color: #94a3b8; }
-.indicator { width: 12px; height: 12px; border-radius: 50%; transition: background-color 0.3s ease, box-shadow 0.3s ease; }
-.bg-green-500 { background-color: #10b981; box-shadow: 0 0 8px #10b981; }
-.bg-red-500 { background-color: #ef4444; box-shadow: 0 0 8px #ef4444; }
 
-/* Responsive Adjustments */
+.light-mode .category-card {
+  background-color: var(--bg-glass);
+}
+
+.category-card:hover {
+  background-color: var(--bg-card-hover);
+  border-color: var(--border-secondary);
+}
+
+.category-name {
+  font-weight: 500;
+  color: var(--text-main);
+}
+
+.category-status {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.category-status .count {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.bg-green-500 {
+  background-color: var(--accent-green);
+  box-shadow: 0 0 8px var(--accent-green);
+}
+
+.bg-red-500 {
+  background-color: var(--accent-red);
+  box-shadow: 0 0 8px var(--accent-red);
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+
 @media (max-width: 1200px) {
   .top-section-grid {
-    grid-template-columns: 1fr; /* Stack columns vertically */
+    grid-template-columns: 1fr;
     gap: 1.5rem;
   }
+
   .bottom-section-grid {
-    grid-template-columns: 1fr; /* Stack doors/sensors vertically */
+    grid-template-columns: 1fr;
     gap: 1.5rem;
   }
-  .activity-log-column, .activity-log-panel {
+
+  .activity-log-column,
+  .activity-log-panel {
     height: auto;
-    min-height: 400px; /* Ensure log has some height when stacked */
+    min-height: 400px;
   }
+
   .log-entry {
     padding: 1rem 0.5rem 1rem 1rem;
   }
 }
+
 @media (max-width: 640px) {
   .main-content {
     padding: 1rem;
     gap: 1rem;
+    margin-left: 0 !important;
   }
+
   .panel-base {
     padding: 1rem;
   }
+
   .camera-grid {
     grid-template-columns: 1fr;
   }
+
   .log-icon-wrapper {
     width: 28px;
     height: 28px;
-    left: -16px;
   }
+
+  .devices-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ============================================
+   LIGHT MODE PREMIUM ENHANCEMENTS
+   ============================================ */
+
+/* Enhanced Panel Base for Light Mode */
+.light-mode .panel-base {
+  background: linear-gradient(145deg, #FFFFFF 0%, #F8FAFC 100%);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.1);
+}
+
+/* Enhanced Camera Cards for Light Mode */
+.light-mode .camera-card {
+  background: linear-gradient(145deg, #F8FAFC 0%, #F1F5F9 100%);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+}
+
+.light-mode .camera-card:hover {
+  border-color: rgba(14, 165, 233, 0.5);
+  box-shadow: 0 8px 20px rgba(56, 189, 248, 0.2);
+  transform: scale(1.02);
+}
+
+/* Enhanced Camera Info for Light Mode */
+.light-mode .camera-info {
+  background: linear-gradient(145deg, 
+    rgba(255, 255, 255, 0.95), 
+    rgba(248, 250, 252, 0.98));
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Enhanced Activity Log for Light Mode */
+.light-mode .log-timeline {
+  scrollbar-color: rgba(14, 165, 233, 0.5) rgba(240, 249, 255, 0.5);
+}
+
+.light-mode .log-timeline::-webkit-scrollbar-track {
+  background: rgba(240, 249, 255, 0.5);
+}
+
+.light-mode .log-timeline::-webkit-scrollbar-thumb {
+  background: rgba(14, 165, 233, 0.5);
+  border: 1px solid rgba(240, 249, 255, 0.5);
+}
+
+/* Enhanced Log Entries for Light Mode */
+.light-mode .log-entry {
+  background: transparent;
+  transition: all 0.3s ease;
+}
+
+.light-mode .log-entry:hover {
+  background: linear-gradient(145deg, 
+    rgba(240, 249, 255, 0.6), 
+    rgba(224, 242, 254, 0.7));
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(56, 189, 248, 0.15);
+}
+
+/* Enhanced Log Icon Wrappers for Light Mode */
+.light-mode .log-icon-wrapper {
+  background: linear-gradient(145deg, 
+    rgba(255, 255, 255, 0.9), 
+    rgba(248, 250, 252, 0.95));
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.light-mode .log-icon-wrapper.motion {
+  background: linear-gradient(145deg, 
+    rgba(254, 226, 226, 0.8), 
+    rgba(254, 202, 202, 0.9));
+  border-color: rgba(239, 68, 68, 0.5);
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.3);
+}
+
+.light-mode .log-icon-wrapper.door {
+  background: linear-gradient(145deg, 
+    rgba(219, 234, 254, 0.8), 
+    rgba(191, 219, 254, 0.9));
+  border-color: rgba(59, 130, 246, 0.5);
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.3);
+}
+
+.light-mode .log-icon-wrapper.alarm {
+  background: linear-gradient(145deg, 
+    rgba(255, 237, 213, 0.8), 
+    rgba(254, 215, 170, 0.9));
+  border-color: rgba(249, 115, 22, 0.5);
+  box-shadow: 0 0 12px rgba(249, 115, 22, 0.3);
+}
+
+.light-mode .log-icon-wrapper.system {
+  background: linear-gradient(145deg, 
+    rgba(209, 250, 229, 0.8), 
+    rgba(167, 243, 208, 0.9));
+  border-color: rgba(16, 185, 129, 0.5);
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.3);
+}
+
+/* Enhanced Device Cards for Light Mode */
+.light-mode .device-card {
+  background: linear-gradient(145deg, #FFFFFF 0%, #F8FAFC 100%);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+.light-mode .device-card:hover {
+  background: linear-gradient(145deg, #F0F9FF 0%, #E0F2FE 100%);
+  border-color: rgba(14, 165, 233, 0.4);
+  box-shadow: 0 8px 20px rgba(56, 189, 248, 0.2);
+}
+
+/* Enhanced Category Cards for Light Mode */
+.light-mode .category-card {
+  background: linear-gradient(145deg, #FFFFFF 0%, #F8FAFC 100%);
+  border: 1px solid rgba(56, 189, 248, 0.15);
+}
+
+.light-mode .category-card:hover {
+  background: linear-gradient(145deg, #F0F9FF 0%, #E0F2FE 100%);
+  border-color: rgba(14, 165, 233, 0.3);
+  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.15);
+}
+
+/* Enhanced Status Badges for Light Mode */
+.light-mode .status-badge.secured {
+  background: linear-gradient(135deg, 
+    rgba(209, 250, 229, 0.8), 
+    rgba(167, 243, 208, 0.9));
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15);
+}
+
+.light-mode .status-badge.active-count {
+  background: linear-gradient(135deg, 
+    rgba(224, 242, 254, 0.8), 
+    rgba(186, 230, 253, 0.9));
+  border: 1px solid rgba(14, 165, 233, 0.4);
+  box-shadow: 0 2px 8px rgba(14, 165, 233, 0.15);
 }

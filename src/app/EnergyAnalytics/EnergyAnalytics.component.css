@@ -1,22 +1,15 @@
-/* ==========================
-   1. Global Variables & Layout
-========================== */
-:root {
-  --bg-dark: #0a0a0a;
-  --bg-panel: #161b2e;
-  --text-primary: #ffffff;
-  --text-secondary: #94a3b8;
-  --accent-cyan: #00e5ff;
-  --border-glow: rgba(0, 229, 255, 0.2);
-}
+/* ============================================
+   ENERGY ANALYTICS - THEME-AWARE STYLES
+   ============================================ */
 
 .page-container {
   display: flex;
   height: 100vh;
   width: 100vw;
   overflow: hidden;
-   background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
-  font-family: 'Inter', sans-serif;
+  background: var(--bg-primary);
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  transition: background 0.3s ease;
 }
 
 .main-content {
@@ -29,7 +22,6 @@
   padding: 2rem;
   box-sizing: border-box;
 
-  /* Grid Layout */
   display: grid;
   grid-template-columns: 2fr 1fr;
   grid-template-rows: auto 1fr;
@@ -43,13 +35,13 @@
   margin-left: 100px;
 }
 
-/* ==========================
-   2. SHARED HEADER STYLES (New)
-   Handles both Chart & Actions Headers
-========================== */
+/* ============================================
+   SHARED HEADER STYLES
+   ============================================ */
+
 .header-section {
   display: flex;
-  justify-content: space-between; /* Title Left, Badge Right */
+  justify-content: space-between;
   align-items: center;
   margin-bottom: 1.5rem;
   width: 100%;
@@ -60,43 +52,43 @@
   font-size: 1.25rem;
   font-weight: 700;
   margin: 0;
-  
-  /* Gradient Text Effect */
-  background: linear-gradient(45deg, #00f3ff, #ff00ff);
+  background: var(--gradient-primary);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-clip: text; /* Standard property */
+  background-clip: text;
 }
 
-/* Badge Styles */
 .badge, .badge-count {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--input-bg);
   padding: 0.25rem 0.75rem;
   border-radius: 20px;
-  color: #8b92a5;
+  color: var(--text-muted);
   font-size: 0.8rem;
   font-weight: 600;
   white-space: nowrap;
 }
 
-/* Specific Badge style for Actions (Purple) */
 .badge-count {
   background: rgba(128, 0, 128, 0.25); 
   color: #ff66ff;
   border: 1px solid rgba(128, 0, 128, 0.5);
 }
 
+.light-mode .badge-count {
+  background: rgba(128, 0, 128, 0.15);
+  border-color: rgba(128, 0, 128, 0.3);
+}
 
-/* ==========================
-   3. Cards Grid (Top Section)
-========================== */
+/* ============================================
+   CARDS GRID (TOP SECTION)
+   ============================================ */
+
 .cards-container {
   grid-area: cards;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
   width: 100%;
-  
 }
 
 .energy-card {
@@ -106,9 +98,9 @@
   text-align: center;
   overflow: hidden;
   --theme-color: #fff;
-  background-color: #121223; /* A slightly lighter dark background */
+  background-color: var(--bg-card);
   border: 1px solid var(--theme-color);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-card);
   opacity: 0;
   animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -121,36 +113,63 @@
 
 .energy-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 0 15px var(--theme-color);
+  box-shadow: var(--shadow-card-hover), 0 0 15px var(--theme-color);
 }
 
 .energy-card::after {
   content: '';
   position: absolute;
-  top: 0; left: -100%; width: 50%; height: 100%;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
   background: linear-gradient(to right, transparent 0%, rgba(255, 255, 255, 0.1) 50%, transparent 100%);
   transform: skewX(-25deg);
   transition: 0.5s;
   pointer-events: none;
 }
-.energy-card:hover::after { left: 150%; transition: 0.7s ease-in-out; }
+
+.light-mode .energy-card::after {
+  background: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.05) 50%, transparent 100%);
+}
+
+.energy-card:hover::after {
+  left: 150%;
+  transition: 0.7s ease-in-out;
+}
 
 .card-content h3 {
-  color: #9ca3af; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-top: 1rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 1rem;
 }
-.value h1 { font-size: 2rem; font-weight: 700; margin: 0.5rem 0; color: var(--theme-color); }
-.card-content p { color: #94a3b8; font-size: 0.8rem; }
 
-/* ==========================
-   4. Chart Section (Left Bottom)
-========================== */
+.value h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0.5rem 0;
+  color: var(--theme-color);
+}
+
+.card-content p {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+}
+
+/* ============================================
+   CHART SECTION (LEFT BOTTOM)
+   ============================================ */
+
 .chart-section {
   grid-area: chart;
-  background-color: #121223; /* A slightly lighter dark background */
+  background-color: var(--bg-card);
   border-radius: 16px;
   padding: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-secondary);
+  box-shadow: var(--shadow-card);
   box-sizing: border-box;
   opacity: 0;
   animation: fadeInUp 0.8s forwards 0.6s;
@@ -161,113 +180,181 @@
 
 .chart-section:hover {
   transform: translateY(-5px);
-  box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 243, 255, 0.1); 
+  box-shadow: var(--shadow-card-hover), var(--glow-cyan);
 }
 
-/* Peak Usage Alert inside Chart */
 .peak-usage {
-  display: flex; align-items: center; gap: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
   background: rgba(255, 68, 68, 0.1);
   border: 1px solid rgba(255, 68, 68, 0.3);
   border-radius: 12px;
-  padding: 1rem; margin-top: 1.5rem; width: 100%; box-sizing: border-box;
+  padding: 1rem;
+  margin-top: 1.5rem;
+  width: 100%;
+  box-sizing: border-box;
   animation: softPulse 2s infinite;
 }
-.usage-icon { font-size: 1.8rem; }
-.usage-content h3 { margin: 0 0 0.25rem 0; font-size: 1rem; color: #fff; background: none; -webkit-text-fill-color: #fff; }
-.usage-content p { margin: 0; font-size: 0.85rem; color: #cbd5e1; }
 
-/* ==========================
-   5. Actions Section (Right Bottom)
-========================== */
-/* ==========================
-   5. Actions Section (Right Bottom)
-========================== */
+.usage-icon {
+  font-size: 1.8rem;
+}
+
+.usage-content h3 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1rem;
+  color: var(--text-main);
+  background: none;
+  -webkit-text-fill-color: var(--text-main);
+}
+
+.usage-content p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+/* ============================================
+   ACTIONS SECTION (RIGHT BOTTOM)
+   ============================================ */
+
 .actions-section {
   grid-area: actions;
-  background-color:  #121223;
+  background-color: var(--bg-card);
   padding: 1.5rem;
   border-radius: 16px;
-  border: 1px solid var(--border-glow);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-primary);
+  box-shadow: var(--shadow-card);
   
   display: flex;
   flex-direction: column;
   height: fit-content;
   opacity: 0;
 
-  /* Animation & Transition */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   animation: fadeInUp 0.8s forwards 0.8s;
   
-  /* Local Vars */
-  --btn-bg: #2d3447;
+  --btn-bg: var(--input-bg);
   --btn-text: var(--accent-cyan);
   --green-text: #00c853;
   --green-bg: rgba(0, 200, 83, 0.15);
 }
 
-/* UPDATED HOVER: Matches .chart-section exactly */
 .actions-section:hover {
   transform: translateY(-5px);
-  box-shadow: 
-    0 15px 30px -5px rgba(0, 0, 0, 0.3), 
-    0 0 20px rgba(0, 243, 255, 0.1); /* This RGBA value matches the Chart section glow */
+  box-shadow: var(--shadow-card-hover), var(--glow-cyan);
 }
 
-.actions-list { display: flex; flex-direction: column; gap: 1rem; }
+.actions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
 
-/* Action Card Styles */
 .action-card {
-  background-color: rgba(255, 255, 255, 0.03);
+  background-color: var(--bg-card);
   border-radius: 12px;
   padding: 1.25rem;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-secondary);
   transition: transform 0.2s, box-shadow 0.2s;
   
-  --theme-bg-soft: rgba(255, 255, 255, 0.1);
+  --theme-bg-soft: var(--input-bg);
 }
 
-.action-card.type-critical { --theme-color: #ff4444; --theme-bg-soft: rgba(255, 68, 68, 0.15); }
-.action-card.type-warning  { --theme-color: #ffbb00; --theme-bg-soft: rgba(255, 187, 0, 0.15); }
+.action-card.type-critical {
+  --theme-color: #ff4444;
+  --theme-bg-soft: rgba(255, 68, 68, 0.15);
+}
+
+.action-card.type-warning {
+  --theme-color: #ffbb00;
+  --theme-bg-soft: rgba(255, 187, 0, 0.15);
+}
 
 .action-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 0 15px var(--theme-color);
+  box-shadow: var(--shadow-card), 0 0 15px var(--theme-color);
 }
 
-.card-top { display: flex; gap: 1rem; align-items: flex-start; }
+.card-top {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
 .icon-box {
-  min-width: 44px; height: 44px; border-radius: 10px;
-  display: flex; align-items: center; justify-content: center; font-size: 1.4rem;
-  background-color: var(--theme-bg-soft); border: 1px solid var(--theme-color);
+  min-width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  background-color: var(--theme-bg-soft);
+  border: 1px solid var(--theme-color);
 }
-.text-content .title { color: white; font-size: 1rem; font-weight: 600; margin: 0 0 0.4rem 0; }
-.text-content .description { color: rgba(217, 213, 213, 0.622); font-size: 0.8rem; margin: 0; line-height: 1.4; }
 
-.divider { height: 1px; background-color: rgba(255,255,255,0.1); margin: 1rem 0; }
+.text-content .title {
+  color: var(--text-main);
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 0.4rem 0;
+}
 
-.card-bottom { display: flex; justify-content: space-between; align-items: center; }
+.text-content .description {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.divider {
+  height: 1px;
+  background-color: var(--border-secondary);
+  margin: 1rem 0;
+}
+
+.card-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .savings-badge {
-  display: flex; align-items: center; gap: 0.4rem;
-  color: var(--green-text); background-color: var(--green-bg);
-  padding: 6px 12px; border-radius: 6px; font-size: 0.9rem; font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--green-text);
+  background-color: var(--green-bg);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
   border: 1px solid rgba(0, 200, 83, 0.2);
 }
 
 .action-btn {
-  background-color: var(--btn-bg); color: var(--btn-text);
-  border: 1px solid rgba(0, 229, 255, 0.2);
-  padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+  background-color: var(--btn-bg);
+  color: var(--btn-text);
+  border: 1px solid var(--border-primary);
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
 }
-.action-btn:hover { background-color: rgba(0, 229, 255, 0.15); border-color: var(--btn-text); }
 
+.action-btn:hover {
+  background-color: var(--bg-card-hover);
+  border-color: var(--btn-text);
+}
 
-/* --- Eco Card Container --- */
+/* Eco Card */
 .eco-card {
-  margin-top: 1.5rem; /* Space between the list and this card */
+  margin-top: 1.5rem;
   background: linear-gradient(180deg, rgba(6, 78, 87, 0.4) 0%, rgba(10, 25, 41, 0.6) 100%);
-  border: 1px solid rgba(0, 229, 255, 0.3); /* Teal border */
+  border: 1px solid rgba(0, 229, 255, 0.3);
   border-radius: 16px;
   padding: 2rem 1.5rem;
   text-align: center;
@@ -277,17 +364,20 @@
   align-items: center;
   gap: 0.8rem;
   
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-card);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.light-mode .eco-card {
+  background: linear-gradient(180deg, rgba(6, 78, 87, 0.15) 0%, rgba(10, 25, 41, 0.1) 100%);
 }
 
 .eco-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 229, 255, 0.15);
-  border-color: #00e5ff;
+  box-shadow: var(--shadow-card-hover), 0 0 20px rgba(0, 229, 255, 0.15);
+  border-color: var(--accent-cyan);
 }
 
-/* --- Icon --- */
 .eco-icon {
   font-size: 3rem;
   margin-bottom: 0.5rem;
@@ -295,9 +385,8 @@
   animation: float 4s ease-in-out infinite;
 }
 
-/* --- Typography --- */
 .eco-card h3 {
-  color: #ffffff;
+  color: var(--text-main);
   font-size: 1.1rem;
   font-weight: 700;
   margin: 0;
@@ -305,25 +394,21 @@
 }
 
 .eco-card p {
-  color: #94a3b8; /* Secondary grey text */
+  color: var(--text-secondary);
   font-size: 0.9rem;
   line-height: 1.5;
   margin: 0;
-  max-width: 90%; /* Keeps text nicely wrapped */
+  max-width: 90%;
 }
 
-/* --- The Big Green Button --- */
 .eco-btn {
   margin-top: 1rem;
   width: 100%;
   padding: 14px;
   border: none;
   border-radius: 12px;
-  
-  /* The Bright Gradient from Image */
   background: linear-gradient(90deg, #00fa9a 0%, #00e5ff 100%);
-  
-  color: #000; /* Black text for contrast */
+  color: #000;
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
@@ -340,36 +425,78 @@
 .eco-btn:active {
   transform: scale(0.98);
 }
-/* ==========================
-   6. Icons & Animations
-========================== */
+
+/* ============================================
+   ICONS & ANIMATIONS
+   ============================================ */
+
 .icon-wrapper {
-  position: relative; width: 60px; height: 60px; border-radius: 50%; margin: 0 auto;
-  display: flex; align-items: center; justify-content: center; font-size: 1.75rem;
-  border: 1px solid var(--theme-color); color: var(--theme-color);
+  position: relative;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+  border: 1px solid var(--theme-color);
+  color: var(--theme-color);
   background-color: color-mix(in srgb, var(--theme-color), transparent 90%);
   box-shadow: inset 0 0 10px color-mix(in srgb, var(--theme-color), transparent 85%);
-  z-index: 2; animation: float 4s ease-in-out infinite;
+  z-index: 2;
+  animation: float 4s ease-in-out infinite;
 }
-.icon-wrapper::before {
-  content: ''; position: absolute; top: -6px; left: -6px; width: 100%; height: 100%;
-  border-radius: 50%; border: 1px solid color-mix(in srgb, var(--theme-color), transparent 80%);
-  z-index: -1; padding: 6px;
-}
-.energy-card:nth-child(odd) .icon-wrapper { animation-duration: 5s; }
 
-@keyframes fadeInUp { from { opacity: 0; transform: translateY(30px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
-@keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-6px); } 100% { transform: translateY(0px); } }
-@keyframes softPulse { 0% { box-shadow: 0 0 0 0 rgba(255, 68, 68, 0.2); } 70% { box-shadow: 0 0 0 10px rgba(255, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 68, 68, 0); } }
+.icon-wrapper::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--theme-color), transparent 80%);
+  z-index: -1;
+  padding: 6px;
+}
+
+.energy-card:nth-child(odd) .icon-wrapper {
+  animation-duration: 5s;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes softPulse {
+  0% { box-shadow: 0 0 0 0 rgba(255, 68, 68, 0.2); }
+  70% { box-shadow: 0 0 0 10px rgba(255, 68, 68, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 68, 68, 0); }
+}
 
 .energy-card:nth-child(1) { animation-delay: 0.1s; }
 .energy-card:nth-child(2) { animation-delay: 0.2s; }
 .energy-card:nth-child(3) { animation-delay: 0.3s; }
 .energy-card:nth-child(4) { animation-delay: 0.4s; }
 
-/* ==========================
-   7. Responsiveness
-========================== */
+/* ============================================
+   RESPONSIVENESS
+   ============================================ */
+
 @media (max-width: 1200px) {
   .main-content {
     grid-template-columns: 1fr;
@@ -382,13 +509,165 @@
 }
 
 @media (max-width: 1024px) {
-  .cards-container { grid-template-columns: repeat(2, 1fr); }
+  .cards-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 768px) {
   .main-content {
     margin-left: 0 !important;
-    padding: 1rem; padding-top: 80px;
+    padding: 1rem;
+    padding-top: 80px;
   }
-  .cards-container { grid-template-columns: 1fr; gap: 1rem; }
+  
+  .cards-container {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+
+/* ============================================
+   LIGHT MODE PREMIUM ENHANCEMENTS
+   ============================================ */
+
+/* Enhanced Energy Cards for Light Mode */
+.light-mode .energy-card {
+  background: linear-gradient(145deg, #FFFFFF 0%, #F8FAFC 100%);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.light-mode .energy-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(56, 189, 248, 0.15) 50%, 
+    transparent 100%);
+  animation: shimmerLight 3s ease-in-out infinite;
+}
+
+.light-mode .energy-card:hover {
+  background: linear-gradient(145deg, #F0F9FF 0%, #E0F2FE 100%);
+  border-color: rgba(14, 165, 233, 0.5);
+  box-shadow: 0 12px 24px rgba(56, 189, 248, 0.2), 0 0 40px rgba(14, 165, 233, 0.15);
+}
+
+/* Enhanced Chart Section for Light Mode */
+.light-mode .chart-section {
+  background: linear-gradient(145deg, #FFFFFF 0%, #F8FAFC 100%);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+}
+
+.light-mode .chart-section:hover {
+  background: linear-gradient(145deg, #F0F9FF 0%, #E0F2FE 100%);
+  border-color: rgba(14, 165, 233, 0.4);
+  box-shadow: 0 16px 32px rgba(56, 189, 248, 0.2), 0 0 50px rgba(14, 165, 233, 0.15);
+}
+
+/* Enhanced Actions Section for Light Mode */
+.light-mode .actions-section {
+  background: linear-gradient(145deg, #FFFFFF 0%, #F8FAFC 100%);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+}
+
+.light-mode .actions-section:hover {
+  background: linear-gradient(145deg, #F0F9FF 0%, #E0F2FE 100%);
+  border-color: rgba(14, 165, 233, 0.4);
+  box-shadow: 0 16px 32px rgba(56, 189, 248, 0.2), 0 0 50px rgba(14, 165, 233, 0.15);
+}
+
+/* Enhanced Action Cards for Light Mode */
+.light-mode .action-card {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 1));
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+.light-mode .action-card:hover {
+  background: linear-gradient(145deg, rgba(240, 249, 255, 1), rgba(224, 242, 254, 1));
+  border-color: rgba(14, 165, 233, 0.4);
+  box-shadow: 0 8px 20px rgba(56, 189, 248, 0.2);
+}
+
+/* Enhanced Eco Card for Light Mode */
+.light-mode .eco-card {
+  background: linear-gradient(180deg, 
+    rgba(224, 242, 254, 0.8) 0%, 
+    rgba(186, 230, 253, 0.9) 50%,
+    rgba(125, 211, 252, 0.95) 100%);
+  border: 1px solid rgba(14, 165, 233, 0.4);
+  box-shadow: 0 8px 24px rgba(56, 189, 248, 0.25);
+}
+
+.light-mode .eco-card:hover {
+  background: linear-gradient(180deg, 
+    rgba(186, 230, 253, 0.9) 0%, 
+    rgba(125, 211, 252, 0.95) 50%,
+    rgba(56, 189, 248, 0.98) 100%);
+  border-color: rgba(14, 165, 233, 0.6);
+  box-shadow: 0 12px 32px rgba(56, 189, 248, 0.35), 0 0 60px rgba(14, 165, 233, 0.2);
+}
+
+/* Enhanced Icon Wrappers for Light Mode */
+.light-mode .icon-wrapper {
+  background: linear-gradient(145deg, 
+    rgba(240, 249, 255, 0.8), 
+    rgba(224, 242, 254, 0.9));
+  border: 2px solid rgba(56, 189, 248, 0.3);
+  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.15), 
+              inset 0 2px 4px rgba(255, 255, 255, 0.5);
+}
+
+/* Enhanced Peak Usage Alert for Light Mode */
+.light-mode .peak-usage {
+  background: linear-gradient(135deg, 
+    rgba(254, 226, 226, 0.8), 
+    rgba(254, 202, 202, 0.9));
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
+}
+
+/* Enhanced Badge for Light Mode */
+.light-mode .badge,
+.light-mode .badge-count {
+  background: linear-gradient(145deg, 
+    rgba(240, 249, 255, 0.9), 
+    rgba(224, 242, 254, 1));
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  color: var(--accent-cyan);
+}
+
+/* Enhanced Action Button for Light Mode */
+.light-mode .action-btn {
+  background: linear-gradient(145deg, 
+    rgba(240, 249, 255, 0.9), 
+    rgba(224, 242, 254, 1));
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  color: var(--accent-cyan);
+}
+
+.light-mode .action-btn:hover {
+  background: linear-gradient(145deg, 
+    rgba(224, 242, 254, 1), 
+    rgba(186, 230, 253, 1));
+  border-color: rgba(14, 165, 233, 0.5);
+  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.25);
+}
+
+/* Enhanced Eco Button for Light Mode */
+.light-mode .eco-btn {
+  background: linear-gradient(90deg, #10b981 0%, #14b8a6 50%, #06b6d4 100%);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+}
+
+.light-mode .eco-btn:hover {
+  background: linear-gradient(90deg, #059669 0%, #0d9488 50%, #0891b2 100%);
+  box-shadow: 0 8px 28px rgba(16, 185, 129, 0.5), 0 0 40px rgba(20, 184, 166, 0.3);
 }

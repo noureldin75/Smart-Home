@@ -1,0 +1,267 @@
+/* ==========================
+   1. Page Layout & Container
+========================== */
+.parts-container {
+  display: flex; /* Sidebar and Main Content side-by-side */
+  min-height: 100vh;
+  width: 100vw;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow: hidden; /* Prevent body scroll, let main-content scroll */
+}
+
+/* The area to the right of the sidebar */
+.main-content {
+  flex-grow: 1;
+  height: 100vh;
+  overflow-y: auto; /* Internal scrolling */
+  overflow-x: hidden;
+  transition: margin-left 0.3s ease;
+  
+  /* Sidebar Offsets */
+  margin-left: 350px; /* Expanded sidebar width */
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+/* When Sidebar is collapsed */
+.main-content.collapsed {
+  margin-left: 100px;
+}
+
+.section-title {
+  color: white;
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+  font-weight: 700;
+  /* Optional Text Gradient */
+  background: linear-gradient(45deg, #fff, #a0a0b0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ==========================
+   2. Rooms Grid
+========================== */
+.rooms-grid {
+  display: grid;
+  /* Auto-fit: Creates as many columns as fit (min 350px wide) */
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+}
+
+/* ==========================
+   3. Room Card Styling
+========================== */
+.room-card {
+  background: #151520; /* Dark Card Background */
+  border: 1px solid rgba(0, 229, 255, 0.1);
+  border-radius: 20px;
+  padding: 1.5rem;
+  color: white;
+  transition: all 0.3s ease;
+  height: fit-content; /* Prevents card from stretching vertically */
+  position: relative;
+}
+
+.room-card:hover {
+  border-color: rgba(0, 229, 255, 0.4);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Active/Expanded State Glow */
+.room-card.expanded {
+  border-color: rgba(0, 229, 255, 0.6);
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.1);
+}
+
+/* --- Header Section --- */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.room-info {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.room-icon-box {
+  width: 50px;
+  height: 50px;
+  background: #252538;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.room-text h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.device-count {
+  font-size: 0.85rem;
+  color: #8a8a9a;
+}
+
+/* Badge (Green = Active, Grey = Off) */
+.status-badge {
+  background: rgba(0, 250, 154, 0.1);
+  color: #00fa9a;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border: 1px solid rgba(0, 250, 154, 0.3);
+}
+
+.status-badge.off {
+  background: rgba(255, 255, 255, 0.05);
+  color: #888;
+  border-color: #444;
+}
+
+/* --- Stats Row (Temp & Power) --- */
+.stats-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.stat-box {
+  background: #1e1e2d;
+  padding: 12px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.stat-icon { font-size: 1.4rem; }
+.stat-icon.temp { color: #ff6b6b; } /* Red for Heat */
+.stat-icon.power { color: #feca57; } /* Yellow for Power */
+
+.stat-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-label { font-size: 0.75rem; color: #8a8a9a; }
+.stat-value { font-size: 1.1rem; font-weight: 700; color: #fff; }
+
+/* --- Toggle Trigger ("Click to view") --- */
+.toggle-trigger {
+  text-align: center;
+  color: #00e5ff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding-top: 1.2rem;
+  transition: opacity 0.2s;
+  user-select: none;
+}
+.toggle-trigger:hover {
+  opacity: 0.8;
+  text-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
+}
+
+/* --- Expandable Content Area --- */
+.expandable-content {
+  margin-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 1rem;
+  /* Animation */
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Device List Scrollable Area */
+.device-list-container {
+  max-height: 250px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 1rem;
+  padding-right: 5px; /* Space for scrollbar */
+}
+
+/* Custom Scrollbar */
+.device-list-container::-webkit-scrollbar { width: 6px; }
+.device-list-container::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 3px; }
+.device-list-container::-webkit-scrollbar-thumb { background: #444455; border-radius: 3px; }
+
+/* Device Row Item */
+.device-row {
+  background: #1e1e2d;
+  padding: 12px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.device-left {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.device-icon { font-size: 1.2rem; }
+.device-name { font-size: 0.95rem; color: #e0e0e0; }
+
+/* --- Switch Toggle --- */
+.switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #3b3b4f; transition: .4s; border-radius: 34px; }
+.slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+
+input:checked + .slider { background-color: #00fa9a; }
+input:checked + .slider:before { transform: translateX(20px); }
+
+/* --- Footer Button --- */
+.turn-off-btn {
+  background: transparent;
+  border: 1px solid #3b3b4f;
+  color: #00e5ff;
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.turn-off-btn:hover {
+  background: rgba(0, 229, 255, 0.1);
+  border-color: #00e5ff;
+}
+
+/* ==========================
+   4. Mobile Responsiveness
+========================== */
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0 !important; /* Sidebar covers content or is hidden */
+    padding: 1rem;
+    padding-top: 80px; /* Space for mobile header trigger */
+  }
+  
+  .rooms-grid {
+    grid-template-columns: 1fr; /* 1 column on mobile */
+  }
+}

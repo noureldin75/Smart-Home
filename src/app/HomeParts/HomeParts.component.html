@@ -1,3 +1,67 @@
-<p>
-  HomeParts works!
-</p>
+<div class="parts-container">
+
+
+  <app-sidebar #sidebarRef class="sidebar"></app-sidebar>
+
+
+  <div class="main-content" [class.collapsed]="!sidebarRef.isSidebarExpanded">
+    <h2 class="section-title">My Rooms</h2>
+    <div class="rooms-grid">
+
+      <div *ngFor="let room of rooms" class="room-card" [class.expanded]="expandedRoomName === room.name">
+
+        <div class="card-header">
+          <div class="room-info">
+            <div class="room-icon-box">{{ room.icon }}</div>
+            <div class="room-text">
+              <h2>{{ room.name }}</h2>
+              <span class="device-count">{{ getRoomDevices(room.name).length }} devices</span>
+            </div>
+          </div>
+          <div class="status-badge" [class.off]="getActiveCount(room.name) === 0">
+            {{ getActiveCount(room.name) }}/{{ getRoomDevices(room.name).length }} ON
+          </div>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat-box">
+            <div class="stat-icon temp">🌡️</div>
+            <div class="stat-text">
+              <span class="stat-label">Temperature</span>
+              <span class="stat-value">{{ room.temperature }}°C</span>
+            </div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-icon power">⚡</div>
+            <div class="stat-text">
+              <span class="stat-label">Power</span>
+              <span class="stat-value">{{ getRoomPower(room.name) | number:'1.1-1' }} kW</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="toggle-trigger" (click)="toggleView(room.name)">
+          <span *ngIf="expandedRoomName !== room.name">Click to view devices ▼</span>
+          <span *ngIf="expandedRoomName === room.name">Hide devices ▲</span>
+        </div>
+
+        <div class="expandable-content" *ngIf="expandedRoomName === room.name">
+          <div class="device-list-container">
+            <div *ngFor="let device of getRoomDevices(room.name)" class="device-row">
+              <div class="device-left">
+                <span class="device-icon">{{ getIcon(device.type) }}</span>
+                <span class="device-name">{{ device.name }}</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" [checked]="device.isOn" (change)="toggleDevice(device)">
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+          <button class="turn-off-btn" (click)="turnOffAll(room.name)">Turn Off All</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

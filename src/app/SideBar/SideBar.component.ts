@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
@@ -17,7 +17,7 @@ interface Room {
   templateUrl: './SideBar.component.html',
   styleUrls: ['./SideBar.component.css']
 })
-export class SideBarComponent {
+export class SideBarComponent implements OnInit {
   // المتغيرات الخاصة بالسايد بار (مستخرجة من الكود الأصلي)
   isSidebarExpanded = true;
   isDarkMode = true;
@@ -28,6 +28,18 @@ export class SideBarComponent {
   activeRooms = 5;
   profileNotifications = 2;
   sparklineData = [30, 45, 60, 35, 70, 50, 80, 40, 65, 55];
+
+  ngOnInit() {
+    // Load saved theme preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+      this.isDarkMode = false;
+      document.body.classList.add('light-mode');
+    } else {
+      this.isDarkMode = true;
+      document.body.classList.remove('light-mode');
+    }
+  }
 
   rooms: Room[] = [
     { name: 'Living Room', icon: '🛋️', devices: 12, temperature: '22°C', status: 'active' },
@@ -67,11 +79,16 @@ export class SideBarComponent {
 
   toggleDarkMode() {
     this.isDarkMode = !this.isDarkMode;
+    
+    // Toggle the light-mode class on body element
     if (this.isDarkMode) {
-      document.body.style.background = 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%)';
+      document.body.classList.remove('light-mode');
     } else {
-      document.body.style.background = 'linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #e2e8f0 100%)';
+      document.body.classList.add('light-mode');
     }
+    
+    // Save preference to localStorage
+    localStorage.setItem('theme', this.isDarkMode ? 'dark' : 'light');
   }
 
   selectRoom(room: Room) {

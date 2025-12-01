@@ -57,7 +57,7 @@ interface PowerConsumption {
 @Component({
   selector: 'app-homepage',
   standalone: true,
-  imports: [CommonModule, FormsModule, HomepagesecComponent,RouterLink],
+  imports: [CommonModule, FormsModule, HomepagesecComponent, RouterLink],
   templateUrl: './homepage.component.html',
   styleUrls: ['./homepage.component.css'],
   animations: [
@@ -130,20 +130,20 @@ export class HomepageComponent implements OnInit {
   securityStatus = 'active';
   doorLocked = true;
   alarmArmed = true;
-  
+
   outdoorLightsOn = false;
   windowLocksOn = true;
   homeTemperature = 22;
   sleepModeOn = false;
-  
+
   jarvisStatus = 'listening';
   jarvisInput = '';
   jarvisMessages: JarvisMessage[] = [
     { content: 'Hello! I\'m Jarvis, your smart home assistant. How can I help you today?', type: 'ai', time: '10:00 AM' }
   ];
-  
+
   quickCommands = ['Lights On', 'Good Night', 'I\'m Home', 'Leave Home'];
-  
+
   recentActivities: Activity[] = [
     { title: 'Front door unlocked', time: '2 mins ago', icon: '🔓', priority: 'high' },
     { title: 'Living room lights turned on', time: '5 mins ago', icon: '💡', priority: 'low' },
@@ -152,7 +152,7 @@ export class HomepageComponent implements OnInit {
     { title: 'New device connected', time: '2 hours ago', icon: '📱', priority: 'medium' },
     { title: 'Water leak detected in kitchen', time: '3 hours ago', icon: '💧', priority: 'critical' }
   ];
-  
+
   familyMembers: FamilyMember[] = [
     { name: 'Hany', avatar: '', emoji: '👨', location: ' ', status: 'online' },
     { name: 'Markeeb', avatar: '', emoji: '👧', location: ' ', status: 'online' },
@@ -160,7 +160,7 @@ export class HomepageComponent implements OnInit {
     { name: 'Eyad', avatar: '', emoji: '🧑', location: ' ', status: 'offline' },
     { name: 'Noor', avatar: '', emoji: '👦', location: ' ', status: 'online' }
   ];
-  
+
   powerConsumption: PowerConsumption[] = [
     { time: '6AM', consumption: 20 },
     { time: '9AM', consumption: 45 },
@@ -172,6 +172,16 @@ export class HomepageComponent implements OnInit {
   ];
 
   ngOnInit() {
+    // Load saved theme preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+      this.isDarkMode = false;
+      document.body.classList.add('light-mode');
+    } else {
+      this.isDarkMode = true;
+      document.body.classList.remove('light-mode');
+    }
+    
     this.simulateRealTimeUpdates();
     this.simulateWeatherUpdates();
     this.simulateJarvisActivity();
@@ -210,9 +220,9 @@ export class HomepageComponent implements OnInit {
 
   selectRoom(room: Room) {
     console.log('Selected room:', room.name);
-    const roomMap: {[key: string]: string} = {
+    const roomMap: { [key: string]: string } = {
       'Living Room': 'living-room',
-      'Kitchen': 'kitchen', 
+      'Kitchen': 'kitchen',
       'Bedroom': 'bedroom',
       'Bathroom': 'bathroom',
       'Home Office': 'office'
@@ -222,11 +232,16 @@ export class HomepageComponent implements OnInit {
 
   toggleDarkMode() {
     this.isDarkMode = !this.isDarkMode;
+    
+    // Toggle the light-mode class on body element
     if (this.isDarkMode) {
-      document.body.style.background = 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%)';
+      document.body.classList.remove('light-mode');
     } else {
-      document.body.style.background = 'linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #e2e8f0 100%)';
+      document.body.classList.add('light-mode');
     }
+    
+    // Save preference to localStorage
+    localStorage.setItem('theme', this.isDarkMode ? 'dark' : 'light');
   }
 
   logout() {
@@ -403,10 +418,10 @@ export class HomepageComponent implements OnInit {
   }
 
   private getCurrentTime(): string {
-    return new Date().toLocaleTimeString('en-US', { 
-      hour: '2-digit', 
+    return new Date().toLocaleTimeString('en-US', {
+      hour: '2-digit',
       minute: '2-digit',
-      hour12: true 
+      hour12: true
     });
   }
 
@@ -417,7 +432,7 @@ export class HomepageComponent implements OnInit {
       icon,
       priority
     });
-    
+
     if (this.recentActivities.length > 6) {
       this.recentActivities.pop();
     }
@@ -425,7 +440,7 @@ export class HomepageComponent implements OnInit {
 
   private simulateRealTimeUpdates() {
     setInterval(() => {
-      this.sparklineData = this.sparklineData.map(() => 
+      this.sparklineData = this.sparklineData.map(() =>
         Math.floor(Math.random() * 40) + 30
       );
       this.connectedDevices = 20 + Math.floor(Math.random() * 10);
@@ -440,7 +455,7 @@ export class HomepageComponent implements OnInit {
       const tempChange = (Math.random() - 0.5) * 2;
       this.currentWeather.temperature = Math.round((this.currentWeather.temperature + tempChange) * 10) / 10;
       this.currentWeather.feelsLike = Math.round((this.currentWeather.feelsLike + tempChange) * 10) / 10;
-      
+
       if (Math.random() > 0.95) {
         const conditions = [
           { desc: 'Sunny', anim: 'sunny', advice: 'Great day for outdoor activities!', level: 'good' },
@@ -449,7 +464,7 @@ export class HomepageComponent implements OnInit {
           { desc: 'Light Rain', anim: 'rainy', advice: 'Consider indoor activities today.', level: 'moderate' },
           { desc: 'Stormy', anim: 'stormy', advice: 'Better stay indoors today.', level: 'poor' }
         ];
-        
+
         const newCondition = conditions[Math.floor(Math.random() * conditions.length)];
         this.currentWeather.description = newCondition.desc;
         this.currentWeather.animation = newCondition.anim;
@@ -466,7 +481,7 @@ export class HomepageComponent implements OnInit {
         { msg: 'Weather update: Clear skies expected throughout the day.', type: 'ai' as const },
         { msg: 'Energy consumption is 15% lower than yesterday. Great job!', type: 'ai' as const }
       ];
-      
+
       if (Math.random() > 0.7) {
         const activity = activities[Math.floor(Math.random() * activities.length)];
         this.jarvisMessages.push({
