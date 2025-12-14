@@ -1,8 +1,5 @@
 <div class="parts-container">
-
-
   <app-sidebar #sidebarRef class="sidebar"></app-sidebar>
-
 
   <div class="main-content" [class.collapsed]="!sidebarRef.isSidebarExpanded">
     <h2 class="section-title">My Rooms</h2>
@@ -23,7 +20,7 @@
           </div>
         </div>
 
-        <div class="stats-row">
+        <div class="stats-row three-col">
           <div class="stat-box">
             <div class="stat-icon temp">🌡️</div>
             <div class="stat-text">
@@ -38,6 +35,21 @@
               <span class="stat-value">{{ getRoomPower(room.name) | number:'1.1-1' }} kW</span>
             </div>
           </div>
+
+          <div class="stat-box light-intensity">
+            <div class="stat-icon light-dim">💡</div>
+            <div class="stat-text">
+              <span class="stat-label">Light Intensity</span>
+              <span class="stat-value">{{ room.lightIntensity || 0 }}/5</span>
+            </div>
+            <div class="slider-control-container">
+              <input type="range" min="0" max="5" step="1"
+                     [value]="room.lightIntensity || 0"
+                     (input)="adjustLight(room.name, $event)"
+                     class="light-range-slider">
+            </div>
+          </div>
+
         </div>
 
         <div class="toggle-trigger" (click)="toggleView(room.name)">
@@ -52,10 +64,14 @@
                 <span class="device-icon">{{ getIcon(device.type) }}</span>
                 <span class="device-name">{{ device.name }}</span>
               </div>
-              <label class="switch">
-                <input type="checkbox" [checked]="device.isOn" (change)="toggleDevice(device)">
-                <span class="slider round"></span>
-              </label>
+              <ng-container *ngIf="device.type !== 'LIGHT'">
+                <label class="switch">
+                  <input type="checkbox" [checked]="device.isOn" (change)="toggleDevice(device)">
+                  <span class="slider round"></span>
+                </label>
+              </ng-container>
+              <span *ngIf="device.type === 'LIGHT'" class="controlled-by-slider">Intensity Controlled</span>
+
             </div>
           </div>
           <button class="turn-off-btn" (click)="turnOffAll(room.name)">Turn Off All</button>

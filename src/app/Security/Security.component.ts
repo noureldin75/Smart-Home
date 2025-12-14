@@ -163,7 +163,7 @@ export class SecurityComponent implements OnInit {
 
       let displayTime = '';
 
-      if (diffSec < 10) displayTime = 'Just now';
+      if (diffSec < 5) displayTime = 'Just now';
       else if (diffSec < 60) displayTime = diffSec + ' sec ago';
       else if (diffMin < 60) displayTime = diffMin + ' min ago';
       else displayTime = diffHr + ' hr ago';

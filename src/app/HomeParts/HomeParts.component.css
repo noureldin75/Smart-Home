@@ -144,8 +144,117 @@
 /* --- Stats Row (Temp & Power) --- */
 .stats-row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  /* Change from 1fr 1fr to 1fr 1fr 1fr for three columns */
+  grid-template-columns: 1fr 1fr; 
   gap: 12px;
+}
+.stats-row.three-col {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+/* Style for the new Light Intensity stat box */
+.stat-box.light-intensity {
+  /* You may want to align content for the slider */
+  justify-content: space-between;
+  gap: 0; /* Adjust gap since content is structured differently */
+}
+
+/* New Icon Color for Light */
+.stat-icon.light-dim {
+  color: var(--accent-orange); /* Using an orange/yellow for light control */
+}
+
+/* Container for the slider */
+.slider-control-container {
+  width: 100%;
+  padding-top: 5px; /* Visual spacing */
+}
+
+/* Styling the HTML range input for a sleek look */
+.light-range-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 10px; 
+  background: var(--bg-secondary); /* Dark track color */
+  border-radius: 5px; 
+  outline: none;
+  margin: 0;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5); /* Stronger inset shadow for depth */
+}
+
+/* Thumb (The draggable handle) */
+.light-range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px; 
+  height: 20px; 
+  background: #ffc107; 
+  cursor: grab;
+  border-radius: 50%;
+  border: 4px solid var(--bg-card); 
+  /* Intense shadow for a prominent, raised appearance */
+  box-shadow: 0 0 15px rgba(255, 193, 7, 1), /* Strong glow matching color */
+              0 2px 5px rgba(0, 0, 0, 0.6); /* Drop shadow for 3D depth */
+  margin-top: -8px; 
+  transition: all 0.2s;
+}
+.light-range-slider::-webkit-slider-thumb:hover,
+.light-range-slider::-webkit-slider-thumb:active {
+  transform: scale(1.1);
+  background: #ffcc33; /* Brighter on hover/active */
+  cursor: grabbing;
+}
+
+.light-range-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #ffc107;
+  cursor: grab;
+  border-radius: 50%;
+  border: 4px solid var(--bg-card);
+  box-shadow: 0 0 15px rgba(255, 193, 7, 1),
+              0 2px 5px rgba(0, 0, 0, 0.6);
+}
+
+/* Optional: Style for the controlled by slider indicator */
+.controlled-by-slider {
+  font-size: 0.8rem;
+  color: var(--text-disabled);
+  background-color: var(--bg-secondary);
+  padding: 4px 8px;
+  border-radius: 8px;
+}
+
+/* Light Mode Adjustments */
+.light-mode .stat-icon.light-dim {
+  color: #fb923c; /* A nice orange for light in light mode */
+}
+
+.light-mode .light-range-slider {
+  background: #e2e8f0;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.light-mode .light-range-slider::-webkit-slider-thumb {
+  background: #ff9800; /* Use a distinct orange */
+  border: 4px solid #fff; /* White border in light mode */
+  box-shadow: 0 0 15px rgba(255, 152, 0, 0.5), 
+              0 2px 5px rgba(0, 0, 0, 0.2);
+}
+.light-mode .light-range-slider::-webkit-slider-thumb:hover,
+.light-mode .light-range-slider::-webkit-slider-thumb:active {
+  background: #ffaa00; 
+}
+
+.light-mode .light-range-slider::-moz-range-thumb {
+  background: #ff9800;
+  border: 4px solid #fff;
+  box-shadow: 0 0 15px rgba(255, 152, 0, 0.5), 
+              0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.light-mode .controlled-by-slider {
+  background-color: #f1f5f9;
 }
 
 .stat-box {
