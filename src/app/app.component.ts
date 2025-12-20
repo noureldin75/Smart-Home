@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { SideBarComponent } from './SideBar/SideBar.component';
+import {DeviceService} from "./services/device.service";
 
 @Component({
   selector: 'app-root',
@@ -11,15 +12,21 @@ import { SideBarComponent } from './SideBar/SideBar.component';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
+export class AppComponent  implements OnInit {
   title = 'resinex';
   showWelcome = true;
-  constructor(private router: Router) {}
+  constructor(private router: Router ,
+              private deviceservice: DeviceService,
+              ) {}
 
 
   onWelcomeComplete() {
     this.showWelcome = false;
     this.router.navigate(['/Home']);
 
+  }
+
+  ngOnInit() {
+   this.deviceservice.syncAllRoomsToHardware();
   }
 }
