@@ -43,10 +43,8 @@
               <span class="stat-value">{{ room.lightIntensity || 0 }}/5</span>
             </div>
             <div class="slider-control-container">
-              <input type="range" min="0" max="5" step="1"
-                     [value]="room.lightIntensity || 0"
-                     (input)="adjustLight(room.name, $event)"
-                     class="light-range-slider">
+              <input type="range" min="0" max="5" step="1" [value]="room.lightIntensity || 0"
+                (input)="adjustLight(room.name, $event)" class="light-range-slider">
             </div>
           </div>
 
@@ -59,21 +57,35 @@
 
         <div class="expandable-content" *ngIf="expandedRoomName === room.name">
           <div class="device-list-container">
-            <div *ngFor="let device of getRoomDevices(room.name)" class="device-row">
+            <div *ngFor="let device of getRoomDevices(room.name)" class="device-row"
+              [class.motion-sensor]="isMotionSensor(device)"
+              [class.alert-active]="isMotionSensor(device) && hasActiveAlert()">
               <div class="device-left">
-                <span class="device-icon">{{ getIcon(device.type) }}</span>
+                <span class="device-icon" [class.pulsing]="isMotionSensor(device) && hasActiveAlert()">
+                  {{ getIcon(device.type) }}
+                </span>
                 <span class="device-name">{{ device.name }}</span>
+                <!-- Alert indicator for motion sensor -->
+                <span class="alert-badge" *ngIf="isMotionSensor(device) && hasActiveAlert()">
+                  🚨 MOTION!
+                </span>
               </div>
               <ng-container *ngIf="device.type !== 'LIGHT'">
-                <label class="switch">
+                <label class="switch" [class.sensor-switch]="isMotionSensor(device)">
                   <input type="checkbox" [checked]="device.isOn" (change)="toggleDevice(device)">
-                  <span class="slider round"></span>
+                  <span class="slider round" [class.alert-slider]="isMotionSensor(device) && hasActiveAlert()"></span>
                 </label>
               </ng-container>
               <span *ngIf="device.type === 'LIGHT'" class="controlled-by-slider">Intensity Controlled</span>
 
             </div>
           </div>
+
+          <!-- Stop Alarm Button (only show for Living Room when alert is active) -->
+          <button class="stop-alarm-btn" *ngIf="room.name === 'Living Room' && hasActiveAlert()" (click)="stopAlarm()">
+            🔇 Stop Alarm
+          </button>
+
           <button class="turn-off-btn" (click)="turnOffAll(room.name)">Turn Off All</button>
         </div>
 

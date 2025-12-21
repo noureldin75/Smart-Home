@@ -3,15 +3,15 @@
   <nav class="smart-sidebar" [class.expanded]="isSidebarExpanded" [class.collapsed]="!isSidebarExpanded">
 
     <!-- Sidebar Header with Animated Logo -->
-    <div class="sidebar-header" >
+    <div class="sidebar-header">
       <div class="header-glow"></div>
       <div class="logo-container">
-        <div class="logo-orb" [class.spinning]="isSidebarExpanded" >
+        <div class="logo-orb" [class.spinning]="isSidebarExpanded">
           <div class="orb-core"></div>
           <div class="orb-ring"></div>
           <div class="orb-pulse"></div>
         </div>
-        <div class="logo-text" *ngIf="isSidebarExpanded"  >
+        <div class="logo-text" *ngIf="isSidebarExpanded">
           <h2>SMART HOME</h2>
           <p>Control Center</p>
         </div>
@@ -46,7 +46,8 @@
     <!-- Navigation Menu -->
     <div class="nav-menu">
       <!-- Profile Section -->
-      <div routerLink="/Profile" routerLinkActive="Active" class="nav-item profile-item" [class.active]="activeSection === 'profile'" (click)="setActiveSection('profile')">
+      <div routerLink="/Profile" routerLinkActive="Active" class="nav-item profile-item"
+        [class.active]="activeSection === 'profile'" (click)="setActiveSection('profile')">
         <div class="nav-icon">
           <div class="icon-wrapper">
             <div class="icon-glow"></div>
@@ -63,7 +64,8 @@
         </div>
       </div>
       <!-- Home Parts Section -->
-      <div  class="nav-item" [class.active]="activeSection === 'home-parts'" (click)="toggleHomeParts() " routerLink="/HomeParts">
+      <div class="nav-item" [class.active]="activeSection === 'home-parts'" (click)="toggleHomeParts() "
+        routerLink="/HomeParts">
         <div class="nav-icon">
           <div class="icon-wrapper">
             <div class="icon-glow"></div>
@@ -92,9 +94,10 @@
           </div>
         </div>
       </div>
-     
+
       <!-- Security Section -->
-      <div class="nav-item" [class.active]="activeSection === 'security'" (click)="setActiveSection('security')" routerLink="/Security">
+      <div class="nav-item" [class.active]="activeSection === 'security'" (click)="setActiveSection('security')"
+        routerLink="/Security">
         <div class="nav-icon">
           <div class="icon-wrapper">
             <div class="icon-glow"></div>
@@ -112,7 +115,8 @@
         </div>
       </div>
       <!-- Analytics Section -->
-      <div class="nav-item" [class.active]="activeSection === 'analytics'" (click)="setActiveSection('analytics')" routerLink="/EnergyAnalytics">
+      <div class="nav-item" [class.active]="activeSection === 'analytics'" (click)="setActiveSection('analytics')"
+        routerLink="/EnergyAnalytics">
         <div class="nav-icon">
           <div class="icon-wrapper">
             <div class="icon-glow"></div>
@@ -167,7 +171,7 @@
         </div>
       </div>
       <!-- Log Out -->
-      <div class="nav-item logout-item" (click)="logout()" >
+      <div class="nav-item logout-item" (click)="logout()">
         <div class="nav-icon">
           <div class="icon-wrapper">
             <div class="icon-glow-red"></div>
@@ -222,9 +226,7 @@
     <section class="recent-activities">
       <h2 class="section-title">Recent Activities</h2>
       <div class="activities-grid">
-        <div *ngFor="let activity of recentActivities"
-             class="activity-item"
-             [class]="'priority-' + activity.priority">
+        <div *ngFor="let activity of recentActivities" class="activity-item" [class]="'priority-' + activity.priority">
           <div class="activity-icon">{{ activity.icon }}</div>
           <div class="activity-content">
             <div class="activity-title">{{ activity.title }}</div>
@@ -268,14 +270,14 @@
           <div class="weather-expanded" *ngIf="weatherExpanded">
             <div class="detailed-weather">
               <div class="detail-grid">
-         <div class="detail-item">
+                <div class="detail-item">
 
 
-       <div class="detail-icon">💧</div>
+                  <div class="detail-icon">💧</div>
 
-       <div class="detail-info">
-     <div class="detail-label">Humidity</div>
-             <div class="detail-value">{{ currentWeather.humidity }}%</div>
+                  <div class="detail-info">
+                    <div class="detail-label">Humidity</div>
+                    <div class="detail-value">{{ currentWeather.humidity }}%</div>
                   </div>
                 </div>
                 <div class="detail-item">
@@ -489,8 +491,8 @@
               </div>
               <div class="temperature-display">{{ homeTemperature }}°C</div>
               <div class="intensity-control">
-                <input type="range" min="16" max="30" [value]="homeTemperature"
-                       (input)="onTemperatureChange($event)" class="temp-slider">
+                <input type="range" min="16" max="30" [value]="homeTemperature" (input)="onTemperatureChange($event)"
+                  class="temp-slider">
                 <div class="temp-markers">
                   <span>16°</span>
                   <span>23°</span>
@@ -541,7 +543,8 @@
             <div class="isometric-home" [class.lights-on]="homeLightsOn">
               <!-- Simplified 3D View -->
               <div class="building-outline">
-                <div class="room living-room" (click)="selectRoom3D('living-room')" [class.active]="selectedRoom === 'living-room'">
+                <div class="room living-room" (click)="selectRoom3D('living-room')"
+                  [class.active]="selectedRoom === 'living-room'">
                   <div class="room-label">Living Room</div>
                 </div>
                 <div class="room kitchen" (click)="selectRoom3D('kitchen')" [class.active]="selectedRoom === 'kitchen'">
@@ -574,16 +577,16 @@
                   <span class="stat-label">Temperature</span>
                 </div>
               </div>
-           <div class="quick-actions">
-          <button class="action-btn" (click)="toggleRoomLights(selectedRoom)">
-      <span class="action-icon">💡</span>
-        <span>Lights</span>
+              <div class="quick-actions">
+                <button class="action-btn" (click)="toggleRoomLights(selectedRoom)">
+                  <span class="action-icon">💡</span>
+                  <span>Lights</span>
                 </button>
                 <button class="action-btn" (click)="adjustRoomTemperature(selectedRoom)">
                   <span class="action-icon">❄️</span>
-         <span>Climate</span>
+                  <span>Climate</span>
                 </button>
-     </div>
+              </div>
             </div>
           </div>
         </div>
@@ -592,39 +595,33 @@
       <!-- Jarvis AI Card -->
       <section class="dashboard-card jarvis-section">
         <div class="jarvis-card">
-    <div class="card-header">
+          <div class="card-header">
             <h3 class="card-title">Jarvis AI Assistant</h3>
-    <div class="ai-status" [class]="jarvisStatus">
-          <div class="status-dot"></div>
-       <span class="status-text">{{ jarvisStatus }}</span>
+            <div class="ai-status" [class]="jarvisStatus">
+              <div class="status-dot"></div>
+              <span class="status-text">{{ jarvisStatus }}</span>
             </div>
           </div>
 
           <div class="jarvis-interface">
             <div class="jarvis-messages">
-              <div *ngFor="let message of jarvisMessages"
-                   class="message"
-                   [class]="message.type">
+              <div *ngFor="let message of jarvisMessages" class="message" [class]="message.type">
                 <div class="message-content">{{ message.content }}</div>
                 <div class="message-time">{{ message.time }}</div>
               </div>
             </div>
 
             <div class="jarvis-input">
-              <input type="text" placeholder="Ask Jarvis anything..."
-                     [(ngModel)]="jarvisInput"
-                                      (keyup.enter)="sendToJarvis()"
-                 class="jarvis-text-input">
-        <button class="send-btn" (click)="sendToJarvis()">
-            <span class="send-icon">🎤</span>
-          </button>
+              <input type="text" placeholder="Ask Jarvis anything..." [(ngModel)]="jarvisInput"
+                (keyup.enter)="sendToJarvis()" class="jarvis-text-input">
+              <button class="send-btn" (click)="sendToJarvis()">
+                <span class="send-icon">🎤</span>
+              </button>
             </div>
           </div>
 
           <div class="quick-commands">
-            <button *ngFor="let command of quickCommands"
-                    class="command-btn"
-                    (click)="executeQuickCommand(command)">
+            <button *ngFor="let command of quickCommands" class="command-btn" (click)="executeQuickCommand(command)">
               {{ command }}
             </button>
           </div>

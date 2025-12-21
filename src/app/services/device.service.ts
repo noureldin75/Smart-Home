@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { APILightServiceService } from '../Controllers/apilight-service.service';
 
 export interface Device {
@@ -22,6 +22,10 @@ export interface RoomMeta {
   providedIn: 'root'
 })
 export class DeviceService {
+
+  // Motion Sensor State - shared across components
+  private motionSensorEnabledSubject = new BehaviorSubject<boolean>(true);
+  public motionSensorEnabled$ = this.motionSensorEnabledSubject.asObservable();
 
   private rooms: RoomMeta[] = [
     { name: 'Living Room', icon: '🛋️', temperature: 22, lightIntensity: 4 },
@@ -66,6 +70,27 @@ export class DeviceService {
   constructor(
     private apiLightService: APILightServiceService
   ) { }
+
+  // Motion Sensor Methods
+  getMotionSensorEnabled(): boolean {
+    return this.motionSensorEnabledSubject.getValue();
+  }
+
+  setMotionSensorEnabled(enabled: boolean): void {
+    // Update the Motion Sensor device state
+    const motionSensor = this.mockDevices.find(d => d.id === 207);
+    if (motionSensor) {
+      motionSensor.isOn = enabled;
+    }
+    this.motionSensorEnabledSubject.next(enabled);
+    console.log(`[DeviceService] Motion Sensor ${enabled ? 'ENABLED' : 'DISABLED'}`);
+  }
+
+  toggleMotionSensor(): boolean {
+    const newState = !this.getMotionSensorEnabled();
+    this.setMotionSensorEnabled(newState);
+    return newState;
+  }
 
   getRooms(): Observable<RoomMeta[]> {
     return of(this.rooms);

@@ -1,18 +1,38 @@
 <!-- Welcome Screen Logic -->
 @if (showWelcome) {
-  
-  <app-welcome (welcomeComplete)="onWelcomeComplete()"></app-welcome>
+
+<app-welcome (welcomeComplete)="onWelcomeComplete()"></app-welcome>
 } @else {
-  
-  <!-- Main Application Layout -->
-  <div class="main-layout">
-    
-   
 
-    
-    <div class="content-container">
-      <router-outlet></router-outlet> 
-    </div>
+<!-- Main Application Layout -->
+<div class="main-layout">
 
+  <div class="content-container">
+    <router-outlet></router-outlet>
   </div>
+
+  <!-- Global Motion Alert Overlay (appears on all pages) -->
+  <section class="motion-alert-overlay" *ngIf="motionAlertActive && motionSensorEnabled">
+    <div class="motion-alert-card">
+      <div class="alert-pulse-ring"></div>
+      <div class="alert-content">
+        <div class="alert-icon">🚨</div>
+        <div class="alert-info">
+          <h3 class="alert-title">Motion Detected!</h3>
+          <p class="alert-location">Living Room - {{ motionAlertScope || 'GLOBAL' }}</p>
+          <p class="alert-time" *ngIf="motionAlertTimestamp">
+            Detected at {{ motionAlertTimestamp | date:'shortTime' }}
+          </p>
+        </div>
+      </div>
+      <div class="alert-actions">
+        <button class="stop-alarm-btn" (click)="stopAlarm()">
+          <span class="btn-icon">🔇</span>
+          <span>Stop Alarm</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+</div>
 }

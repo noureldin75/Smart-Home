@@ -145,28 +145,33 @@
 .stats-row {
   display: grid;
   /* Change from 1fr 1fr to 1fr 1fr 1fr for three columns */
-  grid-template-columns: 1fr 1fr; 
+  grid-template-columns: 1fr 1fr;
   gap: 12px;
 }
+
 .stats-row.three-col {
   grid-template-columns: 1fr 1fr 1fr;
 }
+
 /* Style for the new Light Intensity stat box */
 .stat-box.light-intensity {
   /* You may want to align content for the slider */
   justify-content: space-between;
-  gap: 0; /* Adjust gap since content is structured differently */
+  gap: 0;
+  /* Adjust gap since content is structured differently */
 }
 
 /* New Icon Color for Light */
 .stat-icon.light-dim {
-  color: var(--accent-orange); /* Using an orange/yellow for light control */
+  color: var(--accent-orange);
+  /* Using an orange/yellow for light control */
 }
 
 /* Container for the slider */
 .slider-control-container {
   width: 100%;
-  padding-top: 5px; /* Visual spacing */
+  padding-top: 5px;
+  /* Visual spacing */
 }
 
 /* Styling the HTML range input for a sleek look */
@@ -174,34 +179,40 @@
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
-  height: 10px; 
-  background: var(--bg-secondary); /* Dark track color */
-  border-radius: 5px; 
+  height: 10px;
+  background: var(--bg-secondary);
+  /* Dark track color */
+  border-radius: 5px;
   outline: none;
   margin: 0;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5); /* Stronger inset shadow for depth */
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+  /* Stronger inset shadow for depth */
 }
 
 /* Thumb (The draggable handle) */
 .light-range-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 20px; 
-  height: 20px; 
-  background: #ffc107; 
+  width: 20px;
+  height: 20px;
+  background: #ffc107;
   cursor: grab;
   border-radius: 50%;
-  border: 4px solid var(--bg-card); 
+  border: 4px solid var(--bg-card);
   /* Intense shadow for a prominent, raised appearance */
-  box-shadow: 0 0 15px rgba(255, 193, 7, 1), /* Strong glow matching color */
-              0 2px 5px rgba(0, 0, 0, 0.6); /* Drop shadow for 3D depth */
-  margin-top: -8px; 
+  box-shadow: 0 0 15px rgba(255, 193, 7, 1),
+    /* Strong glow matching color */
+    0 2px 5px rgba(0, 0, 0, 0.6);
+  /* Drop shadow for 3D depth */
+  margin-top: -8px;
   transition: all 0.2s;
 }
+
 .light-range-slider::-webkit-slider-thumb:hover,
 .light-range-slider::-webkit-slider-thumb:active {
   transform: scale(1.1);
-  background: #ffcc33; /* Brighter on hover/active */
+  background: #ffcc33;
+  /* Brighter on hover/active */
   cursor: grabbing;
 }
 
@@ -213,7 +224,7 @@
   border-radius: 50%;
   border: 4px solid var(--bg-card);
   box-shadow: 0 0 15px rgba(255, 193, 7, 1),
-              0 2px 5px rgba(0, 0, 0, 0.6);
+    0 2px 5px rgba(0, 0, 0, 0.6);
 }
 
 /* Optional: Style for the controlled by slider indicator */
@@ -227,7 +238,8 @@
 
 /* Light Mode Adjustments */
 .light-mode .stat-icon.light-dim {
-  color: #fb923c; /* A nice orange for light in light mode */
+  color: #fb923c;
+  /* A nice orange for light in light mode */
 }
 
 .light-mode .light-range-slider {
@@ -236,21 +248,24 @@
 }
 
 .light-mode .light-range-slider::-webkit-slider-thumb {
-  background: #ff9800; /* Use a distinct orange */
-  border: 4px solid #fff; /* White border in light mode */
-  box-shadow: 0 0 15px rgba(255, 152, 0, 0.5), 
-              0 2px 5px rgba(0, 0, 0, 0.2);
+  background: #ff9800;
+  /* Use a distinct orange */
+  border: 4px solid #fff;
+  /* White border in light mode */
+  box-shadow: 0 0 15px rgba(255, 152, 0, 0.5),
+    0 2px 5px rgba(0, 0, 0, 0.2);
 }
+
 .light-mode .light-range-slider::-webkit-slider-thumb:hover,
 .light-mode .light-range-slider::-webkit-slider-thumb:active {
-  background: #ffaa00; 
+  background: #ffaa00;
 }
 
 .light-mode .light-range-slider::-moz-range-thumb {
   background: #ff9800;
   border: 4px solid #fff;
-  box-shadow: 0 0 15px rgba(255, 152, 0, 0.5), 
-              0 2px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 15px rgba(255, 152, 0, 0.5),
+    0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .light-mode .controlled-by-slider {
@@ -525,4 +540,162 @@ input:checked+.slider:before {
 .light-mode .turn-off-btn:hover {
   background: rgba(14, 165, 233, 0.1);
   border-color: #0ea5e9;
+}
+
+/* ==========================
+   6. Motion Sensor Alert Styles
+========================== */
+
+/* Motion sensor device row */
+.device-row.motion-sensor {
+  background: linear-gradient(145deg, rgba(0, 255, 136, 0.05), rgba(0, 255, 136, 0.1));
+  border: 1px solid rgba(0, 255, 136, 0.3);
+}
+
+/* Alert active state */
+.device-row.alert-active {
+  background: linear-gradient(145deg, rgba(255, 68, 68, 0.1), rgba(255, 68, 68, 0.2));
+  border: 2px solid var(--accent-red);
+  animation: alertGlow 1s ease-in-out infinite;
+}
+
+@keyframes alertGlow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 10px rgba(255, 68, 68, 0.3);
+  }
+
+  50% {
+    box-shadow: 0 0 25px rgba(255, 68, 68, 0.6);
+  }
+}
+
+/* Pulsing icon animation */
+.device-icon.pulsing {
+  animation: iconPulse 0.5s ease-in-out infinite;
+}
+
+@keyframes iconPulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+/* Alert badge */
+.alert-badge {
+  background: linear-gradient(135deg, rgba(255, 68, 68, 0.9), rgba(200, 30, 30, 0.9));
+  color: white;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  animation: badgePulse 1s ease-in-out infinite;
+  margin-left: 8px;
+}
+
+@keyframes badgePulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Sensor switch styling */
+.switch.sensor-switch input:checked+.slider {
+  background: var(--accent-green);
+  box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+}
+
+/* Alert slider */
+.slider.alert-slider {
+  background: var(--accent-red) !important;
+  animation: sliderAlert 0.8s ease-in-out infinite;
+}
+
+@keyframes sliderAlert {
+
+  0%,
+  100% {
+    box-shadow: 0 0 5px rgba(255, 68, 68, 0.5);
+  }
+
+  50% {
+    box-shadow: 0 0 15px rgba(255, 68, 68, 0.8);
+  }
+}
+
+/* Stop Alarm Button */
+.stop-alarm-btn {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 10px;
+  background: linear-gradient(135deg, rgba(255, 68, 68, 0.9), rgba(200, 30, 30, 0.9));
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 68, 68, 0.4);
+  animation: stopButtonPulse 1.5s ease-in-out infinite;
+}
+
+.stop-alarm-btn:hover {
+  background: linear-gradient(135deg, rgba(255, 100, 100, 1), rgba(220, 50, 50, 1));
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 68, 68, 0.5);
+}
+
+.stop-alarm-btn:active {
+  transform: translateY(0);
+}
+
+@keyframes stopButtonPulse {
+
+  0%,
+  100% {
+    box-shadow: 0 4px 15px rgba(255, 68, 68, 0.4);
+  }
+
+  50% {
+    box-shadow: 0 4px 25px rgba(255, 68, 68, 0.7);
+  }
+}
+
+/* Light Mode enhancements for motion sensor */
+.light-mode .device-row.motion-sensor {
+  background: linear-gradient(145deg, rgba(16, 185, 129, 0.08), rgba(16, 185, 129, 0.15));
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.light-mode .device-row.alert-active {
+  background: linear-gradient(145deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.2));
+  border-color: #ef4444;
+}
+
+.light-mode .alert-badge {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.light-mode .stop-alarm-btn {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+}
+
+.light-mode .stop-alarm-btn:hover {
+  background: linear-gradient(135deg, #f87171, #ef4444);
+  box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
 }
