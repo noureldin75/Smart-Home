@@ -1,6 +1,8 @@
-import {Component, computed, OnInit, signal} from '@angular/core';
+import {Component, computed, OnDestroy, OnInit, signal} from '@angular/core';
 import { SideBarComponent } from "../SideBar/SideBar.component"
 import {LowerCasePipe, NgClass, Time} from "@angular/common";
+import { AlertService } from '../services/alert.service';
+import { Subscription } from 'rxjs';
 interface DoorWindowDevice {
   name: string;
   status: 'locked' | 'unlocked' | 'closed' | 'open';
@@ -36,8 +38,11 @@ interface ActivityLogEntry {
   styleUrls: ['./Security.component.css'],
   imports: [SideBarComponent, LowerCasePipe, NgClass]
 })
-export class SecurityComponent implements OnInit {
-  constructor() { }
+export class SecurityComponent implements OnInit, OnDestroy {
+  private alertSubscription?: Subscription;
+  private tempSubscription?: Subscription;
+
+  constructor(private alertService: AlertService) { }
 
   ngOnInit() {
     const that = this;
@@ -46,6 +51,43 @@ export class SecurityComponent implements OnInit {
       // Trigger signal update to recompute displayActivityLog
       that.activityLog.set(that.activityLog());
     }, 1000);
+
+    // Subscribe to global motion alerts to add to Activity Log
+    this.alertSubscription = this.alertService.motionAlert$.subscribe(alert => {
+      if (alert.isActive) {
+        this.addLog({
+          type: 'Alarm',
+          title: 'Motion Detected',
+          location: alert.scope || 'Unknown',
+          priority: 'High',
+          time: 'Just now',
+          timestamp: alert.timestamp || new Date()
+        });
+      }
+    });
+
+    // Subscribe to temperature alerts and add to Activity Log when alarmed
+    this.tempSubscription = this.alertService.temperatureAlert$.subscribe(alert => {
+      if (alert.isActive) {
+        this.addLog({
+          type: 'Alarm',
+          title: 'Temperature Alarm',
+          location: alert.temp !== null ? `${alert.temp}°` : 'Temperature Sensor',
+          priority: 'High',
+          time: 'Just now',
+          timestamp: alert.timestamp || new Date()
+        });
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.alertSubscription) {
+      this.alertSubscription.unsubscribe();
+    }
+    if (this.tempSubscription) {
+      this.tempSubscription.unsubscribe();
+    }
   }
 
   // --- Data Models (Signals) ---

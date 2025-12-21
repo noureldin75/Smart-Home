@@ -1,0 +1,10 @@
+.alarm-popup {
+  border: 3px solid #d32f2f;
+}
+.alarm-popup .swal2-title {
+  color: #b71c1c;
+  font-weight: 700;
+}
+.alarm-popup .swal2-html-container {
+  font-size: 14px;
+}

@@ -10,6 +10,12 @@ export interface MotionAlert {
   timestamp: Date | null;
 }
 
+export interface TemperatureAlert {
+  isActive: boolean;
+  temp: number | null;
+  timestamp: Date | null;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -26,6 +32,15 @@ export class AlertService implements OnDestroy {
   
   // Observable for components to subscribe to
   public motionAlert$: Observable<MotionAlert> = this.motionAlertSubject.asObservable();
+
+  // Temperature-specific alert state (separate from motion)
+  private temperatureAlertSubject = new BehaviorSubject<TemperatureAlert>({
+    isActive: false,
+    temp: null,
+    timestamp: null
+  });
+
+  public temperatureAlert$: Observable<TemperatureAlert> = this.temperatureAlertSubject.asObservable();
   
   // Connection status
   private connectionStatusSubject = new BehaviorSubject<'connected' | 'disconnected' | 'connecting'>('disconnected');
@@ -49,8 +64,9 @@ export class AlertService implements OnDestroy {
     this.connectionStatusSubject.next('connecting');
     console.log('[AlertService] Connecting to SSE stream...');
 
-    // Create EventSource connection
-    this.eventSource = new EventSource(`${environment.baseUrl}/api/alerts/stream`);
+    // Create EventSource connection (explicit fallback to localhost:8080)
+    const base = environment.baseUrl ?? 'http://localhost:8080';
+    this.eventSource = new EventSource(`${base}/api/alerts/stream`);
 
     // Handle successful connection
     this.eventSource.onopen = () => {
@@ -89,6 +105,44 @@ export class AlertService implements OnDestroy {
       });
     });
 
+    // Handle 'temperature' (value updates), 'tempAlarm', and 'tempCleared' events separately
+    this.eventSource.addEventListener('temperature', (event: MessageEvent) => {
+      this.ngZone.run(() => {
+        const val = Number(event.data);
+        console.log('[AlertService] Temperature update:', val);
+        // update value but don't set alarm state
+        const cur = this.temperatureAlertSubject.getValue();
+        this.temperatureAlertSubject.next({
+          ...cur,
+          temp: isNaN(val) ? null : val
+        });
+      });
+    });
+
+    this.eventSource.addEventListener('tempAlarm', (event: MessageEvent) => {
+      this.ngZone.run(() => {
+        const val = Number(event.data);
+        console.log('[AlertService] Temperature alarm:', val);
+
+        this.temperatureAlertSubject.next({
+          isActive: true,
+          temp: isNaN(val) ? null : val,
+          timestamp: new Date()
+        });
+      });
+    });
+
+    this.eventSource.addEventListener('tempCleared', (event: MessageEvent) => {
+      this.ngZone.run(() => {
+        console.log('[AlertService] Temperature alarm cleared');
+        this.temperatureAlertSubject.next({
+          isActive: false,
+          temp: null,
+          timestamp: null
+        });
+      });
+    });
+
     // Handle errors
     this.eventSource.onerror = (error) => {
       this.ngZone.run(() => {
@@ -119,6 +173,25 @@ export class AlertService implements OnDestroy {
         });
       })
     );
+  }
+
+  /**
+   * Acknowledge a temperature alarm by sending the 'SAFE' command to backend
+   * This is used to stop Arduino alarming logic.
+   */
+  acknowledgeTemperature(): Observable<any> {
+    const base = environment.baseUrl ?? 'http://localhost:8080';
+    console.log('[AlertService] Sending temperature SAFE ack...');
+    return this.http.post(`${base}/api/temperature/ack`, { command: 'SAFE' });
+  }
+
+  /**
+   * Resume temperature monitoring (if applicable)
+   */
+  resumeTemperature(): Observable<any> {
+    const base = environment.baseUrl ?? 'http://localhost:8080';
+    console.log('[AlertService] Sending temperature resume...');
+    return this.http.post(`${base}/api/temperature/resume`, {});
   }
 
   /**
