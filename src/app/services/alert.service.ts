@@ -1,7 +1,7 @@
 import { Injectable, NgZone, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs'; // Subject مش محتاجينها هنا
-import { tap } from 'rxjs/operators'; // 👈 (1) لازم تضيف دي
+import { BehaviorSubject, Observable } from 'rxjs'; 
+import { tap } from 'rxjs/operators'; 
 import { environment } from '../../environment/environment';
 
 export interface MotionAlert {
@@ -104,19 +104,14 @@ export class AlertService implements OnDestroy {
     };
   }
 
-  /**
-   * Send acknowledgment to stop the alarm
-   * 🔥 التعديل هنا: بنستخدم pipe و tap عشان نحدث الحالة فوراً
-   */
+ 
   acknowledgeAlarm(): Observable<any> {
     console.log('[AlertService] Sending alarm acknowledgment...');
     
     return this.http.post(`${environment.baseUrl}/api/ack`, {}).pipe(
       tap(() => {
-        // 👇 الكود ده هيشتغل أول ما الريكويست ينجح (200 OK)
         console.log('✅ Acknowledgment success: Updating local state immediately');
         
-        // بنبلغ كل المكونات (App & HomeParts) إن الإنذار وقف حالاً
         this.motionAlertSubject.next({
           isActive: false,
           scope: '',
@@ -133,9 +128,7 @@ export class AlertService implements OnDestroy {
     return this.motionAlertSubject.getValue();
   }
 
-  /**
-   * Manually clear the local alert state (UI only)
-   */
+
   clearLocalAlert(): void {
     this.motionAlertSubject.next({
       isActive: false,
