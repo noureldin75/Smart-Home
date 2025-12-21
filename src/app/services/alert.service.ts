@@ -1,6 +1,7 @@
 import { Injectable, NgZone, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs'; // Subject مش محتاجينها هنا
+import { tap } from 'rxjs/operators'; // 👈 (1) لازم تضيف دي
 import { environment } from '../../environment/environment';
 
 export interface MotionAlert {
@@ -53,7 +54,6 @@ export class AlertService implements OnDestroy {
 
     // Handle successful connection
     this.eventSource.onopen = () => {
-      // Run inside NgZone to trigger Angular change detection
       this.ngZone.run(() => {
         this.connectionStatusSubject.next('connected');
         console.log('[AlertService] SSE connection established');
@@ -78,8 +78,9 @@ export class AlertService implements OnDestroy {
     this.eventSource.addEventListener('alarmCleared', (event: MessageEvent) => {
       this.ngZone.run(() => {
         const scope = event.data;
-        console.log('[AlertService] Alarm cleared:', scope);
+        console.log('[AlertService] Alarm cleared from server:', scope);
         
+        // This confirms the clear from server side
         this.motionAlertSubject.next({
           isActive: false,
           scope: '',
@@ -105,10 +106,24 @@ export class AlertService implements OnDestroy {
 
   /**
    * Send acknowledgment to stop the alarm
+   * 🔥 التعديل هنا: بنستخدم pipe و tap عشان نحدث الحالة فوراً
    */
   acknowledgeAlarm(): Observable<any> {
     console.log('[AlertService] Sending alarm acknowledgment...');
-    return this.http.post(`${environment.baseUrl}/api/ack`, {});
+    
+    return this.http.post(`${environment.baseUrl}/api/ack`, {}).pipe(
+      tap(() => {
+        // 👇 الكود ده هيشتغل أول ما الريكويست ينجح (200 OK)
+        console.log('✅ Acknowledgment success: Updating local state immediately');
+        
+        // بنبلغ كل المكونات (App & HomeParts) إن الإنذار وقف حالاً
+        this.motionAlertSubject.next({
+          isActive: false,
+          scope: '',
+          timestamp: null
+        });
+      })
+    );
   }
 
   /**

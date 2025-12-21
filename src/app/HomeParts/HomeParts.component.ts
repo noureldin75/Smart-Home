@@ -29,6 +29,7 @@ export class HomePartsComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    // 1. Load Rooms and Devices
     this.deviceService.getRooms().subscribe(data => {
       this.rooms = data.map(room => ({
         ...room,
@@ -38,6 +39,12 @@ export class HomePartsComponent implements OnInit, OnDestroy {
       this.rooms.forEach(room => {
         this.deviceService.getDevicesByRoom(room.name).subscribe(devs => {
           this.allDevices = [...this.allDevices, ...devs];
+          
+          // Initial sync: Check if motion sensor should be ON based on service state
+          const sensor = devs.find(d => this.isMotionSensor(d));
+          if (sensor) {
+            sensor.isOn = this.deviceService.getMotionSensorEnabled();
+          }
         });
 
         if (room.lightIntensity > 0) {
@@ -46,14 +53,23 @@ export class HomePartsComponent implements OnInit, OnDestroy {
       });
     });
 
-    // Subscribe to motion alerts to update sensor visual state
+    // 2. Subscribe to Motion ALERTS (الربط الأول: التنبيه)
     this.motionAlertSubscription = this.alertService.motionAlert$.subscribe(alert => {
       this.motionAlertActive = alert.isActive;
+
+      // 🔥 FIX: Visually force the sensor to "ON" when alert is active
+      // ده الكود اللي بيربط التنبيه بشكل الجهاز في القائمة
+      if (alert.isActive) {
+        const sensor = this.allDevices.find(d => this.isMotionSensor(d));
+        if (sensor) {
+          sensor.isOn = true; 
+        }
+      }
     });
 
-    // Subscribe to motion sensor state changes from DeviceService
+    // 3. Subscribe to Sensor ENABLE/DISABLE State (الربط الثاني: زر التشغيل)
     this.motionSensorSubscription = this.deviceService.motionSensorEnabled$.subscribe(enabled => {
-      // Sync the motion sensor device state
+      // Sync the motion sensor device state visual toggle
       const motionSensor = this.allDevices.find(d => d.id === 207);
       if (motionSensor) {
         motionSensor.isOn = enabled;
@@ -69,6 +85,8 @@ export class HomePartsComponent implements OnInit, OnDestroy {
       this.motionSensorSubscription.unsubscribe();
     }
   }
+
+  // --- Helper Methods ---
 
   getRoomDevices(roomName: string): Device[] {
     return this.allDevices.filter(d => d.room === roomName && d.type !== 'LIGHT');
@@ -91,8 +109,7 @@ export class HomePartsComponent implements OnInit, OnDestroy {
 
     const room = this.rooms.find(r => r.name === roomName);
     if (room) {
-      // Assuming 0.1kW per intensity level
-      powerSum += room.lightIntensity * 0.1;
+      powerSum += room.lightIntensity * 0.1; // Assuming 0.1kW per intensity level
     }
 
     return powerSum;
@@ -108,35 +125,31 @@ export class HomePartsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Check if a device is the motion sensor
+   * Check if a device is the motion sensor (ID 207)
    */
   isMotionSensor(device: Device): boolean {
     return device.id === 207 && device.type === 'SENSOR';
   }
 
   /**
-   * Check if there's an active motion alert
+   * Check if there's an active motion alert specifically for UI styling
    */
   hasActiveAlert(): boolean {
     return this.motionAlertActive && this.deviceService.getMotionSensorEnabled();
   }
 
+  // --- Actions ---
+
   adjustLight(roomName: string, event: Event) {
     const newIntensity = +(event.target as HTMLInputElement).value;
-
     const room = this.rooms.find(r => r.name === roomName);
     if (room) {
-      // 1. Update UI instantly
       room.lightIntensity = newIntensity;
-
-      // 2. Send to Backend (Must Subscribe!)
       this.deviceService.setLightIntensity(roomName, newIntensity).subscribe({
         error: (err) => console.error('Failed to set light:', err)
       });
     }
   }
-
-  // --- OTHER ACTIONS ---
 
   toggleView(roomName: string) {
     this.expandedRoomName = this.expandedRoomName === roomName ? null : roomName;
@@ -148,39 +161,35 @@ export class HomePartsComponent implements OnInit, OnDestroy {
       this.toggleMotionSensor(device);
       return;
     }
-
     this.deviceService.toggleDevice(device.id);
   }
 
   /**
-   * Toggle motion sensor with AlertService integration
+   * Toggle motion sensor logic
    */
   toggleMotionSensor(device: Device) {
+    // Toggle state in service
     const newState = this.deviceService.toggleMotionSensor();
-    device.isOn = newState;
+    device.isOn = newState; // Visual update
 
-    // If disabling and there's an active alert, acknowledge it
+    // If turning OFF while alert is active -> Stop the Alarm (User acknowledged it)
     if (!newState && this.motionAlertActive) {
-      this.alertService.acknowledgeAlarm().subscribe({
-        next: () => {
-          console.log('[HomeParts] Motion sensor disabled, alarm acknowledged');
-          this.motionAlertActive = false;
-        },
-        error: (err) => console.error('[HomeParts] Failed to acknowledge alarm:', err)
-      });
+      this.stopAlarm();
     }
   }
 
   /**
-   * Stop the active alarm
+   * Stop the active alarm (Sends acknowledgment to backend)
    */
   stopAlarm() {
     if (!this.motionAlertActive) return;
 
     this.alertService.acknowledgeAlarm().subscribe({
       next: () => {
-        console.log('[HomeParts] Alarm stopped');
+        console.log('[HomeParts] Alarm stopped via UI');
         this.motionAlertActive = false;
+        // Optional: Keep the sensor 'ON' (enabled) but stop the red alert
+        // The visual red pulsing will stop because hasActiveAlert() checks motionAlertActive
       },
       error: (err) => console.error('[HomeParts] Failed to stop alarm:', err)
     });
@@ -190,7 +199,7 @@ export class HomePartsComponent implements OnInit, OnDestroy {
     const nonLightDevices = this.allDevices.filter(d => d.room === roomName && d.type !== 'LIGHT');
     nonLightDevices.forEach(d => {
       if (d.isOn) {
-        // Don't auto-disable motion sensor with turn off all
+        // Don't auto-disable motion sensor with "Turn Off All" button
         if (!this.isMotionSensor(d)) {
           this.deviceService.toggleDevice(d.id);
         }
@@ -200,9 +209,7 @@ export class HomePartsComponent implements OnInit, OnDestroy {
     const room = this.rooms.find(r => r.name === roomName);
     if (room) {
       room.lightIntensity = 0;
-      // Updated: Subscribe to the service call
       this.deviceService.setLightIntensity(roomName, 0).subscribe();
     }
   }
 }
-
