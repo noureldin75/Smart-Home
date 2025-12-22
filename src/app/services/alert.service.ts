@@ -1,7 +1,7 @@
 import { Injectable, NgZone, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs'; 
-import { tap } from 'rxjs/operators'; 
+import { BehaviorSubject, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { environment } from '../../environment/environment';
 
 export interface MotionAlert {
@@ -20,16 +20,16 @@ export interface TemperatureAlert {
   providedIn: 'root'
 })
 export class AlertService implements OnDestroy {
-  
+
   private eventSource: EventSource | null = null;
-  
+
   // Motion alert state - using BehaviorSubject for reactive updates
   private motionAlertSubject = new BehaviorSubject<MotionAlert>({
     isActive: false,
     scope: '',
     timestamp: null
   });
-  
+
   // Observable for components to subscribe to
   public motionAlert$: Observable<MotionAlert> = this.motionAlertSubject.asObservable();
 
@@ -41,7 +41,7 @@ export class AlertService implements OnDestroy {
   });
 
   public temperatureAlert$: Observable<TemperatureAlert> = this.temperatureAlertSubject.asObservable();
-  
+
   // Connection status
   private connectionStatusSubject = new BehaviorSubject<'connected' | 'disconnected' | 'connecting'>('disconnected');
   public connectionStatus$ = this.connectionStatusSubject.asObservable();
@@ -79,13 +79,34 @@ export class AlertService implements OnDestroy {
     // Handle 'motion' events from the backend
     this.eventSource.addEventListener('motion', (event: MessageEvent) => {
       this.ngZone.run(() => {
-        const scope = event.data;
-        console.log('[AlertService] Motion detected:', scope);
-        
+        let scope = '';
+        let isActive = true;
+        let timestamp = new Date();
+
+        // Try to parse as JSON (new format with isActive field)
+        try {
+          const data = JSON.parse(event.data);
+          if (typeof data === 'object' && data !== null) {
+            scope = data.scope || '';
+            isActive = data.isActive !== undefined ? data.isActive : true;
+            if (data.timestamp) {
+              timestamp = new Date(data.timestamp);
+            }
+          } else {
+            // Fallback: treat as plain string (old format)
+            scope = event.data;
+          }
+        } catch {
+          // Not JSON, treat as plain string scope
+          scope = event.data;
+        }
+
+        console.log('[AlertService] Motion detected:', scope, 'isActive:', isActive);
+
         this.motionAlertSubject.next({
-          isActive: true,
+          isActive: isActive,
           scope: scope,
-          timestamp: new Date()
+          timestamp: timestamp
         });
       });
     });
@@ -95,7 +116,7 @@ export class AlertService implements OnDestroy {
       this.ngZone.run(() => {
         const scope = event.data;
         console.log('[AlertService] Alarm cleared from server:', scope);
-        
+
         // This confirms the clear from server side
         this.motionAlertSubject.next({
           isActive: false,
@@ -148,7 +169,7 @@ export class AlertService implements OnDestroy {
       this.ngZone.run(() => {
         console.error('[AlertService] SSE connection error:', error);
         this.connectionStatusSubject.next('disconnected');
-        
+
         // Attempt to reconnect after 5 seconds
         setTimeout(() => {
           console.log('[AlertService] Attempting to reconnect...');
@@ -158,14 +179,14 @@ export class AlertService implements OnDestroy {
     };
   }
 
- 
+
   acknowledgeAlarm(): Observable<any> {
     console.log('[AlertService] Sending alarm acknowledgment...');
-    
+
     return this.http.post(`${environment.baseUrl}/api/ack`, {}).pipe(
       tap(() => {
         console.log('✅ Acknowledgment success: Updating local state immediately');
-        
+
         this.motionAlertSubject.next({
           isActive: false,
           scope: '',
