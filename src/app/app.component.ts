@@ -8,6 +8,7 @@ import { DeviceService } from './services/device.service';
 import { AlertService, MotionAlert } from './services/alert.service';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
+import { environment } from '../environment/environment';
 
 @Component({
   selector: 'app-root',
@@ -40,9 +41,15 @@ export class AppComponent implements OnInit, OnDestroy {
   private tempResumeTimeoutId?: any;
 
   private handleIncomingTempAlert(alert: { isActive: boolean; temp: number | null; timestamp: Date | null; }) {
-    // If suppressed, do not show popup
+    // If suppressed by UI short-timer, do not show popup
     if (this.tempSuppressedUntil && Date.now() < this.tempSuppressedUntil) {
       console.log('[AppComponent] Temp alert suppressed until', new Date(this.tempSuppressedUntil).toLocaleTimeString());
+      return;
+    }
+
+    // If service-level suppression (user clicked Stop and server hasn't resumed), ignore
+    if (this.alertService.isTempSuppressed()) {
+      console.log('[AppComponent] Temp alert suppressed by service until backend RESUME');
       return;
     }
 
@@ -89,12 +96,14 @@ export class AppComponent implements OnInit, OnDestroy {
 
       // Subscribe to temperature alerts (separate from motion)
     this.tempSubscription = this.alertService.temperatureAlert$.subscribe(alert => {
+      console.log('[AppComponent] temperatureAlert$ event:', alert);
       this.tempAlertActive = alert.isActive;
       this.tempValue = alert.temp;
       this.tempAlertTimestamp = alert.timestamp;
 
       // immediately attempt to show popup when a temp alarm arrives (unless suppressed)
       if (alert.isActive) {
+        console.log('[AppComponent] Incoming active temp alarm — handling');
         this.handleIncomingTempAlert(alert);
       }
     });
@@ -124,12 +133,18 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private showTempAlarmIfNeeded() {
-    // Do not show if suppressed
+    // Do not show if suppressed by short-timer
     if (this.tempSuppressedUntil && Date.now() < this.tempSuppressedUntil) {
       return;
     }
 
-    if (!this.tempAlertActive || !this.tempAlertTimestamp) {
+    // Do not show if service-level suppression is active
+    if (this.alertService.isTempSuppressed()) {
+      return;
+    }
+
+    // Only show when there's an active temp value and it exceeds threshold
+    if (!this.tempAlertActive || !this.tempAlertTimestamp || (this.tempValue ?? -Infinity) <= 35) {
       return;
     }
 

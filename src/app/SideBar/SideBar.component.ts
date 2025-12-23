@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
+import { AlertService } from '../services/alert.service';
+import { Subscription } from 'rxjs';
 
 interface Room {
   name: string;
@@ -17,7 +19,7 @@ interface Room {
   templateUrl: './SideBar.component.html',
   styleUrls: ['./SideBar.component.css']
 })
-export class SideBarComponent implements OnInit {
+export class SideBarComponent implements OnInit, OnDestroy {
   // المتغيرات الخاصة بالسايد بار (مستخرجة من الكود الأصلي)
   isSidebarExpanded = true;
   isDarkMode = true;
@@ -29,6 +31,12 @@ export class SideBarComponent implements OnInit {
   profileNotifications = 2;
   sparklineData = [30, 45, 60, 35, 70, 50, 80, 40, 65, 55];
 
+  private tempSubscription?: Subscription;
+  private latestTemp: number | null = null;
+  private tempIntervalId?: any;
+
+  constructor(private alertService: AlertService) {}
+
   ngOnInit() {
     // Load saved theme preference
     const savedTheme = localStorage.getItem('theme');
@@ -38,6 +46,58 @@ export class SideBarComponent implements OnInit {
     } else {
       this.isDarkMode = true;
       document.body.classList.remove('light-mode');
+    }
+
+    // Subscribe to temperature updates but only apply to UI every 10 seconds
+    this.tempSubscription = this.alertService.temperatureAlert$.subscribe(alert => {
+      this.latestTemp = alert.temp;
+    });
+
+    // Load persisted value (if any)
+    try {
+      const raw = localStorage.getItem('resinex.roomTemps');
+      if (raw) {
+        const map = JSON.parse(raw) as Record<string, number>;
+        const lt = map['Living Room'];
+        if (typeof lt === 'number') {
+          const living = this.rooms.find(r => r.name === 'Living Room');
+          if (living) {
+            living.temperature = `${lt}°C`;
+          }
+        }
+      }
+    } catch (e) {
+      console.warn('[SideBar] Failed to load persisted temp', e);
+    }
+
+    // Apply latest temperature to Living Room every 10 seconds (non-instant)
+    this.tempIntervalId = setInterval(() => {
+      if (this.latestTemp !== null) {
+        const living = this.rooms.find(r => r.name === 'Living Room');
+        if (living) {
+          // temperature is a string like '22°C' in this component
+          living.temperature = `${this.latestTemp}°C`;
+
+          // Persist the numeric value so HomeParts and reloads can reuse it
+          try {
+            const raw = localStorage.getItem('resinex.roomTemps');
+            const map = raw ? JSON.parse(raw) as Record<string, number> : {};
+            map['Living Room'] = this.latestTemp;
+            localStorage.setItem('resinex.roomTemps', JSON.stringify(map));
+          } catch (e) {
+            console.warn('[SideBar] Failed to persist temp', e);
+          }
+        }
+      }
+    }, 10000);
+  }
+
+  ngOnDestroy() {
+    if (this.tempSubscription) {
+      this.tempSubscription.unsubscribe();
+    }
+    if (this.tempIntervalId) {
+      clearInterval(this.tempIntervalId);
     }
   }
 

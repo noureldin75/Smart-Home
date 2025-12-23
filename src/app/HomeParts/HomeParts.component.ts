@@ -23,6 +23,11 @@ export class HomePartsComponent implements OnInit, OnDestroy {
   private motionAlertSubscription?: Subscription;
   private motionSensorSubscription?: Subscription;
 
+  // Temperature sampling (update UI every 10s)
+  private tempSubscription?: Subscription;
+  private latestTemp: number | null = null;
+  private tempIntervalId?: any;
+
   constructor(
     private deviceService: DeviceService,
     private alertService: AlertService
@@ -35,6 +40,9 @@ export class HomePartsComponent implements OnInit, OnDestroy {
         ...room,
         lightIntensity: room.lightIntensity ?? 3
       }));
+
+      // Load persisted temperatures (if any)
+      this.loadPersistedTemps();
 
       this.rooms.forEach(room => {
         this.deviceService.getDevicesByRoom(room.name).subscribe(devs => {
@@ -75,6 +83,50 @@ export class HomePartsComponent implements OnInit, OnDestroy {
         motionSensor.isOn = enabled;
       }
     });
+
+    // Subscribe to temperature updates and only apply to UI every 10 seconds
+    this.tempSubscription = this.alertService.temperatureAlert$.subscribe(alert => {
+      this.latestTemp = alert.temp;
+    });
+
+    this.tempIntervalId = setInterval(() => {
+      if (this.latestTemp !== null) {
+        const living = this.rooms.find(r => r.name === 'Living Room');
+        if (living) {
+          living.temperature = this.latestTemp;
+          // Persist the updated temperature so it survives navigation and reloads
+          this.savePersistedTemps();
+        }
+      }
+    }, 10000);
+  }
+
+  /**
+   * Persist room temperatures (map of roomName -> temperature number)
+   */
+  private savePersistedTemps() {
+    try {
+      const map: Record<string, number> = {};
+      this.rooms.forEach(r => { map[r.name] = r.temperature; });
+      localStorage.setItem('resinex.roomTemps', JSON.stringify(map));
+    } catch (e) {
+      console.warn('[HomeParts] Failed to save room temps', e);
+    }
+  }
+
+  private loadPersistedTemps() {
+    try {
+      const raw = localStorage.getItem('resinex.roomTemps');
+      if (!raw) return;
+      const map = JSON.parse(raw) as Record<string, number>;
+      this.rooms.forEach(r => {
+        if (map[r.name] !== undefined && typeof map[r.name] === 'number') {
+          r.temperature = map[r.name];
+        }
+      });
+    } catch (e) {
+      console.warn('[HomeParts] Failed to load persisted room temps', e);
+    }
   }
 
   ngOnDestroy() {
@@ -83,6 +135,12 @@ export class HomePartsComponent implements OnInit, OnDestroy {
     }
     if (this.motionSensorSubscription) {
       this.motionSensorSubscription.unsubscribe();
+    }
+    if (this.tempSubscription) {
+      this.tempSubscription.unsubscribe();
+    }
+    if (this.tempIntervalId) {
+      clearInterval(this.tempIntervalId);
     }
   }
 

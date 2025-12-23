@@ -3,6 +3,7 @@ import { SideBarComponent } from "../SideBar/SideBar.component"
 import {LowerCasePipe, NgClass, Time} from "@angular/common";
 import { AlertService } from '../services/alert.service';
 import { Subscription } from 'rxjs';
+import { environment } from '../../environment/environment';
 interface DoorWindowDevice {
   name: string;
   status: 'locked' | 'unlocked' | 'closed' | 'open';
@@ -42,6 +43,9 @@ export class SecurityComponent implements OnInit, OnDestroy {
   private alertSubscription?: Subscription;
   private tempSubscription?: Subscription;
 
+  // Keep track of the last temperature alarm we logged (ms since epoch) to avoid duplicates
+  private lastTempAlarmLoggedAt: number | null = null;
+
   constructor(private alertService: AlertService) { }
 
   ngOnInit() {
@@ -66,19 +70,36 @@ export class SecurityComponent implements OnInit, OnDestroy {
       }
     });
 
-    // Subscribe to temperature alerts and add to Activity Log when alarmed
-    this.tempSubscription = this.alertService.temperatureAlert$.subscribe(alert => {
-      if (alert.isActive) {
-        this.addLog({
-          type: 'Alarm',
-          title: 'Temperature Alarm',
-          location: alert.temp !== null ? `${alert.temp}°` : 'Temperature Sensor',
-          priority: 'High',
-          time: 'Just now',
-          timestamp: alert.timestamp || new Date()
-        });
-      }
-    });
+    // Replace the temperature subscription in ngOnInit() with this:
+
+// Subscribe to temperature alerts and add to Activity Log only when a real alarm fires
+this.tempSubscription = this.alertService.temperatureAlert$.subscribe(alert => {
+  // Only log when alert transitions to active state AND value exceeds threshold
+  if (alert.isActive && (alert.temp ?? -Infinity) > environment.tempAlarmThreshold) {
+    const ts = alert.timestamp ? alert.timestamp.getTime() : Date.now();
+    
+    // More lenient duplicate check: only skip if logged within last 2 seconds
+    const shouldLog = !this.lastTempAlarmLoggedAt || (ts - this.lastTempAlarmLoggedAt) > 2000;
+    
+    if (shouldLog) {
+      this.lastTempAlarmLoggedAt = ts;
+      
+      // Use the exact temperature from the alarm 
+      this.addLog({
+        type: 'Alarm',
+        title: 'Temperature Alarm',
+        location: alert.temp !== null ? `${alert.temp}°` : 'Temperature Sensor',
+        priority: 'High',
+        time: 'Just now',
+        timestamp: alert.timestamp || new Date()
+      });
+      
+      console.log('[Security] Temperature alarm logged:', alert.temp);
+    } else {
+      console.log('[Security] Duplicate temperature alarm suppressed (within 2s)');
+    }
+  }
+});
   }
 
   ngOnDestroy() {
